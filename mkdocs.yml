@@ -1,0 +1,109 @@
+# https://www.mkdocs.org/user-guide/configuration/
+# https://www.mkdocs.org/user-guide/writing-your-docs/
+# https://www.mkdocs.org/user-guide/writing-your-docs/#writing-with-markdown
+# https://mkdocs.readthedocs.io/en/0.15.2/user-guide/writing-your-docs/
+# https://mkdocs.readthedocs.io/en/0.15.2/user-guide/styling-your-docs/
+# https://example-mkdocs-basic.readthedocs.io/en/latest/
+# https://github.com/mkdocs/mkdocs/blob/master/mkdocs.yml
+# https://squidfunk.github.io/mkdocs-material/creating-your-site/
+# mkdocs.yml
+
+site_name: pwshBedrock
+site_url: https://www.pwshdedrock.dev
+repo_url: https://github.com/techthoughts2/pwshBedrock
+# repo_name:
+# edit_uri: edit/main/docs/
+# edit_uri_template:
+site_description: tbd # meta tag to the generated HTML header
+site_author: Jake Morrison # meta tag to the generated HTML header
+copyright: "pwshBedrock is licensed under the <a href='https://github.com/techthoughts2/pwshBedrock/blob/main/LICENSE'>MIT License</a>."
+# remote_branch:
+# remote_name:
+# docs_dir: docs
+# site_dir:
+# extra_css:
+# extra_javascript:
+markdown_extensions:
+  # Python Markdown
+  - admonition
+  - toc:
+      permalink: true
+  # code highlighting
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+# extra_templates:
+extra:
+  analytics:
+    provider: google
+    property: G-Y0D5B1REDE
+theme:
+  name: material
+  language: en
+  # custom_dir: overrides
+  features:
+    # - navigation.tabs
+    # - navigation.tabs.sticky
+    # - navigation.path
+  favicon: assets/pwshBedrock_favicon-32x32.png
+  icon:
+    repo: fontawesome/brands/github
+  # font:
+  #   text: Work Sans
+  logo: assets/pwshBedrock_icon.png
+  # palette:
+  #   primary: teal
+  # palette:
+  #   # Palette toggle for light mode
+  #   - media: "(prefers-color-scheme: light)"
+  #     scheme: default
+  #     primary: light blue
+  #     accent: pink
+  #     toggle:
+  #       icon: material/brightness-7
+  #       name: Switch to dark mode
+
+    # # Palette toggle for dark mode
+    # - media: "(prefers-color-scheme: dark)"
+    #   scheme: slate
+    #   primary: indigo
+    #   accent: pink
+    #   toggle:
+    #     icon: material/brightness-4
+    #     name: Switch to light mode
+nav:
+  - Overview: index.md
+  - Usage:
+    - pwshBedrock Basics: pwshBedrock-Basics.md
+    - pwshBedrock Advanced: pwshBedrock-Advanced.md
+  - Functions:
+    - General:
+      - Get-ModelContext: Get-ModelContext.md
+      - Get-ModelCostEstimate: Get-ModelCostEstimate.md
+      - Get-ModelInfo: Get-ModelInfo.md
+      - Get-ModelTally: Get-ModelTally.md
+      - Get-TokenCountEstimate: Get-TokenCountEstimate.md
+      - Reset-ModelContext: Reset-ModelContext.md
+      - Reset-ModelTally: Reset-ModelTally.md
+      - Save-ModelContext: Save-ModelContext.md
+      - Set-ModelContextFromFile: Set-ModelContextFromFile.md
+    - Invoke-ConverseAPI: Invoke-ConverseAPI.md
+    - Models:
+      - Invoke-AI21LabsJambaModel: Invoke-AI21LabsJambaModel.md
+      - Invoke-AI21LabsJurassic2Model: Invoke-AI21LabsJurassic2Model.md
+      - Invoke-AmazonImageModel: Invoke-AmazonImageModel.md
+      - Invoke-AmazonTextModel: Invoke-AmazonTextModel.md
+      - Invoke-AnthropicModel: Invoke-AnthropicModel.md
+      - Invoke-CohereCommandModel: Invoke-CohereCommandModel.md
+      - Invoke-CohereCommandRModel: Invoke-CohereCommandRModel.md
+      - Invoke-MetaModel: Invoke-MetaModel.md
+      - Invoke-MistralAIChatModel: Invoke-MistralAIChatModel.md
+      - Invoke-MistralAIModel: Invoke-MistralAIModel.md
+      - Invoke-StabilityAIDiffusionModel: Invoke-StabilityAIDiffusionModel.md
+  - FAQ: pwshBedrock-FAQ.md
+  - Change Log: CHANGELOG.md
