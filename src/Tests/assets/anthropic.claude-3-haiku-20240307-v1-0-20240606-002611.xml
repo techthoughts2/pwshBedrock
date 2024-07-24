@@ -1,0 +1,56 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="ModelID">anthropic.claude-3-haiku-20240307-v1:0</S>
+      <Obj N="Context" RefId="1">
+        <TN RefId="1">
+          <T>System.Object[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <Obj RefId="2">
+            <TNRef RefId="0" />
+            <MS>
+              <S N="role">user</S>
+              <Obj N="content" RefId="3">
+                <TNRef RefId="1" />
+                <LST>
+                  <Obj RefId="4">
+                    <TNRef RefId="0" />
+                    <MS>
+                      <S N="type">text</S>
+                      <S N="text">Hello World</S>
+                    </MS>
+                  </Obj>
+                </LST>
+              </Obj>
+            </MS>
+          </Obj>
+          <Obj RefId="5">
+            <TNRef RefId="0" />
+            <MS>
+              <S N="role">assistant</S>
+              <Obj N="content" RefId="6">
+                <TNRef RefId="1" />
+                <LST>
+                  <Obj RefId="7">
+                    <TNRef RefId="0" />
+                    <MS>
+                      <S N="type">text</S>
+                      <S N="text">Hello! It's nice to meet you. I'm an AI assistant created by Anthropic. I'm here to help with a variety of tasks, from answering questions to providing analysis and creative assistance. Please let me know if there's anything I can help you with.</S>
+                    </MS>
+                  </Obj>
+                </LST>
+              </Obj>
+            </MS>
+          </Obj>
+        </LST>
+      </Obj>
+    </MS>
+  </Obj>
+</Objs>

@@ -44,41 +44,6 @@ Install-Module -Name pwshBedrock -Repository PSGallery -Scope CurrentUser
 
 ### Quick start
 
-#### General
-
-```powershell
-#------------------------------------------------------------------------------------------------
-# Returns the message context history for the specified model.
-Get-ModelContext -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
-#------------------------------------------------------------------------------------------------
-# Estimates the cost of using the model with 1000 input tokens and 1000 output tokens.
-Get-ModelCostEstimate -InputTokenCount 1000 -OutputTokenCount 1000 -ModelID 'cohere.command-r-plus-v1:0'
-#------------------------------------------------------------------------------------------------
-# Gets information about specified model
-Get-ModelInfo -ModelID 'anthropic.claude-3-opus-20240229-v1:0'
-# Retrieves information for all models.
-Get-ModelInfo -AllModels
-#------------------------------------------------------------------------------------------------
-# Retrieves the tally for the model
-Get-ModelTally -ModelID 'meta.llama3-70b-instruct-v1:0'
-#------------------------------------------------------------------------------------------------
-# Estimates the number of tokens in the provided text.
-Get-TokenCountEstimate -Text 'Explain zero-point energy.'
-#------------------------------------------------------------------------------------------------
-# Resets the message context for the specified model.
-Reset-ModelContext -ModelID 'anthropic.claude-v2:1'
-#------------------------------------------------------------------------------------------------
-# Resets the tally for the model
-Reset-ModelTally -ModelID 'mistral.mistral-large-2402-v1:0'
-#------------------------------------------------------------------------------------------------
-# Saves the message context history for the specified model to a file,
-Save-ModelContext -ModelID 'amazon.titan-tg1-large' -FilePath 'C:\temp'
-#------------------------------------------------------------------------------------------------
-# Loads and sets the message context for a model from a file.
-Set-ModelContextFromFile -FilePath 'C:\temp\context.xml'
-#------------------------------------------------------------------------------------------------
-```
-
 #### Converse
 
 *Converse provides a consistent interface that works with most models that support messages.*
@@ -185,6 +150,41 @@ Invoke-MistralAIModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mi
 #------------------------------------------------------------------------------------------------
 # Generates an image and saves the image to the C:\temp folder.
 Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
+#------------------------------------------------------------------------------------------------
+```
+
+#### General
+
+```powershell
+#------------------------------------------------------------------------------------------------
+# Returns the message context history for the specified model.
+Get-ModelContext -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
+#------------------------------------------------------------------------------------------------
+# Estimates the cost of using the model with 1000 input tokens and 1000 output tokens.
+Get-ModelCostEstimate -InputTokenCount 1000 -OutputTokenCount 1000 -ModelID 'cohere.command-r-plus-v1:0'
+#------------------------------------------------------------------------------------------------
+# Gets information about specified model
+Get-ModelInfo -ModelID 'anthropic.claude-3-opus-20240229-v1:0'
+# Retrieves information for all models.
+Get-ModelInfo -AllModels
+#------------------------------------------------------------------------------------------------
+# Retrieves the tally for the model
+Get-ModelTally -ModelID 'meta.llama3-70b-instruct-v1:0'
+#------------------------------------------------------------------------------------------------
+# Estimates the number of tokens in the provided text.
+Get-TokenCountEstimate -Text 'Explain zero-point energy.'
+#------------------------------------------------------------------------------------------------
+# Resets the message context for the specified model.
+Reset-ModelContext -ModelID 'anthropic.claude-v2:1'
+#------------------------------------------------------------------------------------------------
+# Resets the tally for the model
+Reset-ModelTally -ModelID 'mistral.mistral-large-2402-v1:0'
+#------------------------------------------------------------------------------------------------
+# Saves the message context history for the specified model to a file,
+Save-ModelContext -ModelID 'amazon.titan-tg1-large' -FilePath 'C:\temp'
+#------------------------------------------------------------------------------------------------
+# Loads and sets the message context for a model from a file.
+Set-ModelContextFromFile -FilePath 'C:\temp\context.xml'
 #------------------------------------------------------------------------------------------------
 ```
 

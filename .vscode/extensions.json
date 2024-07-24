@@ -1,0 +1,14 @@
+{
+    // See http://go.microsoft.com/fwlink/?LinkId=827846
+    // for the documentation about the extensions.json format
+    "recommendations": [
+        "ms-vscode.PowerShell",
+        "ryanluker.vscode-coverage-gutters",
+        "DavidAnson.vscode-markdownlint",
+        "redhat.vscode-yaml",
+        "aws-scripting-guy.cform",
+        "danielthielking.aws-cloudformation-yaml",
+        "kddejong.vscode-cfn-lint",
+        "streetsidesoftware.code-spell-checker"
+    ]
+}

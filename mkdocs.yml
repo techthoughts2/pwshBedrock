@@ -14,7 +14,7 @@ repo_url: https://github.com/techthoughts2/pwshBedrock
 # repo_name:
 # edit_uri: edit/main/docs/
 # edit_uri_template:
-site_description: tbd # meta tag to the generated HTML header
+site_description: pwshBedrock simplifies interaction with Amazon Bedrock foundation models using PowerShell. Send messages, manage conversation contexts, generate images, and estimate costs easily. Supports InvokeModel and Converse API for efficient AI integration in PowerShell workflows. # meta tag to the generated HTML header
 site_author: Jake Morrison # meta tag to the generated HTML header
 copyright: "pwshBedrock is licensed under the <a href='https://github.com/techthoughts2/pwshBedrock/blob/main/LICENSE'>MIT License</a>."
 # remote_branch:

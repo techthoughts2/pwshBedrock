@@ -100,7 +100,7 @@ $documents = @(
         snippet = 'The line must be drawn here! This far, no further!'
     }
 )
-$invokeAmazonTextModelSplat = @{
+$invokeCohereCommandRModelSplat = @{
     Message           = 'Shaka, when the walls fell.'
     ModelID           = 'cohere.command-r-plus-v1:0'
     NoContextPersist  = $true
@@ -118,7 +118,7 @@ $invokeAmazonTextModelSplat = @{
     SecretKey         = 'sk'
     Region            = 'us-west-2'
 }
-Invoke-CohereCommandRModel @invokeAmazonTextModelSplat
+Invoke-CohereCommandRModel @invokeCohereCommandRModelSplat
 ```
 
 Sends a message to the on-demand Cohere Command R+ model in the specified AWS region with custom parameters and returns the response.
