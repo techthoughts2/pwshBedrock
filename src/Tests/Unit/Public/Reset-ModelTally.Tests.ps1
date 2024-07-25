@@ -80,36 +80,33 @@ InModuleScope 'pwshBedrock' {
 
             BeforeEach {
                 $Global:pwshBedRockSessionCostEstimate = 1
-                $Global:pwshBedRockSessionModelTally = @(
-                    [PSCustomObject]@{
-                        ModelId          = 'anthropic.claude-v2:1'
-                        TotalCost        = 1
-                        InputTokenCount  = 1
-                        OutputTokenCount = 1
-                        InputTokenCost   = 1
-                        OutputTokenCost  = 1
-                    }
-                    [PSCustomObject]@{
-                        ModelId          = 'anthropic.claude-3-sonnet-20240229-v1:0'
-                        TotalCost        = 1
-                        InputTokenCount  = 1
-                        OutputTokenCount = 1
-                        InputTokenCost   = 1
-                        OutputTokenCost  = 1
-                    }
-                )
+                $v21 = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq 'anthropic.claude-v2:1' }
+                $v21.TotalCost = 1
+                $v21.InputTokenCount = 1
+                $v21.OutputTokenCount = 1
+                $v21.InputTokenCost = 1
+                $v21.OutputTokenCost = 1
+                $v3 = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq 'anthropic.claude-3-sonnet-20240229-v1:0' }
+                $v3.TotalCost = 1
+                $v3.InputTokenCount = 1
+                $v3.OutputTokenCount = 1
+                $v3.InputTokenCost = 1
+                $v3.OutputTokenCost = 1
             } #beforeEach
+            AfterAll {
+                Reset-ModelTally -AllModels
+            }
 
             It 'should reset the tally for a single model' {
                 Reset-ModelTally -ModelID 'anthropic.claude-v2:1'
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq 'anthropic.claude-v2:1' }
+                $eval = Get-ModelTally -ModelID 'anthropic.claude-v2:1'
                 $eval.TotalCost | Should -BeExactly 0
                 $eval.InputTokenCount | Should -BeExactly 0
                 $eval.OutputTokenCount | Should -BeExactly 0
                 $eval.InputTokenCost | Should -BeExactly 0
                 $eval.OutputTokenCost | Should -BeExactly 0
 
-                $eval2 = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq 'anthropic.claude-3-sonnet-20240229-v1:0' }
+                $eval2 = Get-ModelTally -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
                 $eval2.TotalCost | Should -BeExactly 1
                 $eval2.InputTokenCount | Should -BeExactly 1
                 $eval2.OutputTokenCount | Should -BeExactly 1
@@ -121,11 +118,17 @@ InModuleScope 'pwshBedrock' {
                 Reset-ModelTally -AllModels
                 $Global:pwshBedRockSessionCostEstimate | Should -BeExactly 0
                 foreach ($model in $Global:pwshBedRockSessionModelTally) {
-                    $model.TotalCost | Should -BeExactly 0
-                    $model.InputTokenCount | Should -BeExactly 0
-                    $model.OutputTokenCount | Should -BeExactly 0
-                    $model.InputTokenCost | Should -BeExactly 0
-                    $model.OutputTokenCost | Should -BeExactly 0
+                    if ($null -ne $model.ImageCount) {
+                        $model.ImageCount | Should -BeExactly 0
+                        $model.ImageCost | Should -BeExactly 0
+                    }
+                    else {
+                        $model.TotalCost | Should -BeExactly 0
+                        $model.InputTokenCount | Should -BeExactly 0
+                        $model.OutputTokenCount | Should -BeExactly 0
+                        $model.InputTokenCost | Should -BeExactly 0
+                        $model.OutputTokenCost | Should -BeExactly 0
+                    }
                 }
             } #it
 

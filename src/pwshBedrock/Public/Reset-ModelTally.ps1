@@ -127,11 +127,18 @@ function Reset-ModelTally {
                     Write-Verbose -Message 'Resetting all model tallies'
                     $Global:pwshBedRockSessionCostEstimate = 0
                     $Global:pwshBedRockSessionModelTally | ForEach-Object {
-                        $_.TotalCost = 0
-                        $_.InputTokenCount = 0
-                        $_.OutputTokenCount = 0
-                        $_.InputTokenCost = 0
-                        $_.OutputTokenCost = 0
+                        # if the object has the ImageCount property, we will reset an image object, otherwise we will reset a token object
+                        if ($null -ne $_.ImageCount) {
+                            $_.ImageCount = 0
+                            $_.ImageCost = 0
+                        }
+                        else {
+                            $_.TotalCost = 0
+                            $_.InputTokenCount = 0
+                            $_.OutputTokenCount = 0
+                            $_.InputTokenCost = 0
+                            $_.OutputTokenCost = 0
+                        }
                     }
                     Write-Debug -Message ('Total cost estimate: {0}' -f $Global:pwshBedRockSessionCostEstimate)
                     Write-Debug -Message ($Global:pwshBedRockSessionModelTally | Out-String)

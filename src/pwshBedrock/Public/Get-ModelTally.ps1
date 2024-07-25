@@ -98,6 +98,7 @@ function Get-ModelTally {
         'Single' {
             Write-Verbose -Message ('Getting model tally for {0}' -f $ModelID)
             $modelTally = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelID -eq $ModelID }
+            Write-Debug -Message ('ModelTally: {0}' -f $modelTally)
             return $modelTally
         }
         'All' {
