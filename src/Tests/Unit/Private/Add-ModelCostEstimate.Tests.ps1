@@ -153,7 +153,8 @@ InModuleScope 'pwshBedrock' {
 
             It 'should update the tally for a Converse API called model' {
                 Add-ModelCostEstimate -Usage $converseUsage -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0' -Converse
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq 'anthropic.claude-3-sonnet-20240229-v1:0' }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq 'anthropic.claude-3-sonnet-20240229-v1:0' }
+                $eval = Get-ModelTally -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -164,7 +165,8 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for <_> model' -ForEach $script:anthropicModelInfo.ModelId {
                 $modelName = $_
                 Add-ModelCostEstimate -Usage $anthropicUsage -ModelID $modelName
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelName }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelName }
+                $eval = Get-ModelTally -ModelID $modelName
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -175,7 +177,8 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.ModelId -ne 'amazon.titan-image-generator-v1' }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $amazonUsage -ModelID $modelId
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -192,7 +195,8 @@ InModuleScope 'pwshBedrock' {
                     }
                 } #endMock
                 Add-ModelCostEstimate -ImageCount 2 -ModelID $modelId
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.ImageCount | Should -BeGreaterThan 0
                 $eval.ImageCost | Should -BeGreaterThan 0
             } #it
@@ -200,7 +204,8 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for <_.ModelId> model' -ForEach ($script:ai21ModelInfo | Where-Object { $_.ModelId -ne 'ai21.jamba-instruct-v1:0' }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $ai21LabsUsage -ModelID $modelId
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -222,7 +227,8 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for <_.ModelId> model' -ForEach ($script:cohereModelInfo | Where-Object { $_.ModelId -eq 'cohere.command-text-v14' -or $_.ModelId -eq 'cohere.command-light-text-v14' }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $cohereCommandUsage -ModelID $modelId
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -233,7 +239,8 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for <_.ModelId> model' -ForEach ($script:cohereModelInfo | Where-Object { $_.ModelId -eq 'cohere.command-r-v1:0' -or $_.ModelId -eq 'cohere.command-r-plus-v1:0' }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $cohereCommandRUsage -Message 'Hi there'  -ModelID $modelId
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -244,7 +251,8 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for <_.ModelId> model' -ForEach ($script:metaModelInfo) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $metaUsage -ModelID $modelId
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -255,7 +263,8 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for <_.ModelId> model' -ForEach $script:mistralAIModelInfo {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $mistralAIUsage -ModelID $modelId -Message 'Hi there'
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -266,7 +275,8 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for the large chat model' {
                 $modelId = 'mistral.mistral-large-2407-v1:0'
                 Add-ModelCostEstimate -Usage $mistraAIChatUsage -ModelID $modelId -Message 'Hi there'
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -277,7 +287,8 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for the large chat when tool_calls are returned model' {
                 $modelId = 'mistral.mistral-large-2407-v1:0'
                 Add-ModelCostEstimate -Usage $mistraAIChatToolsCallUsage -ModelID $modelId -Message 'Hi there'
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -294,7 +305,8 @@ InModuleScope 'pwshBedrock' {
                     }
                 } #endMock
                 Add-ModelCostEstimate -ImageCount 1 -ModelID $modelId
-                $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.ImageCount | Should -BeGreaterThan 0
                 $eval.ImageCost | Should -BeGreaterThan 0
             } #it
