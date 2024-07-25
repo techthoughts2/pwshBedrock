@@ -63,14 +63,14 @@ See the pwshBedrock documentation for more information on Function Calling and t
 
 ### EXAMPLE 1
 ```
-Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2402-v1:0' -Credential $awsCredential -Region 'us-west-2'
+Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2407-v1:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region and returns the response.
 
 ### EXAMPLE 2
 ```
-Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2402-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
+Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2407-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
 Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region and returns the full response object.
@@ -83,7 +83,7 @@ $invokeMistralAIChatModelSplat = @{
     Tools            = $starTrekTriviaFunctionTool
     ToolChoice       = 'auto'
     ReturnFullObject = $true
-    ModelID          = 'mistral.mistral-large-2402-v1:0'
+    ModelID          = 'mistral.mistral-large-2407-v1:0'
     ReturnFullObject = $true
     Credential       = $awsCredential
     Region           = 'us-west-2'
@@ -97,7 +97,7 @@ Sends a chat message to the on-demand Mistral AI chat model in the specified AWS
 ```
 $invokeMistralAIChatModelSplat = @{
     ToolsResults     = $starTrekTriviaFunctionResults
-    ModelID          = 'mistral.mistral-large-2402-v1:0'
+    ModelID          = 'mistral.mistral-large-2407-v1:0'
     ReturnFullObject = $true
     Credential       = $awsCredential
     Region           = 'us-west-2'

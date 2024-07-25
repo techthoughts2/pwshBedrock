@@ -436,6 +436,20 @@ User: "Hi there!
                         )
                     }
                     [PSCustomObject]@{
+                        ModelID = 'mistral.mistral-large-2407-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Mistral large 2407 v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
                         ModelID = 'mistral.mistral-small-2402-v1:0'
                         Context = @(
                             [PSCustomObject]@{

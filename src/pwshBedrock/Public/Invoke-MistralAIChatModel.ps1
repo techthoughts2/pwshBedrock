@@ -11,11 +11,11 @@
     If you are providing Tools to enable Function Calling, it is recommended that you use the ReturnFullObject parameter to capture the full response object.
     See the pwshBedrock documentation for more information on Function Calling and the Mistral AI chat model.
 .EXAMPLE
-    Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2402-v1:0' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2407-v1:0' -Credential $awsCredential -Region 'us-west-2'
 
     Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region and returns the response.
 .EXAMPLE
-    Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2402-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
+    Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2407-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 
     Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region and returns the full response object.
 .EXAMPLE
@@ -25,7 +25,7 @@
         Tools            = $starTrekTriviaFunctionTool
         ToolChoice       = 'auto'
         ReturnFullObject = $true
-        ModelID          = 'mistral.mistral-large-2402-v1:0'
+        ModelID          = 'mistral.mistral-large-2407-v1:0'
         ReturnFullObject = $true
         Credential       = $awsCredential
         Region           = 'us-west-2'
@@ -36,7 +36,7 @@
 .EXAMPLE
     $invokeMistralAIChatModelSplat = @{
         ToolsResults     = $starTrekTriviaFunctionResults
-        ModelID          = 'mistral.mistral-large-2402-v1:0'
+        ModelID          = 'mistral.mistral-large-2407-v1:0'
         ReturnFullObject = $true
         Credential       = $awsCredential
         Region           = 'us-west-2'
@@ -134,8 +134,9 @@ function Invoke-MistralAIChatModel {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
+            'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-small-2402-v1:0',
-            'mistral.mistral-large-2402-v1:0'
+            'mistral.mistral-large-2407-v1:0'
         )]
         [string]$ModelID,
 

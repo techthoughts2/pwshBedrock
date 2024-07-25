@@ -62,6 +62,7 @@ function Get-ModelContext {
             'meta.llama3-1-70b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
+            'mistral.mistral-large-2407-v1:0',
             'mistral.mistral-small-2402-v1:0',
             'mistral.mixtral-8x7b-instruct-v0:1',
             'stability.stable-diffusion-xl-v1',

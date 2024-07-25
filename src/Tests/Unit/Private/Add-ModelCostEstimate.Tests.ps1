@@ -264,7 +264,7 @@ InModuleScope 'pwshBedrock' {
             } #it
 
             It 'should update the tally for the large chat model' {
-                $modelId = 'mistral.mistral-large-2402-v1:0'
+                $modelId = 'mistral.mistral-large-2407-v1:0'
                 Add-ModelCostEstimate -Usage $mistraAIChatUsage -ModelID $modelId -Message 'Hi there'
                 $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
                 $eval.TotalCost | Should -BeGreaterThan 0
@@ -275,7 +275,7 @@ InModuleScope 'pwshBedrock' {
             } #it
 
             It 'should update the tally for the large chat when tool_calls are returned model' {
-                $modelId = 'mistral.mistral-large-2402-v1:0'
+                $modelId = 'mistral.mistral-large-2407-v1:0'
                 Add-ModelCostEstimate -Usage $mistraAIChatToolsCallUsage -ModelID $modelId -Message 'Hi there'
                 $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
                 $eval.TotalCost | Should -BeGreaterThan 0

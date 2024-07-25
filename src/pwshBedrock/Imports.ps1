@@ -231,6 +231,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'mistral.mistral-large-2407-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'mistral.mistral-small-2402-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -368,6 +376,10 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'mistral.mistral-large-2402-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'mistral.mistral-large-2407-v1:0'
         Context = ''
     }
     [PSCustomObject]@{
@@ -1102,7 +1114,27 @@ $script:mistralAIModelInfo = @(
         InputTokenCost             = 0.001
         OutputTokenCost            = 0.003
     }
-
+    [PSCustomObject]@{
+        ProviderName               = 'Mistral AI'
+        ModelName                  = 'Mistral Large (2407)'
+        ModelId                    = 'mistral.mistral-large-2407-v1:0'
+        Description                = 'The latest version of Mistral AI flagship large language model, with significant improvements on multilingual accuracy, conversational behavior, coding capabilities, reasoning and instruction-following behavior.'
+        Strength                   = 'multilingual translation, text summarization, complex multilingual reasoning tasks, math and coding tasks including code generation'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 8192
+        TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
+        PayloadLimit               = ''
+        InputTokenCost             = 0.001
+        OutputTokenCost            = 0.003
+    }
 ) #mistralModelInfo
 
 #endregion

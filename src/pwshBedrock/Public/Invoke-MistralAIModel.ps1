@@ -8,21 +8,21 @@
     The cmdlet also estimates the cost of model usage based on the provided
     input and output tokens and adds the estimate to the models tally information.
 .EXAMPLE
-    Invoke-MistralAIModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2402-v1:0' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-MistralAIModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2407-v1:0' -Credential $awsCredential -Region 'us-west-2'
 
     Sends a text message to the on-demand Mistral AI text model in the specified AWS region and returns the response.
 .EXAMPLE
-    Invoke-MistralAIModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2402-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
+    Invoke-MistralAIModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2407-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 
     Sends a text message to the on-demand Mistral AI text model in the specified AWS region and returns the full response object.
 .EXAMPLE
-    Invoke-MistralAIModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2402-v1:0' -Credential $awsCredential -Region 'us-west-2' -NoContextPersist
+    Invoke-MistralAIModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2407-v1:0' -Credential $awsCredential -Region 'us-west-2' -NoContextPersist
 
     Sends a text message to the on-demand Mistral AI text model in the specified AWS region and returns the response without persisting the conversation context history.
 .EXAMPLE
     $invokeMetaModelSplat = @{
         Message          = 'Explain zero-point energy.'
-        ModelID          = 'mistral.mistral-large-2402-v1:0'
+        ModelID          = 'mistral.mistral-large-2407-v1:0'
         MaxTokens        = 2000
         Credential       = $awsCredential
         Region           = 'us-west-2'
@@ -109,7 +109,8 @@ function Invoke-MistralAIModel {
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mixtral-8x7b-instruct-v0:1',
             'mistral.mistral-small-2402-v1:0',
-            'mistral.mistral-large-2402-v1:0'
+            'mistral.mistral-large-2402-v1:0',
+            'mistral.mistral-large-2407-v1:0'
         )]
         [string]$ModelID,
 

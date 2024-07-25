@@ -4,9 +4,9 @@
 .DESCRIPTION
     This function formats a message to be sent to a Mistral AI model.
 .EXAMPLE
-    Format-MistralAIChatModel -Role 'User' -Message 'Hello, how are you?' -ModelID 'mistral.mistral-large-2402-v1:0'
+    Format-MistralAIChatModel -Role 'User' -Message 'Hello, how are you?' -ModelID 'mistral.mistral-large-2407-v1:0'
 
-    This example formats a message to be sent to the Mistral AI model 'mistral.mistral-large-2402-v1:0'.
+    This example formats a message to be sent to the Mistral AI model 'mistral.mistral-large-2407-v1:0'.
 .PARAMETER Role
     The role of the message sender.
 .PARAMETER Message
