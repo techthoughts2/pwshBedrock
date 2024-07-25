@@ -53,7 +53,8 @@ function Format-MistralAIChatModel {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
-            'mistral.mistral-large-2402-v1:0'
+            'mistral.mistral-large-2402-v1:0',
+            'mistral.mistral-large-2407-v1:0'
         )]
         [string]$ModelID,
 
