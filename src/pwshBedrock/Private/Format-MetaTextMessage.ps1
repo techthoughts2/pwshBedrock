@@ -4,15 +4,15 @@
 .DESCRIPTION
     This function formats a message to be sent to a Meta model.
 .EXAMPLE
-    Format-MetaTextMessage -Role 'User' -Message 'Hello, how are you?' -ModelID 'meta.llama3-8b-instruct-v1:0'
+    Format-MetaTextMessage -Role 'User' -Message 'Hello, how are you?' -ModelID 'meta.llama3-1-8b-instruct-v1:0'
 
     Formats a text message to be sent to the Meta model.
 .EXAMPLE
-    Format-MetaTextMessage -Role 'User' -Message 'Hello, how are you?' -ModelID 'meta.llama3-8b-instruct-v1:0' -NoContextPersist
+    Format-MetaTextMessage -Role 'User' -Message 'Hello, how are you?' -ModelID 'meta.llama3-1-8b-instruct-v1:0' -NoContextPersist
 
     Formats a text message to be sent to the Meta model without persisting the conversation context history.
 .EXAMPLE
-    Format-MetaTextMessage -Role 'User' -Message 'Hello, how are you?' -SystemPrompt 'You are a Star Trek trivia expert.' -ModelID 'meta.llama3-8b-instruct-v1:0'
+    Format-MetaTextMessage -Role 'User' -Message 'Hello, how are you?' -SystemPrompt 'You are a Star Trek trivia expert.' -ModelID 'meta.llama3-1-8b-instruct-v1:0'
 
     Formats a text message to be sent to the Meta model with a system prompt.
 .PARAMETER Role
@@ -57,7 +57,9 @@ function Format-MetaTextMessage {
             'meta.llama2-13b-chat-v1',
             'meta.llama2-70b-chat-v1',
             'meta.llama3-8b-instruct-v1:0',
-            'meta.llama3-70b-instruct-v1:0'
+            'meta.llama3-70b-instruct-v1:0',
+            'meta.llama3-1-8b-instruct-v1:0',
+            'meta.llama3-1-70b-instruct-v1:0'
         )]
         [string]$ModelID,
 

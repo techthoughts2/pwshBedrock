@@ -64,6 +64,8 @@ function Reset-ModelContext {
             'meta.llama2-70b-chat-v1',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-8b-instruct-v1:0',
+            'meta.llama3-1-8b-instruct-v1:0',
+            'meta.llama3-1-70b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-small-2402-v1:0',
@@ -138,6 +140,8 @@ function Reset-ModelContext {
                             $model -eq 'meta.llama2-70b-chat-v1' -or
                             $model -eq 'meta.llama3-8b-instruct-v1:0' -or
                             $model -eq 'meta.llama3-70b-instruct-v1:0' -or
+                            $model -eq 'meta.llama3-1-8b-instruct-v1:0' -or
+                            $model -eq 'meta.llama3-1-70b-instruct-v1:0' -or
                             $model -eq 'mistral.mistral-7b-instruct-v0:2' -or
                             $model -eq 'mistral.mixtral-8x7b-instruct-v0:1' -or
                             $model -eq 'mistral.mistral-large-2402-v1:0' -or

@@ -366,6 +366,34 @@ User: "Hi there!
                         )
                     }
                     [PSCustomObject]@{
+                        ModelID = 'meta.llama3-1-8b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama3 1 8b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'meta.llama3-1-70b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama3 1 70b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
                         ModelID = 'mistral.mistral-7b-instruct-v0:2'
                         Context = @(
                             [PSCustomObject]@{
