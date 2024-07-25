@@ -29,7 +29,7 @@ InModuleScope 'pwshBedrock' {
                 Reset-ModelContext @resetModelContextSplat
             }
             AfterEach {
-                Start-Sleep -Milliseconds 1500
+                Start-Sleep -Milliseconds 5500
             }
 
             It 'should return a message when provided a standard message' {

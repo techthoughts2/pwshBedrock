@@ -785,7 +785,7 @@ function Invoke-StabilityAIDiffusionModel {
                 throw
             }
 
-            Start-Sleep -Milliseconds 1500 #for naming uniqueness
+            Start-Sleep -Milliseconds 5500 #for naming uniqueness
             $imageCount--
         } #foreach_image
     }

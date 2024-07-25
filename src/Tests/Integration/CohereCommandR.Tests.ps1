@@ -29,7 +29,7 @@ InModuleScope 'pwshBedrock' {
                 Reset-ModelContext @resetModelContextSplat
             }
             AfterEach {
-                Start-Sleep -Milliseconds 1500
+                Start-Sleep -Milliseconds 5500
             }
 
             It 'should return a message when provided a standard message for <_.ModelId>' -Foreach ($script:cohereModelInfo | Where-Object { $_.ModelId -eq 'cohere.command-r-v1:0' -or $_.ModelId -eq 'cohere.command-r-plus-v1:0' }) {

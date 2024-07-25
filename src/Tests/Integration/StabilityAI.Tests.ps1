@@ -40,7 +40,7 @@ InModuleScope 'pwshBedrock' {
                 # $outFile = 'D:\Code\Bedrock'
             }
             AfterEach {
-                Start-Sleep -Milliseconds 1500
+                Start-Sleep -Milliseconds 5500
             }
 
             It 'should return an image when using text-to-image for <_.ModelId>' -Foreach $script:stabilityAIModelInfo {

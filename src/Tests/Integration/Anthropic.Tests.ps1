@@ -34,7 +34,7 @@ InModuleScope 'pwshBedrock' {
                 Reset-ModelContext @resetModelContextSplat
             }
             AfterEach {
-                Start-Sleep -Milliseconds 1500
+                Start-Sleep -Milliseconds 5500
             }
 
             It 'should return a message when provided a standard message for <_.ModelID>' -Foreach ($script:anthropicModelInfo | Where-Object { $_.ModelID -ne 'anthropic.claude-3-opus-20240229-v1:0' }) {
@@ -84,7 +84,7 @@ InModuleScope 'pwshBedrock' {
 
         Context 'Vision Message' {
             AfterEach {
-                Start-Sleep -Milliseconds 1500
+                Start-Sleep -Milliseconds 5500
             }
 
             It 'should return a message when provided a vision message for <_.ModelID>' -Foreach ($script:anthropicModelInfo | Where-Object { $_.Vision -eq $true -and $_.ModelID -ne 'anthropic.claude-3-opus-20240229-v1:0' }) {
@@ -113,7 +113,7 @@ InModuleScope 'pwshBedrock' {
 
         Context 'Custom Message' {
             AfterEach {
-                Start-Sleep -Milliseconds 1500
+                Start-Sleep -Milliseconds 5500
             }
 
             It 'should return a message when provided a custom message for <_.ModelID>' -Foreach ($script:anthropicModelInfo | Where-Object { $_.ModelID -ne 'anthropic.claude-3-opus-20240229-v1:0' }) {
