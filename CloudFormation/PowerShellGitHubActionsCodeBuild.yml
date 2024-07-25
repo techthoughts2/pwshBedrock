@@ -19,7 +19,7 @@ Parameters:
 
   CodeBuildTimeoutInMinutes:
     Type: Number
-    Default: 30
+    Default: 45
     Description: The number of minutes before a CodeBuild build will timeout.
 
   # https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html
