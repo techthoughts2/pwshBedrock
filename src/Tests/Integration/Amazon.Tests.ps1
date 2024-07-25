@@ -42,6 +42,9 @@ InModuleScope 'pwshBedrock' {
                 }
                 Reset-ModelContext @resetModelContextSplat
             }
+            AfterEach {
+                Start-Sleep -Milliseconds 500
+            }
 
             It 'should return a message when provided a standard message for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -ne 'amazon.titan-image-generator-v1' }) {
                 $ModelID = $_.ModelId
@@ -85,6 +88,9 @@ InModuleScope 'pwshBedrock' {
         } #context_standard_message
 
         Context 'Custom Message' {
+            AfterEach {
+                Start-Sleep -Milliseconds 500
+            }
 
             It 'should return a message when provided a custom message for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -ne 'amazon.titan-image-generator-v1' }) {
                 $ModelID = $_.ModelId
@@ -122,6 +128,9 @@ User: Say the exact same thing you just said.
             BeforeEach {
                 $outFile = $env:TEMP
                 # $outFile = 'D:\Code\Bedrock'
+            }
+            AfterEach {
+                Start-Sleep -Milliseconds 500
             }
 
             It 'should return an image when using TEXT_IMAGE generation for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {

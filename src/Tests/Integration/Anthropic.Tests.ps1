@@ -33,6 +33,9 @@ InModuleScope 'pwshBedrock' {
                 }
                 Reset-ModelContext @resetModelContextSplat
             }
+            AfterEach {
+                Start-Sleep -Milliseconds 500
+            }
 
             It 'should return a message when provided a standard message for <_.ModelID>' -Foreach ($script:anthropicModelInfo | Where-Object { $_.ModelID -ne 'anthropic.claude-3-opus-20240229-v1:0' }) {
                 $ModelID = $_.ModelID
@@ -80,6 +83,9 @@ InModuleScope 'pwshBedrock' {
         } #context_standard_message
 
         Context 'Vision Message' {
+            AfterEach {
+                Start-Sleep -Milliseconds 500
+            }
 
             It 'should return a message when provided a vision message for <_.ModelID>' -Foreach ($script:anthropicModelInfo | Where-Object { $_.Vision -eq $true -and $_.ModelID -ne 'anthropic.claude-3-opus-20240229-v1:0' }) {
                 # Write-Verbose ('$PSScriptRoot is {0}' -f $PSScriptRoot)
@@ -106,6 +112,9 @@ InModuleScope 'pwshBedrock' {
         } #context_vision_message
 
         Context 'Custom Message' {
+            AfterEach {
+                Start-Sleep -Milliseconds 500
+            }
 
             It 'should return a message when provided a custom message for <_.ModelID>' -Foreach ($script:anthropicModelInfo | Where-Object { $_.ModelID -ne 'anthropic.claude-3-opus-20240229-v1:0' }) {
                 $ModelID = $_.ModelID

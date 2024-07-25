@@ -28,6 +28,9 @@ InModuleScope 'pwshBedrock' {
                 }
                 Reset-ModelContext @resetModelContextSplat
             }
+            AfterEach {
+                Start-Sleep -Milliseconds 500
+            }
 
             It 'should return a message when provided a standard message' {
                 $invokeMistralAIChatModelSplat = @{
