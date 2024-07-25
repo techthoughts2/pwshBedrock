@@ -29,7 +29,7 @@ InModuleScope 'pwshBedrock' {
                 Reset-ModelContext @resetModelContextSplat
             }
             AfterEach {
-                Start-Sleep -Milliseconds 500
+                Start-Sleep -Milliseconds 1500
             }
 
             It 'should return a message when provided a standard message for <_.ModelId>' -Foreach ($script:ai21ModelInfo | Where-Object { $_.ModelId -ne 'ai21.jamba-instruct-v1:0' }) {
@@ -101,7 +101,7 @@ InModuleScope 'pwshBedrock' {
                 Reset-ModelContext @resetModelContextSplat
             }
             AfterEach {
-                Start-Sleep -Milliseconds 500
+                Start-Sleep -Milliseconds 1500
             }
 
             It 'should return a message when provided a standard message for ai21.jamba-instruct-v1:0' {
