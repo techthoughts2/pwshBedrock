@@ -34,8 +34,9 @@ function Get-TokenCountEstimate {
             HelpMessage = 'The text to estimate tokens for.')]
         [string]$Text
     )
+    $normalizedText = $Text.Replace("`r`n", "`n").Replace("`r", "`n")
     # Calculate character count
-    $charCount = $Text.Length
+    $charCount = $normalizedText.Length
 
     Write-Debug ('Character count: {0}' -f $charCount)
 

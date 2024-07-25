@@ -69,14 +69,14 @@ InModuleScope 'pwshBedrock' {
         Context 'Success' {
 
             BeforeEach {
-
+                $tempPath = [System.IO.Path]::GetTempPath()
             } #beforeEach
 
             It 'should not save the context if the model context is null' {
                 Mock -CommandName Get-ModelContext -MockWith { return $null }
                 Mock -CommandName ConvertTo-Clixml -MockWith { return $null }
                 Mock -CommandName Out-File -MockWith { return $null }
-                Save-ModelContext -ModelID 'anthropic.claude-v2:1' -FilePath $env:TEMP
+                Save-ModelContext -ModelID 'anthropic.claude-v2:1' -FilePath $tempPath
                 Should -Invoke -CommandName Get-ModelContext -Exactly 1
                 Should -Invoke -CommandName ConvertTo-Clixml -Exactly 0
                 Should -Invoke -CommandName Out-File -Exactly 0
@@ -86,7 +86,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Get-ModelContext -MockWith { return 'context' }
                 Mock -CommandName ConvertTo-Clixml -MockWith { return 'contextXML' }
                 Mock -CommandName Out-File -MockWith { return $null }
-                Save-ModelContext -ModelID 'anthropic.claude-v2:1' -FilePath $env:TEMP
+                Save-ModelContext -ModelID 'anthropic.claude-v2:1' -FilePath $tempPath
                 Should -Invoke -CommandName Get-ModelContext -Exactly 1
                 Should -Invoke -CommandName ConvertTo-Clixml -Exactly 1
                 Should -Invoke -CommandName Out-File -Exactly 1

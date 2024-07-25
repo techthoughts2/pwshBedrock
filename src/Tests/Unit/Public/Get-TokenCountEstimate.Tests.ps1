@@ -42,7 +42,7 @@ His bosom should heave,
 And his heart should glow,
 And his fist be ever ready for a knock-down blow.
 '@
-                Get-TokenCountEstimate -Text $text | Should -BeExactly 51
+                Get-TokenCountEstimate -Text $text | Should -BeExactly 50
             } #it
 
         } #context_Success
