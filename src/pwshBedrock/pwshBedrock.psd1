@@ -12,7 +12,7 @@
     RootModule        = 'pwshBedrock.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.9.0'
+    ModuleVersion     = '0.9.1'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -197,7 +197,7 @@
             ProjectUri   = 'https://github.com/techthoughts2/pwshBedrock'
 
             # A URL to an icon representing this module.
-            IconUri      = 'https://github.com/techthoughts2/pwshBedrock/raw/main/docs/assets/pwshBedrock.png'
+            IconUri      = 'https://github.com/techthoughts2/pwshBedrock/raw/main/docs/assets/pwshBedrock_icon.png'
 
             # ReleaseNotes of this module
             ReleaseNotes = 'https://github.com/techthoughts2/pwshBedrock/blob/main/docs/CHANGELOG.md'
