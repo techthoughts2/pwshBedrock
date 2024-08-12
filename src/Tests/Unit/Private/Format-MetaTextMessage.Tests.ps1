@@ -1,16 +1,12 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-$PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
-$script:assetPath = [System.IO.Path]::Combine('..', 'assets')
-#-------------------------------------------------------------------------
-if (Get-Module -Name $ModuleName -ErrorAction 'SilentlyContinue') {
+BeforeAll {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
+    $script:assetPath = [System.IO.Path]::Combine('..', 'assets')
     #if the module is already in memory, remove it
-    Remove-Module -Name $ModuleName -Force
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
 }
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
 
 InModuleScope 'pwshBedrock' {
     $metaModels = (Get-ModelInfo -Provider Meta).ModelID
