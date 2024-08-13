@@ -52,6 +52,16 @@ Invoke-AmazonImageModel -ImagesSavePath <Object> -VariationImagePath <String[]> 
  [-SessionToken <String>] [<CommonParameters>]
 ```
 
+### Condition
+```
+Invoke-AmazonImageModel -ImagesSavePath <Object> -ConditionImagePath <String> -ConditionTextPrompt <String>
+ [-ControlMode <String>] [-ControlStrength <Single>] [-NegativeText <String>] [-NumberOfImages <Int32>]
+ [-Width <Int32>] [-Height <Int32>] [-CfgScale <Single>] -ModelID <String> [-ReturnFullObject]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Sends a message to an Amazon Titan on the Amazon Bedrock platform and returns the model's response.
 The response from this model is an image or images generated based on the input parameters.
@@ -147,6 +157,25 @@ Invoke-AmazonImageModel @invokeAmazonImageSplat
 ```
 
 Generates variations of the image located at $variationMainImage and saves the images to the specified folder.
+
+### EXAMPLE 7
+```
+$invokeAmazonImageSplat = @{
+    ImagesSavePath     = 'C:\temp'
+    ConditionImagePath = $conditioningMainImage
+    ConditionTextPrompt = 'Create a starship emerging from a nebula.'
+    ControlMode         = 'CANNY_EDGE'
+    ControlStrength     = 0.5
+    ModelID             = $ModelID
+    Credential          = $awsCredential
+    Region              = 'us-west-2'
+}
+Invoke-AmazonImageModel @invokeAmazonImageSplat
+```
+
+Generates an image based on the text prompt and the conditioning image and saves the image to the specified folder.
+The layout and composition of the generated image are guided by the conditioning image.
+The control mode is set to CANNY_EDGE and the control strength is set to 0.5.
 
 ## PARAMETERS
 
@@ -374,6 +403,72 @@ Accepted range is between 0.2 and 1.0 (both inclusive), while a default of 0.7 i
 ```yaml
 Type: Single
 Parameter Sets: Variation
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ConditionImagePath
+File path to local media file conditioning image that guides the layout and composition of the generated image.
+V2 only.
+A single input conditioning image that guides the layout and composition of the generated image
+
+```yaml
+Type: String
+Parameter Sets: Condition
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ConditionTextPrompt
+A text prompt to generate the image.
+V2 only.
+
+```yaml
+Type: String
+Parameter Sets: Condition
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ControlMode
+Specifies that type of conditioning mode should be used.
+V2 only.
+
+```yaml
+Type: String
+Parameter Sets: Condition
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ControlStrength
+Specifies how similar the layout and composition of the generated image should be to the conditioningImage.
+Lower values used to introduce more randomness.
+V2 only.
+
+```yaml
+Type: Single
+Parameter Sets: Condition
 Aliases:
 
 Required: False

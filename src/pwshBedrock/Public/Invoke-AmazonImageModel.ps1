@@ -76,6 +76,22 @@
     Invoke-AmazonImageModel @invokeAmazonImageSplat
 
     Generates variations of the image located at $variationMainImage and saves the images to the specified folder.
+.EXAMPLE
+    $invokeAmazonImageSplat = @{
+        ImagesSavePath     = 'C:\temp'
+        ConditionImagePath = $conditioningMainImage
+        ConditionTextPrompt = 'Create a starship emerging from a nebula.'
+        ControlMode         = 'CANNY_EDGE'
+        ControlStrength     = 0.5
+        ModelID             = $ModelID
+        Credential          = $awsCredential
+        Region              = 'us-west-2'
+    }
+    Invoke-AmazonImageModel @invokeAmazonImageSplat
+
+    Generates an image based on the text prompt and the conditioning image and saves the image to the specified folder.
+    The layout and composition of the generated image are guided by the conditioning image.
+    The control mode is set to CANNY_EDGE and the control strength is set to 0.5.
 .PARAMETER ImagesSavePath
     The local file path to save the generated images.
 .PARAMETER ImagePrompt
@@ -108,6 +124,15 @@
     A text prompt that can define what to preserve and what to change in the image.
 .PARAMETER SimilarityStrength
     Specifies how similar the generated image should be to the input image.  Use a lower value to introduce more randomness in the generation. Accepted range is between 0.2 and 1.0 (both inclusive), while a default of 0.7 is used if this parameter is missing in the request.
+.PARAMETER ConditionImagePath
+    File path to local media file conditioning image that guides the layout and composition of the generated image. V2 only.
+    A single input conditioning image that guides the layout and composition of the generated image
+.PARAMETER ConditionTextPrompt
+    A text prompt to generate the image. V2 only.
+.PARAMETER ControlMode
+    Specifies that type of conditioning mode should be used. V2 only.
+.PARAMETER ControlStrength
+    Specifies how similar the layout and composition of the generated image should be to the conditioningImage. Lower values used to introduce more randomness. V2 only.
 .PARAMETER NegativeText
     A text prompt to define what not to include in the image.
     Don't use negative words in the negativeText prompt. For example, if you don't want to include mirrors in an image, enter mirrors in the negativeText prompt. Don't enter no mirrors.
@@ -295,6 +320,37 @@ function Invoke-AmazonImageModel {
         [ValidateRange(0.2, 1.0)]
         [float]$SimilarityStrength,
         #_______________________________________________________
+        # conditioning parameters
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'File path to local media file conditioning image that guides the layout and composition of the generated image.',
+            ParameterSetName = 'Condition')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$ConditionImagePath,
+
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'A text prompt to generate the image.',
+            ParameterSetName = 'Condition')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [ValidateLength(0, 512)]
+        [string]$ConditionTextPrompt,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'Specifies that type of conditioning mode should be used.',
+            ParameterSetName = 'Condition')]
+        [ValidateSet(
+            'CANNY_EDGE',
+            'SEGMENTATION'
+        )]
+        [string]$ControlMode,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'Specifies how similar the layout and composition of the generated image should be to the conditioningImage. Lower values used to introduce more randomness.',
+            ParameterSetName = 'Condition')]
+        [ValidateRange(0.0, 1.0)]
+        [float]$ControlStrength,
+        #_______________________________________________________
         # common image parameters
 
         [Parameter(Mandatory = $false,
@@ -424,7 +480,7 @@ function Invoke-AmazonImageModel {
             if ($NegativeText) {
                 $bodyObj.textToImageParams.Add('negativeText', $NegativeText)
             }
-        }
+        } #generation
         'InPaint' {
             # validate that either $InPaintMaskPrompt or $InPaintMaskImagePath is provided
             if (-not ($InPaintMaskPrompt -or $InPaintMaskImagePath)) {
@@ -488,7 +544,7 @@ function Invoke-AmazonImageModel {
             if ($NegativeText) {
                 $bodyObj.inPaintingParams.Add('negativeText', $NegativeText)
             }
-        }
+        } #inpaint
         'OutPaint' {
             # validate that either $OutPaintMaskPrompt or $OutPaintMaskImagePath is provided
             if (-not ($OutPaintMaskPrompt -or $OutPaintMaskImagePath)) {
@@ -553,7 +609,7 @@ function Invoke-AmazonImageModel {
             if ($NegativeText) {
                 $bodyObj.outPaintingParams.Add('negativeText', $NegativeText)
             }
-        }
+        } #outpaint
         'Variation' {
             $bodyObj = @{
                 taskType             = 'IMAGE_VARIATION'
@@ -592,7 +648,49 @@ function Invoke-AmazonImageModel {
             if ($NegativeText) {
                 $bodyObj.imageVariationParams.Add('negativeText', $NegativeText)
             }
-        }
+        } #variation
+        'Condition' {
+            if ($ModelID -ne 'amazon.titan-image-generator-v2:0') {
+                throw 'Conditioning can only be used with the v2 model.'
+            }
+
+            Write-Debug -Message 'Validating primary CONDITIONING image.'
+            $mediaEval = Test-AmazonMedia -MediaPath $ConditionImagePath
+            if ($mediaEval -ne $true) {
+                throw 'Media file not supported.'
+            }
+            else {
+                Write-Debug -Message 'Primary CONDITIONING image is supported.'
+            }
+
+            $bodyObj = @{
+                taskType          = 'TEXT_IMAGE'
+                textToImageParams = @{
+                    text = $ConditionTextPrompt
+                }
+            }
+            if ($NegativeText) {
+                $bodyObj.textToImageParams.Add('negativeText', $NegativeText)
+            }
+
+            Write-Debug -Message 'Converting primary CONDITIONING image to base64.'
+            try {
+                $base64 = Convert-MediaToBase64 -MediaPath $ConditionImagePath -ErrorAction Stop
+            }
+            catch {
+                Write-Error $_
+                throw
+            }
+
+            $bodyObj.textToImageParams.Add('conditionImage', $base64)
+            if ($ControlMode) {
+                $bodyObj.textToImageParams.Add('controlMode', $ControlMode)
+            }
+            if ($ControlStrength) {
+                $bodyObj.textToImageParams.Add('controlStrength', $ControlStrength)
+            }
+
+        } #condition
     } #switch_parameterSetName
 
     #region common image parameters

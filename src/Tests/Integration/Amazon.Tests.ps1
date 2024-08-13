@@ -243,6 +243,23 @@ User: Say the exact same thing you just said.
                 $eval.images.Count | Should -Be 1
             } #it
 
+            It 'should return an image when using CONDITIONING for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+                $ModelID = $_.ModelID
+                $invokeAmazonImageSplat = @{
+                    ImagesSavePath      = $outFile
+                    ConditionImagePath  = $variationMainImage
+                    ConditionTextPrompt = 'Create a poster of a pop culture sci-fi rock reference.'
+                    ModelID             = $ModelID
+                    ReturnFullObject    = $true
+                    Credential          = $awsCredential
+                    Region              = 'us-west-2'
+                    Verbose             = $false
+                }
+                $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
+                $eval | Should -Not -BeNullOrEmpty
+                $eval.images.Count | Should -Be 1
+            } #it
+
         } #context_image_model
 
     } #describe
