@@ -11,11 +11,11 @@
     Outpainting - Editing - Modify an image by seamlessly extending the region defined by the mask.
     Image Variation - Editing - Modify an image by producing variations of the original image.
 .EXAMPLE
-    Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.titan-image-generator-v1' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.titan-image-generator-v2:0' -Credential $awsCredential -Region 'us-west-2'
 
     Generates an image and saves the image to the C:\temp folder.
 .EXAMPLE
-    Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -VariationImagePath 'C:\temp\image1.png' -VariationTextPrompt 'Add more stars and space debris.' -ModelID 'amazon.titan-image-generator-v1' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -VariationImagePath 'C:\temp\image1.png' -VariationTextPrompt 'Add more stars and space debris.' -ModelID 'amazon.titan-image-generator-v2:0' -Credential $awsCredential -Region 'us-west-2'
 
     Generates variations of the image located at C:\temp\image1.png and saves the images to the C:\temp folder.
 .EXAMPLE
@@ -28,7 +28,7 @@
         Width            = 1024
         Height           = 1024
         CfgScale         = 10
-        ModelID          = 'amazon.titan-image-generator-v1'
+        ModelID          = 'amazon.titan-image-generator-v2:0'
         Credential       = $awsCredential
         Region           = 'us-west-2'
     }
@@ -358,9 +358,10 @@ function Invoke-AmazonImageModel {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
+            'amazon.titan-image-generator-v2:0',
             'amazon.titan-image-generator-v1'
         )]
-        [string]$ModelID = 'amazon.titan-image-generator-v1',
+        [string]$ModelID = 'amazon.titan-image-generator-v2:0',
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'Specify if you want the full object returned from the model. This will include the raw base64 image data and other information.')]

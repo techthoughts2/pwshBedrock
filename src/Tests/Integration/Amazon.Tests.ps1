@@ -43,7 +43,7 @@ InModuleScope 'pwshBedrock' {
                 Start-Sleep -Milliseconds 5500
             }
 
-            It 'should return a message when provided a standard message for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -ne 'amazon.titan-image-generator-v1' }) {
+            It 'should return a message when provided a standard message for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $false }) {
                 $ModelID = $_.ModelId
                 $invokeAmazonTextModelSplat = @{
                     Message          = 'Return the number 1 as a string'
@@ -60,7 +60,7 @@ InModuleScope 'pwshBedrock' {
                 Write-Verbose -Message $eval
             } #it
 
-            It 'should return an object when provided a standard message for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -ne 'amazon.titan-image-generator-v1' }) {
+            It 'should return an object when provided a standard message for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $false }) {
                 $ModelID = $_.ModelId
                 $invokeAmazonTextModelSplat = @{
                     Message          = 'Return the number 1 as a string'
@@ -89,7 +89,7 @@ InModuleScope 'pwshBedrock' {
                 Start-Sleep -Milliseconds 5500
             }
 
-            It 'should return a message when provided a custom message for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -ne 'amazon.titan-image-generator-v1' }) {
+            It 'should return a message when provided a custom message for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $false }) {
                 $ModelID = $_.ModelId
                 $customConversation = @'
 User: Return the number 1 as a string.
@@ -130,7 +130,7 @@ User: Say the exact same thing you just said.
                 Start-Sleep -Milliseconds 5500
             }
 
-            It 'should return an image when using TEXT_IMAGE generation for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {
+            It 'should return an image when using TEXT_IMAGE generation for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $true }) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath   = $outFile
@@ -153,7 +153,7 @@ User: Say the exact same thing you just said.
             } #it
 
             # ! All of these tests are currently being skipped as they flag the content filter and its not clear why.
-            # It 'should return an image when using INPAINTING with a mask image for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {
+            # It 'should return an image when using INPAINTING with a mask image for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $true }) {
             #     $ModelID = $_.ModelID
             #     $invokeAmazonImageSplat = @{
             #         ImagesSavePath       = $outFile
@@ -171,7 +171,7 @@ User: Say the exact same thing you just said.
             #     $eval.images.Count | Should -Be 1
             # } #it
 
-            # It 'should return an image when using INPAINTING with a mask prompt for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {
+            # It 'should return an image when using INPAINTING with a mask prompt for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $true }) {
             #     $ModelID = $_.ModelID
             #     $invokeAmazonImageSplat = @{
             #         ImagesSavePath       = $outFile
@@ -190,7 +190,7 @@ User: Say the exact same thing you just said.
             #     $eval.images.Count | Should -Be 1
             # } #it
 
-            # It 'should return an image when using OUTPAINTING with a mask image for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {
+            # It 'should return an image when using OUTPAINTING with a mask image for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $true }) {
             #     $ModelID = $_.ModelID
             #     $invokeAmazonImageSplat = @{
             #         ImagesSavePath        = $outFile
@@ -208,7 +208,7 @@ User: Say the exact same thing you just said.
             #     $eval.images.Count | Should -Be 1
             # } #it
 
-            # It 'should return an image when using OUTPAINTING with a mask prompt for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {
+            # It 'should return an image when using OUTPAINTING with a mask prompt for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $true }) {
             #     $ModelID = $_.ModelID
             #     $invokeAmazonImageSplat = @{
             #         ImagesSavePath     = $outFile
@@ -226,7 +226,7 @@ User: Say the exact same thing you just said.
             #     $eval.images.Count | Should -Be 1
             # } #it
 
-            It 'should return an image when using IMAGE_VARIATION for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {
+            It 'should return an image when using IMAGE_VARIATION for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $true }) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath      = $outFile

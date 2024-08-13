@@ -13,6 +13,7 @@ Describe 'Supported Models Checks' -Tag Integration {
             'ai21.j2-ultra-v1'
             # 'ai21.j2-ultra'
             'amazon.titan-image-generator-v1'
+            'amazon.titan-image-generator-v2:0'
             'amazon.titan-text-express-v1'
             'amazon.titan-text-lite-v1'
             'amazon.titan-text-premier-v1:0'

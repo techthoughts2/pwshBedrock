@@ -67,6 +67,13 @@ InModuleScope 'pwshBedrock' {
                     #     content = 'test'
                     # }
                     # }
+                    # [PSCustomObject]@{
+                    #     ModelId = 'amazon.titan-image-generator-v2:0'
+                    #     Context = [PSCustomObject]@{
+                    #     role    = 'user'
+                    #     content = 'test'
+                    # }
+                    # }
                     [PSCustomObject]@{
                         ModelId = 'amazon.titan-text-express-v1'
                         Context = 'test'

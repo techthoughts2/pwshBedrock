@@ -66,14 +66,14 @@ Image Variation - Editing - Modify an image by producing variations of the origi
 
 ### EXAMPLE 1
 ```
-Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.titan-image-generator-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.titan-image-generator-v2:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Generates an image and saves the image to the C:\temp folder.
 
 ### EXAMPLE 2
 ```
-Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -VariationImagePath 'C:\temp\image1.png' -VariationTextPrompt 'Add more stars and space debris.' -ModelID 'amazon.titan-image-generator-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -VariationImagePath 'C:\temp\image1.png' -VariationTextPrompt 'Add more stars and space debris.' -ModelID 'amazon.titan-image-generator-v2:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Generates variations of the image located at C:\temp\image1.png and saves the images to the C:\temp folder.
@@ -89,7 +89,7 @@ $invokeAmazonImageSplat = @{
     Width            = 1024
     Height           = 1024
     CfgScale         = 10
-    ModelID          = 'amazon.titan-image-generator-v1'
+    ModelID          = 'amazon.titan-image-generator-v2:0'
     Credential       = $awsCredential
     Region           = 'us-west-2'
 }
@@ -477,7 +477,7 @@ Aliases:
 
 Required: True
 Position: Named
-Default value: Amazon.titan-image-generator-v1
+Default value: Amazon.titan-image-generator-v2:0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

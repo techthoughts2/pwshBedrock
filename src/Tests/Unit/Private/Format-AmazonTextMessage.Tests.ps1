@@ -10,7 +10,7 @@ BeforeAll {
 
 InModuleScope 'pwshBedrock' {
     $amazonModels = (Get-ModelInfo -Provider Amazon).ModelID
-    $amazonModels = $amazonModels | Where-Object { $_ -ne 'amazon.titan-image-generator-v1' }
+    $amazonModels = $amazonModels | Where-Object { $_ -ne 'amazon.titan-image-generator-v1' -and $_ -ne 'amazon.titan-image-generator-v2:0' }
     Describe 'Format-AmazonTextMessage Private Function Tests' -Tag Unit {
         BeforeAll {
             $WarningPreference = 'SilentlyContinue'

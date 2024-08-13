@@ -170,7 +170,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.ModelId -ne 'amazon.titan-image-generator-v1' }) {
+            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $false }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $amazonUsage -ModelID $modelId
                 # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
@@ -182,7 +182,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {
+            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $true }) {
                 $modelId = $_.ModelId
                 Mock -CommandName Get-ModelCostEstimate -MockWith {
                     [PSCustomObject]@{

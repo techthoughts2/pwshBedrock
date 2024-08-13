@@ -11,6 +11,7 @@ InModuleScope 'pwshBedrock' {
     $allModelInfo = Get-ModelInfo -AllModels
     $allModelIDs = ($allModelInfo | Where-Object {
             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
+            $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
             $_.ModelId -notlike 'ai21.j2*' -and
             $_.ModelId -ne 'cohere.command-text-v14' -and
             $_.ModelId -ne 'cohere.command-light-text-v14'

@@ -99,7 +99,7 @@ Invoke-AI21LabsJurassic2Model -Messages 'Explain zero-point energy.' -ModelID 'a
 ```powershell
 #------------------------------------------------------------------------------------------------
 # Generates an image and saves the image to the C:\temp folder.
-Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.titan-image-generator-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.titan-image-generator-v2:0' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 ```
 

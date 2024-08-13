@@ -63,6 +63,11 @@ $Global:pwshBedRockSessionModelTally = @(
         ImageCost  = 0
     }
     [PSCustomObject]@{
+        ModelId    = 'amazon.titan-image-generator-v2:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'amazon.titan-text-express-v1'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -300,6 +305,10 @@ $Global:pwshBedrockModelContext = @(
     # }
     # [PSCustomObject]@{
     #     ModelId = 'amazon.titan-image-generator-v1'
+    #     Context = New-Object System.Collections.Generic.List[object]
+    # }
+    # [PSCustomObject]@{
+    #     ModelId = 'amazon.titan-image-generator-v2:0'
     #     Context = New-Object System.Collections.Generic.List[object]
     # }
     [PSCustomObject]@{
@@ -642,15 +651,31 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
         ProviderName               = 'Amazon'
         ModelName                  = 'Titan Image Generator G1'
         ModelId                    = 'amazon.titan-image-generator-v1'
-        Description                = @'
-Amazon Titan Image Generator G1 is an image generation model.
-It generates images from text, and allows users to upload and edit an existing image.
-This model can generate images from natural language text and can also be used to edit or generate variations for an existing or a generated image.
-Users can edit an image with a text prompt (without a mask) or parts of an image with an image mask.
-You can extend the boundaries of an image with outpainting, and fill in an image with inpainting.
-It can also generate variations of an image based on an optional text prompt.
-'@
-        Strength                   = 'image generation, image editing, image variations'
+        Description                = 'Generate realistic, studio-quality images using text prompts.'
+        Strength                   = 'Text-to-image generation, image editing, and image variations.'
+        Multilingual               = $false
+        Text                       = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $true
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '5MB'
+        ImageCost                  = 0.012
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Amazon'
+        ModelName                  = 'Titan Image Generator G2'
+        ModelId                    = 'amazon.titan-image-generator-v2:0'
+        Description                = 'Generate photorealistic images, with support for image conditioning, subject consistency, instant customization and background removal'
+        Strength                   = 'Text-to-image generation, image editing, image variation, image conditioning using a reference image, subject consistency using fine tuning (preserve specific subjects in generated images), and automated background removal.'
         Multilingual               = $false
         Text                       = $false
         Document                   = $false
