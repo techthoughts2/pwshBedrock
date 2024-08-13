@@ -278,6 +278,7 @@ function Invoke-ConverseAPI {
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
             'meta.llama3-1-70b-instruct-v1:0',
+            'meta.llama3-1-405b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-large-2407-v1:0',

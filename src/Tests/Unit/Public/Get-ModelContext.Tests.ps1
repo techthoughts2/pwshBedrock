@@ -171,6 +171,10 @@ InModuleScope 'pwshBedrock' {
                         Context = 'test'
                     }
                     [PSCustomObject]@{
+                        ModelId = 'meta.llama3-1-405b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
                         ModelId = 'mistral.mistral-7b-instruct-v0:2'
                         Context = 'test'
                     }

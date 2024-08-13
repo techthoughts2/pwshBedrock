@@ -215,6 +215,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'meta.llama3-1-405b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'mistral.mistral-7b-instruct-v0:2'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -368,6 +376,10 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'meta.llama3-1-70b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-1-405b-instruct-v1:0'
         Context = ''
     }
     [PSCustomObject]@{
@@ -954,7 +966,7 @@ $script:metaModelInfo = @(
         MaxOutput                  = 2048
         TrainingCutoff             = '03-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.0004
+        InputTokenCost             = 0.0003
         OutputTokenCost            = 0.0006
     }
     [PSCustomObject]@{
@@ -984,7 +996,7 @@ $script:metaModelInfo = @(
         ModelId                    = 'meta.llama3-1-8b-instruct-v1:0'
         Description                = 'Light-weight, ultra-fast model. Instruction tuned text only models are intended for assistant-like chat.'
         Strength                   = 'best suited for limited computational power and resources. The model excels at text summarization, text classification, sentiment analysis, and language translation requiring low-latency inferencing.'
-        Multilingual               = $false
+        Multilingual               = $true
         Text                       = $true
         Document                   = $true
         Vision                     = $false
@@ -996,8 +1008,8 @@ $script:metaModelInfo = @(
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.00265
-        OutputTokenCost            = 0.0035
+        InputTokenCost             = 0.00022
+        OutputTokenCost            = 0.00022
     }
     [PSCustomObject]@{
         ProviderName               = 'Meta'
@@ -1005,7 +1017,7 @@ $script:metaModelInfo = @(
         ModelId                    = 'meta.llama3-1-70b-instruct-v1:0'
         Description                = 'Highly performant, cost effective model that enables diverse use cases. Instruction tuned text only models are intended for assistant-like chat.'
         Strength                   = 'ideal for content creation, conversational AI, language understanding, R&D, and enterprise applications. The model excels at text summarization and accuracy, text classification, sentiment analysis and nuance reasoning, language modeling, dialogue systems, code generation, and following instructions.'
-        Multilingual               = $false
+        Multilingual               = $true
         Text                       = $true
         Document                   = $true
         Vision                     = $false
@@ -1017,8 +1029,29 @@ $script:metaModelInfo = @(
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.00265
-        OutputTokenCost            = 0.0035
+        InputTokenCost             = 0.00099
+        OutputTokenCost            = 0.00099
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.1 405B Instruct'
+        ModelId                    = 'meta.llama3-1-405b-instruct-v1:0'
+        Description                = 'Highly performant, cost effective model that enables diverse use cases. Instruction tuned text only models are intended for assistant-like chat.'
+        Strength                   = 'ideal for content creation, conversational AI, language understanding, R&D, and enterprise applications. The model excels at text summarization and accuracy, text classification, sentiment analysis and nuance reasoning, language modeling, dialogue systems, code generation, and following instructions.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 2048
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00532
+        OutputTokenCost            = 0.016
     }
 ) #metaModelInfo
 
