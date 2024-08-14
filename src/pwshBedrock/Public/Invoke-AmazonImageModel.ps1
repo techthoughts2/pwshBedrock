@@ -78,8 +78,8 @@
     Generates variations of the image located at $variationMainImage and saves the images to the specified folder.
 .EXAMPLE
     $invokeAmazonImageSplat = @{
-        ImagesSavePath     = 'C:\temp'
-        ConditionImagePath = $conditioningMainImage
+        ImagesSavePath      = 'C:\temp'
+        ConditionImagePath  = $conditioningMainImage
         ConditionTextPrompt = 'Create a starship emerging from a nebula.'
         ControlMode         = 'CANNY_EDGE'
         ControlStrength     = 0.5
@@ -92,6 +92,18 @@
     Generates an image based on the text prompt and the conditioning image and saves the image to the specified folder.
     The layout and composition of the generated image are guided by the conditioning image.
     The control mode is set to CANNY_EDGE and the control strength is set to 0.5.
+.EXAMPLE
+    $invokeAmazonImageSplat = @{
+        ImagesSavePath        = 'C:\temp'
+        ColorGuidedTextPrompt = 'Create a starship emerging from a nebula.'
+        Colors                = @('#FF0000', '#00FF00', '#0000FF')
+        ModelID               = $ModelID
+        Credential            = $awsCredential
+        Region                = 'us-west-2'
+    }
+    Invoke-AmazonImageModel @invokeAmazonImageSplat
+
+    Generates an image based on the text prompt colored by the specified hex colors and saves the image to the specified folder.
 .PARAMETER ImagesSavePath
     The local file path to save the generated images.
 .PARAMETER ImagePrompt
@@ -133,6 +145,12 @@
     Specifies that type of conditioning mode should be used. V2 only.
 .PARAMETER ControlStrength
     Specifies how similar the layout and composition of the generated image should be to the conditioningImage. Lower values used to introduce more randomness. V2 only.
+.PARAMETER ColorGuidedImagePath
+    File path to local media file conditioning image that guides the color palette of the generated image. V2 only.
+.PARAMETER ColorGuidedTextPrompt
+    A text prompt to generate the image. V2 only.
+.PARAMETER Colors
+    A list of up to 10 hex color codes to specify colors in the generated image. V2 only.
 .PARAMETER NegativeText
     A text prompt to define what not to include in the image.
     Don't use negative words in the negativeText prompt. For example, if you don't want to include mirrors in an image, enter mirrors in the negativeText prompt. Don't enter no mirrors.
@@ -321,7 +339,7 @@ function Invoke-AmazonImageModel {
         [float]$SimilarityStrength,
         #_______________________________________________________
         # conditioning parameters
-        [Parameter(Mandatory = $true,
+        [Parameter(Mandatory = $false,
             HelpMessage = 'File path to local media file conditioning image that guides the layout and composition of the generated image.',
             ParameterSetName = 'Condition')]
         [ValidateNotNull()]
@@ -350,6 +368,28 @@ function Invoke-AmazonImageModel {
             ParameterSetName = 'Condition')]
         [ValidateRange(0.0, 1.0)]
         [float]$ControlStrength,
+        #_______________________________________________________
+        # color guided parameters
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'File path to local media file conditioning image that guides the color palette of the generated image.',
+            ParameterSetName = 'ColorGuided')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$ColorGuidedImagePath,
+
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'A text prompt to generate the image.',
+            ParameterSetName = 'ColorGuided')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [ValidateLength(0, 512)]
+        [string]$ColorGuidedTextPrompt,
+
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'A list of up to 10 hex color codes to specify colors in the generated image.',
+            ParameterSetName = 'ColorGuided')]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$Colors,
         #_______________________________________________________
         # common image parameters
 
@@ -689,8 +729,51 @@ function Invoke-AmazonImageModel {
             if ($ControlStrength) {
                 $bodyObj.textToImageParams.Add('controlStrength', $ControlStrength)
             }
-
         } #condition
+        'ColorGuided' {
+            if ($ModelID -ne 'amazon.titan-image-generator-v2:0') {
+                throw 'ColorGuided can only be used with the v2 model.'
+            }
+
+            Write-Debug -Message 'Validating primary COLORGUIDED image.'
+            $mediaEval = Test-AmazonMedia -MediaPath $ColorGuidedImagePath
+            if ($mediaEval -ne $true) {
+                throw 'Media file not supported.'
+            }
+            else {
+                Write-Debug -Message 'Primary COLORGUIDED image is supported.'
+            }
+
+            $bodyObj = @{
+                taskType                    = 'COLOR_GUIDED_GENERATION'
+                colorGuidedGenerationParams = @{
+                    text = $ColorGuidedTextPrompt
+                }
+            }
+            if ($NegativeText) {
+                $bodyObj.colorGuidedGenerationParams.Add('negativeText', $NegativeText)
+            }
+
+            Write-Debug -Message 'Converting primary COLORGUIDED image to base64.'
+            try {
+                $base64 = Convert-MediaToBase64 -MediaPath $ColorGuidedImagePath -ErrorAction Stop
+            }
+            catch {
+                Write-Error $_
+                throw
+            }
+
+            $bodyObj.colorGuidedGenerationParams.Add('referenceImage', $base64)
+
+            $colorsEval = Test-ColorHex -Colors $Colors
+            if ($colorsEval -ne $true) {
+                throw 'Colors are not valid.'
+            }
+            else {
+                $bodyObj.colorGuidedGenerationParams.Add('colors', $Colors)
+            }
+
+        } #colorGuided
     } #switch_parameterSetName
 
     #region common image parameters
