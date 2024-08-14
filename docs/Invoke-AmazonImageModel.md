@@ -54,8 +54,18 @@ Invoke-AmazonImageModel -ImagesSavePath <Object> -VariationImagePath <String[]> 
 
 ### Condition
 ```
-Invoke-AmazonImageModel -ImagesSavePath <Object> -ConditionImagePath <String> -ConditionTextPrompt <String>
+Invoke-AmazonImageModel -ImagesSavePath <Object> [-ConditionImagePath <String>] -ConditionTextPrompt <String>
  [-ControlMode <String>] [-ControlStrength <Single>] [-NegativeText <String>] [-NumberOfImages <Int32>]
+ [-Width <Int32>] [-Height <Int32>] [-CfgScale <Single>] -ModelID <String> [-ReturnFullObject]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+```
+
+### ColorGuided
+```
+Invoke-AmazonImageModel -ImagesSavePath <Object> [-ColorGuidedImagePath <String>]
+ -ColorGuidedTextPrompt <String> -Colors <String[]> [-NegativeText <String>] [-NumberOfImages <Int32>]
  [-Width <Int32>] [-Height <Int32>] [-CfgScale <Single>] -ModelID <String> [-ReturnFullObject]
  [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
  [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
@@ -161,8 +171,8 @@ Generates variations of the image located at $variationMainImage and saves the i
 ### EXAMPLE 7
 ```
 $invokeAmazonImageSplat = @{
-    ImagesSavePath     = 'C:\temp'
-    ConditionImagePath = $conditioningMainImage
+    ImagesSavePath      = 'C:\temp'
+    ConditionImagePath  = $conditioningMainImage
     ConditionTextPrompt = 'Create a starship emerging from a nebula.'
     ControlMode         = 'CANNY_EDGE'
     ControlStrength     = 0.5
@@ -176,6 +186,21 @@ Invoke-AmazonImageModel @invokeAmazonImageSplat
 Generates an image based on the text prompt and the conditioning image and saves the image to the specified folder.
 The layout and composition of the generated image are guided by the conditioning image.
 The control mode is set to CANNY_EDGE and the control strength is set to 0.5.
+
+### EXAMPLE 8
+```
+$invokeAmazonImageSplat = @{
+    ImagesSavePath        = 'C:\temp'
+    ColorGuidedTextPrompt = 'Create a starship emerging from a nebula.'
+    Colors                = @('#FF0000', '#00FF00', '#0000FF')
+    ModelID               = $ModelID
+    Credential            = $awsCredential
+    Region                = 'us-west-2'
+}
+Invoke-AmazonImageModel @invokeAmazonImageSplat
+```
+
+Generates an image based on the text prompt colored by the specified hex colors and saves the image to the specified folder.
 
 ## PARAMETERS
 
@@ -422,7 +447,7 @@ Type: String
 Parameter Sets: Condition
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -474,6 +499,54 @@ Aliases:
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ColorGuidedImagePath
+File path to local media file conditioning image that guides the color palette of the generated image.
+V2 only.
+
+```yaml
+Type: String
+Parameter Sets: ColorGuided
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ColorGuidedTextPrompt
+A text prompt to generate the image.
+V2 only.
+
+```yaml
+Type: String
+Parameter Sets: ColorGuided
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Colors
+A list of up to 10 hex color codes to specify colors in the generated image.
+V2 only.
+
+```yaml
+Type: String[]
+Parameter Sets: ColorGuided
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -1,4 +1,4 @@
-BeforeAll {
+BeforeDiscovery {
     Set-Location -Path $PSScriptRoot
     $ModuleName = 'pwshBedrock'
     $PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
