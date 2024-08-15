@@ -14,7 +14,7 @@
     # Version number of this module.
     ModuleVersion     = '0.15.0'
 
-    # Supported PSEditionsl
+    # Supported PSEditions
     # CompatiblePSEditions = @()
 
     # ID used to uniquely identify this module

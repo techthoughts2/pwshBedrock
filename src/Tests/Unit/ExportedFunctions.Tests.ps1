@@ -16,7 +16,7 @@ BeforeDiscovery {
     $moduleExported = Get-Command -Module $ModuleName | Select-Object -ExpandProperty Name
     $manifestExported = ($manifestContent.ExportedFunctions).Keys
 }
-Describe 'Catesta Functions' -Tag Unit {
+Describe 'pwshBedrock Functions' -Tag Unit {
 
     Context 'Exported Commands' -Fixture {
 
