@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - Corrected Meta Llama 3.1 models to show Multilingual support as `$true`
 - Build changes:
     - Updated tests to follow Pester 5 rules
+    - Updated integration tests for newly added capabilities
 
 ## [0.9.1]
 

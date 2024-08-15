@@ -91,6 +91,9 @@ Text-to-image - Generation - Generate an image using a text prompt.
 Inpainting - Editing - Modify an image by changing the inside of a mask to match the surrounding background.
 Outpainting - Editing - Modify an image by seamlessly extending the region defined by the mask.
 Image Variation - Editing - Modify an image by producing variations of the original image.
+Conditioning - Generation - Generate an image based on the text prompt and by providing a 'condition image' to achieve more fine-grained control over the resulting generated image.
+Color Guided Generation - Generation - Provide a list of hex color codes along with a text prompt to generate an image that follows the color palette.
+Background Removal - Editing - Remove the background from an image.
 
 ## EXAMPLES
 
@@ -577,6 +580,7 @@ Accept wildcard characters: False
 
 ### -BackgroundRemovalImagePath
 File path to local media file that you want to have the background removed from.
+V2 only.
 
 ```yaml
 Type: String
