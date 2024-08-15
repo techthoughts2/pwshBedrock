@@ -163,7 +163,7 @@
 .PARAMETER Colors
     A list of up to 10 hex color codes to specify colors in the generated image. V2 only.
 .PARAMETER BackgroundRemovalImagePath
-    File path to local media file that you want to have the background removed from.
+    File path to local media file that you want to have the background removed from. V2 only.
 .PARAMETER NegativeText
     A text prompt to define what not to include in the image.
     Don't use negative words in the negativeText prompt. For example, if you don't want to include mirrors in an image, enter mirrors in the negativeText prompt. Don't enter no mirrors.
@@ -966,7 +966,7 @@ function Invoke-AmazonImageModel {
                 Write-Error $_
                 throw
             }
-            $imageFileName = '{0}-{1}.png' -f 'amazon-titan-image-generator-v1', (Get-Date -Format 'yyyyMMdd-HHmmss')
+            $imageFileName = '{0}-{1}.png' -f $ModelID, (Get-Date -Format 'yyyyMMdd-HHmmss')
             $imageFilePath = [System.IO.Path]::Combine($ImagesSavePath, $imageFileName)
             Write-Verbose -Message ('Saving image to {0}.' -f $imageFilePath)
             try {
