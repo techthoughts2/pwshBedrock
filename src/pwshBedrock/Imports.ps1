@@ -1190,8 +1190,8 @@ $script:mistralAIModelInfo = @(
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
         PayloadLimit               = ''
-        InputTokenCost             = 0.001
-        OutputTokenCost            = 0.003
+        InputTokenCost             = 0.004
+        OutputTokenCost            = 0.012
     }
 ) #mistralModelInfo
 

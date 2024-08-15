@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - Added support for Llama 3.1 405B Instruct - `meta.llama3-1-405b-instruct-v1:0`
         - Updated pricing to reflect current Meta Llama 3.1 prices
         - Corrected Meta Llama 3.1 models to show Multilingual support as `$true`
+    - Mistral AI
+        - Updated pricing to reflect current prices
 - Build changes:
     - Updated tests to follow Pester 5 rules
     - Updated integration tests for newly added capabilities
