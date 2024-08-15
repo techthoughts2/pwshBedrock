@@ -315,6 +315,7 @@ Get-TokenCountEstimate -Text (Get-Content -Path 'C:\Temp\test.txt' -Raw)
 ```
 
 **Note:**
+
 - This function provides a rough estimate based on an average token length of 4 characters.
 - Each language model has a different tokenization strategy, so the actual token count may vary.
 - Use this estimate to get a general idea of token usage, but conduct a more detailed analysis for precise budgeting.
