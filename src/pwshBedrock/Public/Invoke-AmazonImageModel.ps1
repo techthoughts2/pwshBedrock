@@ -104,6 +104,17 @@
     Invoke-AmazonImageModel @invokeAmazonImageSplat
 
     Generates an image based on the text prompt colored by the specified hex colors and saves the image to the specified folder.
+.EXAMPLE
+    $invokeAmazonImageSplat = @{
+        ImagesSavePath             = 'C:\temp'
+        BackgroundRemovalImagePath = $backgroundRemovalImage
+        ModelID                    = $ModelID
+        Credential                 = $awsCredential
+        Region                     = 'us-west-2'
+    }
+    Invoke-AmazonImageModel @invokeAmazonImageSplat
+
+    Removes the background from the image located at $backgroundRemovalImage and saves the image to the specified folder.
 .PARAMETER ImagesSavePath
     The local file path to save the generated images.
 .PARAMETER ImagePrompt
@@ -151,6 +162,8 @@
     A text prompt to generate the image. V2 only.
 .PARAMETER Colors
     A list of up to 10 hex color codes to specify colors in the generated image. V2 only.
+.PARAMETER BackgroundRemovalImagePath
+    File path to local media file that you want to have the background removed from.
 .PARAMETER NegativeText
     A text prompt to define what not to include in the image.
     Don't use negative words in the negativeText prompt. For example, if you don't want to include mirrors in an image, enter mirrors in the negativeText prompt. Don't enter no mirrors.
@@ -390,6 +403,14 @@ function Invoke-AmazonImageModel {
             ParameterSetName = 'ColorGuided')]
         [ValidateNotNullOrEmpty()]
         [string[]]$Colors,
+        #_______________________________________________________
+        # background removal parameters
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'File path to local media file that you want to have the background removed from.',
+            ParameterSetName = 'BackgroundRemoval')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$BackgroundRemovalImagePath,
         #_______________________________________________________
         # common image parameters
 
@@ -774,6 +795,38 @@ function Invoke-AmazonImageModel {
             }
 
         } #colorGuided
+        'BackgroundRemoval' {
+
+            if ($ModelID -ne 'amazon.titan-image-generator-v2:0') {
+                throw 'BackgroundRemoval can only be used with the v2 model.'
+            }
+
+            Write-Debug -Message 'Validating primary BACKGROUND REMOVAL image.'
+            $mediaEval = Test-AmazonMedia -MediaPath $BackgroundRemovalImagePath
+            if ($mediaEval -ne $true) {
+                throw 'Media file not supported.'
+            }
+            else {
+                Write-Debug -Message 'Primary BACKGROUND REMOVAL image is supported.'
+            }
+
+            Write-Debug -Message 'Converting primary BACKGROUND REMOVAL image to base64.'
+            try {
+                $base64 = Convert-MediaToBase64 -MediaPath $BackgroundRemovalImagePath -ErrorAction Stop
+            }
+            catch {
+                Write-Error $_
+                throw
+            }
+
+            $bodyObj = @{
+                taskType                = 'BACKGROUND_REMOVAL'
+                backgroundRemovalParams = @{
+                    image = $base64
+                }
+            }
+
+        } #backgroundRemoval
     } #switch_parameterSetName
 
     #region common image parameters

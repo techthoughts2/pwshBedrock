@@ -12,9 +12,9 @@
     RootModule        = 'pwshBedrock.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.14.0'
+    ModuleVersion     = '0.15.0'
 
-    # Supported PSEditions
+    # Supported PSEditionsl
     # CompatiblePSEditions = @()
 
     # ID used to uniquely identify this module

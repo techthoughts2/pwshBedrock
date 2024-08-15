@@ -72,6 +72,16 @@ Invoke-AmazonImageModel -ImagesSavePath <Object> [-ColorGuidedImagePath <String>
  [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
+### BackgroundRemoval
+```
+Invoke-AmazonImageModel -ImagesSavePath <Object> [-BackgroundRemovalImagePath <String>]
+ [-NegativeText <String>] [-NumberOfImages <Int32>] [-Width <Int32>] [-Height <Int32>] [-CfgScale <Single>]
+ -ModelID <String> [-ReturnFullObject] [-AccessKey <String>] [-Credential <AWSCredentials>]
+ [-EndpointUrl <String>] [-NetworkCredential <PSCredential>] [-ProfileLocation <String>]
+ [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>] [-SessionToken <String>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Sends a message to an Amazon Titan on the Amazon Bedrock platform and returns the model's response.
 The response from this model is an image or images generated based on the input parameters.
@@ -201,6 +211,20 @@ Invoke-AmazonImageModel @invokeAmazonImageSplat
 ```
 
 Generates an image based on the text prompt colored by the specified hex colors and saves the image to the specified folder.
+
+### EXAMPLE 9
+```
+$invokeAmazonImageSplat = @{
+    ImagesSavePath             = 'C:\temp'
+    BackgroundRemovalImagePath = $backgroundRemovalImage
+    ModelID                    = $ModelID
+    Credential                 = $awsCredential
+    Region                     = 'us-west-2'
+}
+Invoke-AmazonImageModel @invokeAmazonImageSplat
+```
+
+Removes the background from the image located at $backgroundRemovalImage and saves the image to the specified folder.
 
 ## PARAMETERS
 
@@ -545,6 +569,21 @@ Parameter Sets: ColorGuided
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BackgroundRemovalImagePath
+File path to local media file that you want to have the background removed from.
+
+```yaml
+Type: String
+Parameter Sets: BackgroundRemoval
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

@@ -483,6 +483,47 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
+            It 'should throw for BACKGROUND_REMOVAL if v1 model is provided' {
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath             = 'C:\images'
+                        BackgroundRemovalImagePath = 'C:\images\image.jpeg'
+                        ModelID                    = 'amazon.titan-image-generator-v1'
+                        ProfileName                = 'default'
+                        Region                     = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for BACKGROUND_REMOVAL if an image is provided that is not supported by the model' {
+                Mock -CommandName Test-AmazonMedia -MockWith { $false }
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath             = 'C:\images'
+                        BackgroundRemovalImagePath = 'C:\images\image.jpeg'
+                        ModelID                    = 'amazon.titan-image-generator-v2:0'
+                        ProfileName                = 'default'
+                        Region                     = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for BACKGROUND_REMOVAL if an error is encountered converting the image to base64' {
+                Mock -CommandName Convert-MediaToBase64 -MockWith { throw 'Error' }
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath             = 'C:\images'
+                        BackgroundRemovalImagePath = 'C:\images\image.jpeg'
+                        ModelID                    = 'amazon.titan-image-generator-v2:0'
+                        ProfileName                = 'default'
+                        Region                     = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
             It 'should throw if an error is encountered calling the model API' {
                 Mock -CommandName Invoke-BDRRModel -MockWith { throw 'Error' }
                 {
@@ -860,6 +901,25 @@ InModuleScope 'pwshBedrock' {
                     ModelID               = 'amazon.titan-image-generator-v2:0'
                     ProfileName           = 'default'
                     Region                = 'us-west-2'
+                }
+                Invoke-AmazonImageModel @invokeAmazonImageSplat
+                Should -Invoke Test-AmazonMedia -Exactly 1 -Scope It
+                Should -Invoke Convert-MediaToBase64 -Exactly 1 -Scope It
+                Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
+                Should -Invoke ConvertFrom-MemoryStreamToString -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+                Should -Invoke Convert-FromBase64ToByte -Exactly 2 -Scope It
+                Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
+            } #it
+
+            It 'should run all expected subcommands for BACKGROUND_REMOVAL' {
+                $invokeAmazonImageSplat = @{
+                    ImagesSavePath             = 'C:\images'
+                    BackgroundRemovalImagePath = 'C:\images\image.jpeg'
+                    NegativeText               = 'stars'
+                    ModelID                    = 'amazon.titan-image-generator-v2:0'
+                    ProfileName                = 'default'
+                    Region                     = 'us-west-2'
                 }
                 Invoke-AmazonImageModel @invokeAmazonImageSplat
                 Should -Invoke Test-AmazonMedia -Exactly 1 -Scope It
