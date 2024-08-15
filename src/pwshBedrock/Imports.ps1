@@ -63,6 +63,11 @@ $Global:pwshBedRockSessionModelTally = @(
         ImageCost  = 0
     }
     [PSCustomObject]@{
+        ModelId    = 'amazon.titan-image-generator-v2:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'amazon.titan-text-express-v1'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -215,6 +220,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'meta.llama3-1-405b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'mistral.mistral-7b-instruct-v0:2'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -294,6 +307,10 @@ $Global:pwshBedrockModelContext = @(
     #     ModelId = 'amazon.titan-image-generator-v1'
     #     Context = New-Object System.Collections.Generic.List[object]
     # }
+    # [PSCustomObject]@{
+    #     ModelId = 'amazon.titan-image-generator-v2:0'
+    #     Context = New-Object System.Collections.Generic.List[object]
+    # }
     [PSCustomObject]@{
         ModelId = 'amazon.titan-text-express-v1'
         Context = ''
@@ -368,6 +385,10 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'meta.llama3-1-70b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-1-405b-instruct-v1:0'
         Context = ''
     }
     [PSCustomObject]@{
@@ -630,15 +651,31 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
         ProviderName               = 'Amazon'
         ModelName                  = 'Titan Image Generator G1'
         ModelId                    = 'amazon.titan-image-generator-v1'
-        Description                = @'
-Amazon Titan Image Generator G1 is an image generation model.
-It generates images from text, and allows users to upload and edit an existing image.
-This model can generate images from natural language text and can also be used to edit or generate variations for an existing or a generated image.
-Users can edit an image with a text prompt (without a mask) or parts of an image with an image mask.
-You can extend the boundaries of an image with outpainting, and fill in an image with inpainting.
-It can also generate variations of an image based on an optional text prompt.
-'@
-        Strength                   = 'image generation, image editing, image variations'
+        Description                = 'Generate realistic, studio-quality images using text prompts.'
+        Strength                   = 'Text-to-image generation, image editing, and image variations.'
+        Multilingual               = $false
+        Text                       = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $true
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '5MB'
+        ImageCost                  = 0.012
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Amazon'
+        ModelName                  = 'Titan Image Generator G2'
+        ModelId                    = 'amazon.titan-image-generator-v2:0'
+        Description                = 'Generate photorealistic images, with support for image conditioning, subject consistency, instant customization and background removal'
+        Strength                   = 'Text-to-image generation, image editing, image variation, image conditioning using a reference image, subject consistency using fine tuning (preserve specific subjects in generated images), and automated background removal.'
         Multilingual               = $false
         Text                       = $false
         Document                   = $false
@@ -954,7 +991,7 @@ $script:metaModelInfo = @(
         MaxOutput                  = 2048
         TrainingCutoff             = '03-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.0004
+        InputTokenCost             = 0.0003
         OutputTokenCost            = 0.0006
     }
     [PSCustomObject]@{
@@ -984,7 +1021,7 @@ $script:metaModelInfo = @(
         ModelId                    = 'meta.llama3-1-8b-instruct-v1:0'
         Description                = 'Light-weight, ultra-fast model. Instruction tuned text only models are intended for assistant-like chat.'
         Strength                   = 'best suited for limited computational power and resources. The model excels at text summarization, text classification, sentiment analysis, and language translation requiring low-latency inferencing.'
-        Multilingual               = $false
+        Multilingual               = $true
         Text                       = $true
         Document                   = $true
         Vision                     = $false
@@ -996,8 +1033,8 @@ $script:metaModelInfo = @(
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.00265
-        OutputTokenCost            = 0.0035
+        InputTokenCost             = 0.00022
+        OutputTokenCost            = 0.00022
     }
     [PSCustomObject]@{
         ProviderName               = 'Meta'
@@ -1005,7 +1042,7 @@ $script:metaModelInfo = @(
         ModelId                    = 'meta.llama3-1-70b-instruct-v1:0'
         Description                = 'Highly performant, cost effective model that enables diverse use cases. Instruction tuned text only models are intended for assistant-like chat.'
         Strength                   = 'ideal for content creation, conversational AI, language understanding, R&D, and enterprise applications. The model excels at text summarization and accuracy, text classification, sentiment analysis and nuance reasoning, language modeling, dialogue systems, code generation, and following instructions.'
-        Multilingual               = $false
+        Multilingual               = $true
         Text                       = $true
         Document                   = $true
         Vision                     = $false
@@ -1017,8 +1054,29 @@ $script:metaModelInfo = @(
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.00265
-        OutputTokenCost            = 0.0035
+        InputTokenCost             = 0.00099
+        OutputTokenCost            = 0.00099
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.1 405B Instruct'
+        ModelId                    = 'meta.llama3-1-405b-instruct-v1:0'
+        Description                = 'Highly performant, cost effective model that enables diverse use cases. Instruction tuned text only models are intended for assistant-like chat.'
+        Strength                   = 'ideal for content creation, conversational AI, language understanding, R&D, and enterprise applications. The model excels at text summarization and accuracy, text classification, sentiment analysis and nuance reasoning, language modeling, dialogue systems, code generation, and following instructions.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 2048
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00532
+        OutputTokenCost            = 0.016
     }
 ) #metaModelInfo
 
@@ -1132,8 +1190,8 @@ $script:mistralAIModelInfo = @(
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
         PayloadLimit               = ''
-        InputTokenCost             = 0.001
-        OutputTokenCost            = 0.003
+        InputTokenCost             = 0.004
+        OutputTokenCost            = 0.012
     }
 ) #mistralModelInfo
 

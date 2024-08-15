@@ -1,15 +1,11 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-$PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
-#-------------------------------------------------------------------------
-if (Get-Module -Name $ModuleName -ErrorAction 'SilentlyContinue') {
+BeforeDiscovery {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
     #if the module is already in memory, remove it
-    Remove-Module -Name $ModuleName -Force
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
 }
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
 
 InModuleScope 'pwshBedrock' {
     #-------------------------------------------------------------------------
@@ -27,6 +23,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Test-Path -MockWith { $true }
                 Mock -CommandName Test-AmazonMedia -MockWith { $true }
                 Mock -CommandName Convert-MediaToBase64 -MockWith { 'base64-encoded-image' }
+                Mock -CommandName Test-ColorHex -MockWith { $true }
                 $response = [Amazon.BedrockRuntime.Model.InvokeModelResponse]::new()
                 $response.ContentType = 'application/json'
                 $jsonPayload = @'
@@ -378,6 +375,155 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
+            It 'should throw for CONDITIONING if v1 model is provided' {
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath      = 'C:\images'
+                        ConditionImagePath  = 'C:\images\image.jpeg'
+                        ConditionTextPrompt = 'Make it darker'
+                        ModelID             = 'amazon.titan-image-generator-v1'
+                        ProfileName         = 'default'
+                        Region              = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for CONDITIONING if an image is provided that is not supported by the model' {
+                Mock -CommandName Test-AmazonMedia -MockWith { $false }
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath      = 'C:\images'
+                        ConditionImagePath  = 'C:\images\image.jpeg'
+                        ConditionTextPrompt = 'Make it darker'
+                        ModelID             = 'amazon.titan-image-generator-v2:0'
+                        ProfileName         = 'default'
+                        Region              = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+
+            It 'should throw for CONDITIONING if an error is encountered converting the image to base64' {
+                Mock -CommandName Convert-MediaToBase64 -MockWith { throw 'Error' }
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath      = 'C:\images'
+                        ConditionImagePath  = 'C:\images\image.jpeg'
+                        ConditionTextPrompt = 'Make it darker'
+                        ModelID             = 'amazon.titan-image-generator-v2:0'
+                        ProfileName         = 'default'
+                        Region              = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for COLOR_GUIDED_GENERATION if v1 model is provided' {
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath        = 'C:\images'
+                        ColorGuidedImagePath  = 'C:\images\image.jpeg'
+                        ColorGuidedTextPrompt = 'Make it darker'
+                        Colors                = @('#FF0000', '#00FF00', '#0000FF')
+                        ModelID               = 'amazon.titan-image-generator-v1'
+                        ProfileName           = 'default'
+                        Region                = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for COLOR_GUIDED_GENERATION if colors are provided that are not valid hex values' {
+                Mock -CommandName Test-ColorHex -MockWith { $false }
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath        = 'C:\images'
+                        ColorGuidedImagePath  = 'C:\images\image.jpeg'
+                        ColorGuidedTextPrompt = 'Make it darker'
+                        Colors                = @('#FF0000', '#00FF00', '#0000FF')
+                        ModelID               = 'amazon.titan-image-generator-v2:0'
+                        ProfileName           = 'default'
+                        Region                = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for COLOR_GUIDED_GENERATION if an image is provided that is not supported by the model' {
+                Mock -CommandName Test-AmazonMedia -MockWith { $false }
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath        = 'C:\images'
+                        ColorGuidedImagePath  = 'C:\images\image.jpeg'
+                        ColorGuidedTextPrompt = 'Make it darker'
+                        Colors                = @('#FF0000', '#00FF00', '#0000FF')
+                        ModelID               = 'amazon.titan-image-generator-v2:0'
+                        ProfileName           = 'default'
+                        Region                = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for COLOR_GUIDED_GENERATION if an error is encountered converting the image to base64' {
+                Mock -CommandName Convert-MediaToBase64 -MockWith { throw 'Error' }
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath        = 'C:\images'
+                        ColorGuidedImagePath  = 'C:\images\image.jpeg'
+                        ColorGuidedTextPrompt = 'Make it darker'
+                        Colors                = @('#FF0000', '#00FF00', '#0000FF')
+                        ModelID               = 'amazon.titan-image-generator-v2:0'
+                        ProfileName           = 'default'
+                        Region                = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for BACKGROUND_REMOVAL if v1 model is provided' {
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath             = 'C:\images'
+                        BackgroundRemovalImagePath = 'C:\images\image.jpeg'
+                        ModelID                    = 'amazon.titan-image-generator-v1'
+                        ProfileName                = 'default'
+                        Region                     = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for BACKGROUND_REMOVAL if an image is provided that is not supported by the model' {
+                Mock -CommandName Test-AmazonMedia -MockWith { $false }
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath             = 'C:\images'
+                        BackgroundRemovalImagePath = 'C:\images\image.jpeg'
+                        ModelID                    = 'amazon.titan-image-generator-v2:0'
+                        ProfileName                = 'default'
+                        Region                     = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw for BACKGROUND_REMOVAL if an error is encountered converting the image to base64' {
+                Mock -CommandName Convert-MediaToBase64 -MockWith { throw 'Error' }
+                {
+                    $invokeAmazonImageSplat = @{
+                        ImagesSavePath             = 'C:\images'
+                        BackgroundRemovalImagePath = 'C:\images\image.jpeg'
+                        ModelID                    = 'amazon.titan-image-generator-v2:0'
+                        ProfileName                = 'default'
+                        Region                     = 'us-west-2'
+                    }
+                    Invoke-AmazonImageModel @invokeAmazonImageSplat
+                } | Should -Throw
+            } #it
+
             It 'should throw if an error is encountered calling the model API' {
                 Mock -CommandName Invoke-BDRRModel -MockWith { throw 'Error' }
                 {
@@ -541,6 +687,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Test-Path -MockWith { $true }
                 Mock -CommandName Test-AmazonMedia -MockWith { $true }
                 Mock -CommandName Convert-MediaToBase64 -MockWith { 'base64-encoded-image' }
+                Mock -CommandName Test-ColorHex -MockWith { $true }
                 $response = [Amazon.BedrockRuntime.Model.InvokeModelResponse]::new()
                 $response.ContentType = 'application/json'
                 $jsonPayload = @'
@@ -711,6 +858,68 @@ InModuleScope 'pwshBedrock' {
                     ModelID             = 'amazon.titan-image-generator-v1'
                     ProfileName         = 'default'
                     Region              = 'us-west-2'
+                }
+                Invoke-AmazonImageModel @invokeAmazonImageSplat
+                Should -Invoke Test-AmazonMedia -Exactly 1 -Scope It
+                Should -Invoke Convert-MediaToBase64 -Exactly 1 -Scope It
+                Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
+                Should -Invoke ConvertFrom-MemoryStreamToString -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+                Should -Invoke Convert-FromBase64ToByte -Exactly 2 -Scope It
+                Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
+            } #it
+
+            It 'should run all expected subcommands for CONDITIONING' {
+                $invokeAmazonImageSplat = @{
+                    ImagesSavePath      = 'C:\images'
+                    ConditionImagePath  = 'C:\images\image.jpeg'
+                    ConditionTextPrompt = 'Make it darker'
+                    ControlMode         = 'CANNY_EDGE'
+                    ControlStrength     = 0.5
+                    NegativeText        = 'stars'
+                    ModelID             = 'amazon.titan-image-generator-v2:0'
+                    ProfileName         = 'default'
+                    Region              = 'us-west-2'
+                }
+                Invoke-AmazonImageModel @invokeAmazonImageSplat
+                Should -Invoke Test-AmazonMedia -Exactly 1 -Scope It
+                Should -Invoke Convert-MediaToBase64 -Exactly 1 -Scope It
+                Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
+                Should -Invoke ConvertFrom-MemoryStreamToString -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+                Should -Invoke Convert-FromBase64ToByte -Exactly 2 -Scope It
+                Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
+            } #it
+
+            It 'should run all expected subcommands for COLOR_GUIDED_GENERATION' {
+                $invokeAmazonImageSplat = @{
+                    ImagesSavePath        = 'C:\images'
+                    ColorGuidedImagePath  = 'C:\images\image.jpeg'
+                    ColorGuidedTextPrompt = 'Make it darker'
+                    Colors                = @('#FF0000', '#00FF00', '#0000FF')
+                    NegativeText          = 'stars'
+                    ModelID               = 'amazon.titan-image-generator-v2:0'
+                    ProfileName           = 'default'
+                    Region                = 'us-west-2'
+                }
+                Invoke-AmazonImageModel @invokeAmazonImageSplat
+                Should -Invoke Test-AmazonMedia -Exactly 1 -Scope It
+                Should -Invoke Convert-MediaToBase64 -Exactly 1 -Scope It
+                Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
+                Should -Invoke ConvertFrom-MemoryStreamToString -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+                Should -Invoke Convert-FromBase64ToByte -Exactly 2 -Scope It
+                Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
+            } #it
+
+            It 'should run all expected subcommands for BACKGROUND_REMOVAL' {
+                $invokeAmazonImageSplat = @{
+                    ImagesSavePath             = 'C:\images'
+                    BackgroundRemovalImagePath = 'C:\images\image.jpeg'
+                    NegativeText               = 'stars'
+                    ModelID                    = 'amazon.titan-image-generator-v2:0'
+                    ProfileName                = 'default'
+                    Region                     = 'us-west-2'
                 }
                 Invoke-AmazonImageModel @invokeAmazonImageSplat
                 Should -Invoke Test-AmazonMedia -Exactly 1 -Scope It

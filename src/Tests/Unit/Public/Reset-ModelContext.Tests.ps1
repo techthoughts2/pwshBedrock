@@ -1,20 +1,17 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-$PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
-#-------------------------------------------------------------------------
-if (Get-Module -Name $ModuleName -ErrorAction 'SilentlyContinue') {
+BeforeDiscovery {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
     #if the module is already in memory, remove it
-    Remove-Module -Name $ModuleName -Force
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
 }
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
 
 InModuleScope 'pwshBedrock' {
     $allModelInfo = Get-ModelInfo -AllModels
     $allModelIDs = ($allModelInfo | Where-Object {
             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
+            $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
             $_.ModelId -notlike 'ai21.j2*' -and
             $_.ModelId -ne 'cohere.command-text-v14' -and
             $_.ModelId -ne 'cohere.command-light-text-v14'
@@ -388,6 +385,20 @@ User: "Hi there!
                                     [PSCustomObject]@{
                                         type = 'text'
                                         text = 'Llama3 1 70b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'meta.llama3-1-405b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama3 1 405b instruct v1 context'
                                     }
                                 )
                             }

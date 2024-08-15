@@ -1,15 +1,11 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-$PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
-#-------------------------------------------------------------------------
-if (Get-Module -Name $ModuleName -ErrorAction 'SilentlyContinue') {
+BeforeDiscovery {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
     #if the module is already in memory, remove it
-    Remove-Module -Name $ModuleName -Force
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
 }
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
 
 InModuleScope 'pwshBedrock' {
     #-------------------------------------------------------------------------
@@ -47,7 +43,7 @@ InModuleScope 'pwshBedrock' {
 
             It 'should get the tally for all models' {
                 $eval = Get-ModelTally -AllModels
-                $eval.Count | Should -BeExactly 32
+                $eval.Count | Should -BeExactly 34
                 foreach ($model in $eval) {
                     if ($null -ne $model.ImageCount) {
                         $model.ImageCount | Should -BeExactly 0

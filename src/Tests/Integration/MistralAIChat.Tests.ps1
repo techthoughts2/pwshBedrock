@@ -1,15 +1,12 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-#-------------------------------------------------------------------------
-#if the module is already in memory, remove it
-Get-Module $ModuleName | Remove-Module -Force
-$PathToManifest = [System.IO.Path]::Combine('..', '..', 'Artifacts', "$ModuleName.psd1")
-#-------------------------------------------------------------------------
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
-# $awsCredential = [Amazon.Runtime.BasicAWSCredentials]::new('FAKEACCESSKEY', 'FAKESECRETKEY')
+BeforeDiscovery {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', $ModuleName, "$ModuleName.psd1")
+    #if the module is already in memory, remove it
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
+    # $awsCredential = [Amazon.Runtime.BasicAWSCredentials]::new('FAKEACCESSKEY', 'FAKESECRETKEY')
+}
 
 InModuleScope 'pwshBedrock' {
     Describe 'Mistral AI Chat Integration Tests' -Tag Integration {

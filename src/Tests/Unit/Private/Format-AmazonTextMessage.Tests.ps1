@@ -1,20 +1,16 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-$PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
-$script:assetPath = [System.IO.Path]::Combine('..', 'assets')
-#-------------------------------------------------------------------------
-if (Get-Module -Name $ModuleName -ErrorAction 'SilentlyContinue') {
+BeforeDiscovery {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
+    $script:assetPath = [System.IO.Path]::Combine('..', 'assets')
     #if the module is already in memory, remove it
-    Remove-Module -Name $ModuleName -Force
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
 }
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
 
 InModuleScope 'pwshBedrock' {
     $amazonModels = (Get-ModelInfo -Provider Amazon).ModelID
-    $amazonModels = $amazonModels | Where-Object { $_ -ne 'amazon.titan-image-generator-v1' }
+    $amazonModels = $amazonModels | Where-Object { $_ -ne 'amazon.titan-image-generator-v1' -and $_ -ne 'amazon.titan-image-generator-v2:0' }
     Describe 'Format-AmazonTextMessage Private Function Tests' -Tag Unit {
         BeforeAll {
             $WarningPreference = 'SilentlyContinue'

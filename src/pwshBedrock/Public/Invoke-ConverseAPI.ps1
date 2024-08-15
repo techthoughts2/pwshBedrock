@@ -259,6 +259,7 @@ function Invoke-ConverseAPI {
             # 'ai21.j2-mid-v1', # *note: not supported by Converse API
             # 'ai21.j2-ultra-v1', # *note: not supported by Converse API
             # 'amazon.titan-image-generator-v1', # *note: not supported by Converse API
+            # 'amazon.titan-image-generator-v2:0', # *note: not supported by Converse API
             'amazon.titan-text-express-v1',
             'amazon.titan-text-lite-v1',
             'amazon.titan-text-premier-v1:0',
@@ -278,6 +279,7 @@ function Invoke-ConverseAPI {
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
             'meta.llama3-1-70b-instruct-v1:0',
+            'meta.llama3-1-405b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-large-2407-v1:0',

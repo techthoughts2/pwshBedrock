@@ -1,15 +1,12 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-#-------------------------------------------------------------------------
-#if the module is already in memory, remove it
-Get-Module $ModuleName | Remove-Module -Force
-$PathToManifest = [System.IO.Path]::Combine('..', '..', 'Artifacts', "$ModuleName.psd1")
-#-------------------------------------------------------------------------
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
-# $awsCredential = [Amazon.Runtime.BasicAWSCredentials]::new('FAKEACCESSKEY', 'FAKESECRETKEY')
+BeforeDiscovery {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', $ModuleName, "$ModuleName.psd1")
+    #if the module is already in memory, remove it
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
+    # $awsCredential = [Amazon.Runtime.BasicAWSCredentials]::new('FAKEACCESSKEY', 'FAKESECRETKEY')
+}
 
 InModuleScope 'pwshBedrock' {
     Describe 'Converse API Integration Tests' -Tag Integration {
@@ -21,6 +18,7 @@ InModuleScope 'pwshBedrock' {
                 # 'ai21.j2-mid-v1', # *note: not supported by Converse API
                 # 'ai21.j2-ultra-v1', # *note: not supported by Converse API
                 # 'amazon.titan-image-generator-v1', # *note: not supported by Converse API
+                # 'amazon.titan-image-generator-v2:0', # *note: not supported by Converse API
                 'amazon.titan-text-express-v1',
                 'amazon.titan-text-lite-v1',
                 'amazon.titan-text-premier-v1:0',
@@ -40,6 +38,7 @@ InModuleScope 'pwshBedrock' {
                 'meta.llama3-8b-instruct-v1:0',
                 'meta.llama3-1-8b-instruct-v1:0',
                 'meta.llama3-1-70b-instruct-v1:0',
+                'meta.llama3-1-405b-instruct-v1:0',
                 'mistral.mistral-7b-instruct-v0:2',
                 'mistral.mistral-large-2402-v1:0',
                 'mistral.mistral-large-2407-v1:0',

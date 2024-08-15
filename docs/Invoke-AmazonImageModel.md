@@ -52,6 +52,36 @@ Invoke-AmazonImageModel -ImagesSavePath <Object> -VariationImagePath <String[]> 
  [-SessionToken <String>] [<CommonParameters>]
 ```
 
+### Condition
+```
+Invoke-AmazonImageModel -ImagesSavePath <Object> [-ConditionImagePath <String>] -ConditionTextPrompt <String>
+ [-ControlMode <String>] [-ControlStrength <Single>] [-NegativeText <String>] [-NumberOfImages <Int32>]
+ [-Width <Int32>] [-Height <Int32>] [-CfgScale <Single>] -ModelID <String> [-ReturnFullObject]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+```
+
+### ColorGuided
+```
+Invoke-AmazonImageModel -ImagesSavePath <Object> [-ColorGuidedImagePath <String>]
+ -ColorGuidedTextPrompt <String> -Colors <String[]> [-NegativeText <String>] [-NumberOfImages <Int32>]
+ [-Width <Int32>] [-Height <Int32>] [-CfgScale <Single>] -ModelID <String> [-ReturnFullObject]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+```
+
+### BackgroundRemoval
+```
+Invoke-AmazonImageModel -ImagesSavePath <Object> [-BackgroundRemovalImagePath <String>]
+ [-NegativeText <String>] [-NumberOfImages <Int32>] [-Width <Int32>] [-Height <Int32>] [-CfgScale <Single>]
+ -ModelID <String> [-ReturnFullObject] [-AccessKey <String>] [-Credential <AWSCredentials>]
+ [-EndpointUrl <String>] [-NetworkCredential <PSCredential>] [-ProfileLocation <String>]
+ [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>] [-SessionToken <String>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Sends a message to an Amazon Titan on the Amazon Bedrock platform and returns the model's response.
 The response from this model is an image or images generated based on the input parameters.
@@ -61,19 +91,22 @@ Text-to-image - Generation - Generate an image using a text prompt.
 Inpainting - Editing - Modify an image by changing the inside of a mask to match the surrounding background.
 Outpainting - Editing - Modify an image by seamlessly extending the region defined by the mask.
 Image Variation - Editing - Modify an image by producing variations of the original image.
+Conditioning - Generation - Generate an image based on the text prompt and by providing a 'condition image' to achieve more fine-grained control over the resulting generated image.
+Color Guided Generation - Generation - Provide a list of hex color codes along with a text prompt to generate an image that follows the color palette.
+Background Removal - Editing - Remove the background from an image.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.titan-image-generator-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.titan-image-generator-v2:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Generates an image and saves the image to the C:\temp folder.
 
 ### EXAMPLE 2
 ```
-Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -VariationImagePath 'C:\temp\image1.png' -VariationTextPrompt 'Add more stars and space debris.' -ModelID 'amazon.titan-image-generator-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -VariationImagePath 'C:\temp\image1.png' -VariationTextPrompt 'Add more stars and space debris.' -ModelID 'amazon.titan-image-generator-v2:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Generates variations of the image located at C:\temp\image1.png and saves the images to the C:\temp folder.
@@ -89,7 +122,7 @@ $invokeAmazonImageSplat = @{
     Width            = 1024
     Height           = 1024
     CfgScale         = 10
-    ModelID          = 'amazon.titan-image-generator-v1'
+    ModelID          = 'amazon.titan-image-generator-v2:0'
     Credential       = $awsCredential
     Region           = 'us-west-2'
 }
@@ -147,6 +180,54 @@ Invoke-AmazonImageModel @invokeAmazonImageSplat
 ```
 
 Generates variations of the image located at $variationMainImage and saves the images to the specified folder.
+
+### EXAMPLE 7
+```
+$invokeAmazonImageSplat = @{
+    ImagesSavePath      = 'C:\temp'
+    ConditionImagePath  = $conditioningMainImage
+    ConditionTextPrompt = 'Create a starship emerging from a nebula.'
+    ControlMode         = 'CANNY_EDGE'
+    ControlStrength     = 0.5
+    ModelID             = $ModelID
+    Credential          = $awsCredential
+    Region              = 'us-west-2'
+}
+Invoke-AmazonImageModel @invokeAmazonImageSplat
+```
+
+Generates an image based on the text prompt and the conditioning image and saves the image to the specified folder.
+The layout and composition of the generated image are guided by the conditioning image.
+The control mode is set to CANNY_EDGE and the control strength is set to 0.5.
+
+### EXAMPLE 8
+```
+$invokeAmazonImageSplat = @{
+    ImagesSavePath        = 'C:\temp'
+    ColorGuidedTextPrompt = 'Create a starship emerging from a nebula.'
+    Colors                = @('#FF0000', '#00FF00', '#0000FF')
+    ModelID               = $ModelID
+    Credential            = $awsCredential
+    Region                = 'us-west-2'
+}
+Invoke-AmazonImageModel @invokeAmazonImageSplat
+```
+
+Generates an image based on the text prompt colored by the specified hex colors and saves the image to the specified folder.
+
+### EXAMPLE 9
+```
+$invokeAmazonImageSplat = @{
+    ImagesSavePath             = 'C:\temp'
+    BackgroundRemovalImagePath = $backgroundRemovalImage
+    ModelID                    = $ModelID
+    Credential                 = $awsCredential
+    Region                     = 'us-west-2'
+}
+Invoke-AmazonImageModel @invokeAmazonImageSplat
+```
+
+Removes the background from the image located at $backgroundRemovalImage and saves the image to the specified folder.
 
 ## PARAMETERS
 
@@ -383,6 +464,136 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ConditionImagePath
+File path to local media file conditioning image that guides the layout and composition of the generated image.
+V2 only.
+A single input conditioning image that guides the layout and composition of the generated image
+
+```yaml
+Type: String
+Parameter Sets: Condition
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ConditionTextPrompt
+A text prompt to generate the image.
+V2 only.
+
+```yaml
+Type: String
+Parameter Sets: Condition
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ControlMode
+Specifies that type of conditioning mode should be used.
+V2 only.
+
+```yaml
+Type: String
+Parameter Sets: Condition
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ControlStrength
+Specifies how similar the layout and composition of the generated image should be to the conditioningImage.
+Lower values used to introduce more randomness.
+V2 only.
+
+```yaml
+Type: Single
+Parameter Sets: Condition
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ColorGuidedImagePath
+File path to local media file conditioning image that guides the color palette of the generated image.
+V2 only.
+
+```yaml
+Type: String
+Parameter Sets: ColorGuided
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ColorGuidedTextPrompt
+A text prompt to generate the image.
+V2 only.
+
+```yaml
+Type: String
+Parameter Sets: ColorGuided
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Colors
+A list of up to 10 hex color codes to specify colors in the generated image.
+V2 only.
+
+```yaml
+Type: String[]
+Parameter Sets: ColorGuided
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BackgroundRemovalImagePath
+File path to local media file that you want to have the background removed from.
+V2 only.
+
+```yaml
+Type: String
+Parameter Sets: BackgroundRemoval
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -NegativeText
 A text prompt to define what not to include in the image.
 Don't use negative words in the negativeText prompt.
@@ -477,7 +688,7 @@ Aliases:
 
 Required: True
 Position: Named
-Default value: Amazon.titan-image-generator-v1
+Default value: Amazon.titan-image-generator-v2:0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

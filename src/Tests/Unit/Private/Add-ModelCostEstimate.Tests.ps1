@@ -1,15 +1,11 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-$PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
-#-------------------------------------------------------------------------
-if (Get-Module -Name $ModuleName -ErrorAction 'SilentlyContinue') {
+BeforeDiscovery {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
     #if the module is already in memory, remove it
-    Remove-Module -Name $ModuleName -Force
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
 }
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
 
 InModuleScope 'pwshBedrock' {
     Describe 'Add-ModelCostEstimate Private Function Tests' -Tag Unit {
@@ -174,7 +170,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.ModelId -ne 'amazon.titan-image-generator-v1' }) {
+            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $false }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $amazonUsage -ModelID $modelId
                 # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
@@ -186,7 +182,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {
+            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $true }) {
                 $modelId = $_.ModelId
                 Mock -CommandName Get-ModelCostEstimate -MockWith {
                     [PSCustomObject]@{

@@ -1,15 +1,11 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-$PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
-#-------------------------------------------------------------------------
-if (Get-Module -Name $ModuleName -ErrorAction 'SilentlyContinue') {
+BeforeDiscovery {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
     #if the module is already in memory, remove it
-    Remove-Module -Name $ModuleName -Force
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
 }
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
 
 InModuleScope 'pwshBedrock' {
     Describe 'Get-ModelCostEstimate Public Function Tests' -Tag Unit {
@@ -42,7 +38,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputCost | Should -BeExactly $ExpectedCost.OutputCost
             } #it
 
-            It 'should return the expected cost results for <_.ModelID>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -ne 'amazon.titan-image-generator-v1' }) {
+            It 'should return the expected cost results for <_.ModelID>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $false }) {
                 $InputTokenCount = 1000
                 $OutputTokenCount = 1000
                 $ModelID = $_.ModelID
@@ -60,7 +56,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputCost | Should -BeExactly $ExpectedCost.OutputCost
             } #it
 
-            It 'should return the expected cost results for <_.ModelID>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v1' }) {
+            It 'should return the expected cost results for <_.ModelID>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $false }) {
                 $ImageCount = 1
                 $ModelID = $_.ModelID
                 [float]$imageCost = $_.ImageCost

@@ -47,6 +47,7 @@ function Reset-ModelContext {
             # 'ai21.j2-mid-v1',
             # 'ai21.j2-ultra-v1',
             'amazon.titan-image-generator-v1',
+            'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',
             'amazon.titan-text-lite-v1',
             'amazon.titan-text-premier-v1:0',
@@ -66,6 +67,7 @@ function Reset-ModelContext {
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
             'meta.llama3-1-70b-instruct-v1:0',
+            'meta.llama3-1-405b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-large-2407-v1:0',
@@ -127,6 +129,7 @@ function Reset-ModelContext {
                     $allModelInfo = Get-ModelInfo -AllModels
                     $allModelIDs = ($allModelInfo | Where-Object {
                             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
+                            $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
                             $_.ModelId -notlike 'ai21.j2*' -and
                             $_.ModelId -ne 'cohere.command-text-v14' -and
                             $_.ModelId -ne 'cohere.command-light-text-v14'

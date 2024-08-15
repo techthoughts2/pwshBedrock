@@ -1,15 +1,11 @@
-#-------------------------------------------------------------------------
-Set-Location -Path $PSScriptRoot
-#-------------------------------------------------------------------------
-$ModuleName = 'pwshBedrock'
-$PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
-#-------------------------------------------------------------------------
-if (Get-Module -Name $ModuleName -ErrorAction 'SilentlyContinue') {
+BeforeDiscovery {
+    Set-Location -Path $PSScriptRoot
+    $ModuleName = 'pwshBedrock'
+    $PathToManifest = [System.IO.Path]::Combine('..', '..', '..', $ModuleName, "$ModuleName.psd1")
     #if the module is already in memory, remove it
-    Remove-Module -Name $ModuleName -Force
+    Get-Module $ModuleName -ErrorAction SilentlyContinue | Remove-Module -Force
+    Import-Module $PathToManifest -Force
 }
-Import-Module $PathToManifest -Force
-#-------------------------------------------------------------------------
 
 InModuleScope 'pwshBedrock' {
     Describe 'Get-ModelContext Public Function Tests' -Tag Unit {
@@ -66,6 +62,13 @@ InModuleScope 'pwshBedrock' {
                     # }
                     # [PSCustomObject]@{
                     #     ModelId = 'amazon.titan-image-generator-v1'
+                    #     Context = [PSCustomObject]@{
+                    #     role    = 'user'
+                    #     content = 'test'
+                    # }
+                    # }
+                    # [PSCustomObject]@{
+                    #     ModelId = 'amazon.titan-image-generator-v2:0'
                     #     Context = [PSCustomObject]@{
                     #     role    = 'user'
                     #     content = 'test'
@@ -172,6 +175,10 @@ InModuleScope 'pwshBedrock' {
                     }
                     [PSCustomObject]@{
                         ModelId = 'meta.llama3-1-70b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama3-1-405b-instruct-v1:0'
                         Context = 'test'
                     }
                     [PSCustomObject]@{

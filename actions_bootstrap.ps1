@@ -54,7 +54,14 @@ foreach ($module in $modulesToInstall) {
         ErrorAction        = 'Stop'
     }
     try {
-        Install-Module @installSplat
+        if ($module.ModuleName -eq 'Pester' -and $IsWindows) {
+            # special case for Pester certificate mismatch with older Pester versions - https://github.com/pester/Pester/issues/2389
+            # this only affects windows builds
+            Install-Module @installSplat -SkipPublisherCheck
+        }
+        else {
+            Install-Module @installSplat
+        }
         Import-Module -Name $module.ModuleName -ErrorAction Stop
         '  - Successfully installed {0}' -f $module.ModuleName
     }
