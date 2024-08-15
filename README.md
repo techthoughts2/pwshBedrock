@@ -94,7 +94,7 @@ Invoke-AI21LabsJurassic2Model -Messages 'Explain zero-point energy.' -ModelID 'a
 #------------------------------------------------------------------------------------------------
 ```
 
-##### Amazon Titan Image Generator G1 model
+##### Amazon Titan Image Generator G2 model
 
 ```powershell
 #------------------------------------------------------------------------------------------------
