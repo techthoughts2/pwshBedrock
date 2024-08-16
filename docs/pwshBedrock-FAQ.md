@@ -82,3 +82,41 @@ Here are some model links to learn about the respective models:
     -[Llama 3](https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-3/)
 - [Mistal AI Models Overview]([Models](https://docs.mistral.ai/getting-started/models/))
 - [Stability AI](https://platform.stability.ai/docs/legacy/grpc-api/features/text-to-image)
+
+## How do I pass credentials to pwshBedrock?
+
+In pwshBedrock, the examples often demonstrate using the `Credential` parameter for authentication:
+
+```powershell
+Invoke-AmazonTextModel -Message 'Explain zero-point energy.' -ModelID amazon.titan-text-lite-v1 -Region us-west-2 -Credential $awsCredential
+```
+
+However, pwshBedrock supports multiple authentication methods, just like the AWS Tools for PowerShell. You can authenticate using:
+
+- `Credential`: Pass a credential object (as shown above).
+- `AccessKey` / `SecretKey`: Directly pass access keys.
+- `NetworkCredential`: Use Windows credentials.
+- `SessionToken`: For temporary sessions.
+- `ProfileLocation`: Specify a custom credentials file.
+- `ProfileName`: Use a named profile from your AWS credentials file.
+
+To use the `Credential` parameter, you can easily create a credential object like this:
+
+```powershell
+$awsCredential = [Amazon.Runtime.BasicAWSCredentials]::new('ACCESSKEY', 'SECRETKEY')
+Invoke-AmazonTextModel -Message 'Hello, World!' -ModelID amazon.titan-text-lite-v1 -Region us-west-2 -Credential $awsCredential
+```
+
+## Can I use AWSPowerShell.NetCore instead of AWS.Tools modules for pwshBedrock?
+
+While [AWSPowerShell.NetCore](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html#ps-installing-awspowershellnetcore) is a single, large module that supports all AWS services, it's generally recommended to use the [AWS.Tools](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html#ps-installing-awstools) modularized version for pwshBedrock. Here's why:
+
+- **AWSPowerShell.NetCore**: This large module bundles support for all AWS services in a single package. As it continues to grow, it takes significantly longer to import into memory, leading to potential performance issues.
+
+- **AWS.Tools**: This modular version allows you to install individual modules for specific AWS services, such as `AWS.Tools.BedrockRuntime`, which reduces memory overhead and improves performance. It is more efficient and likely to be the long-term supported module for PowerShell at AWS.
+
+### Why Can't pwshBedrock Support Both?
+
+The `.psd1` manifest in PowerShell modules must specify dependencies on other modules, but it can only choose **one version**—either `AWSPowerShell.NetCore` or `AWS.Tools`. Unfortunately, it's not possible to specify dependencies on both. Given this limitation, pwshBedrock has chosen to depend on the modularized `AWS.Tools` version because of its performance benefits and long-term support.
+
+While you can technically use **AWSPowerShell.NetCore**, it will not satisfy pwshBedrock's dependency requirements as defined in the `.psd1`. Therefore, to ensure compatibility and meet dependency requirements, **AWS.Tools** is the recommended version for pwshBedrock.
