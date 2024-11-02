@@ -21,7 +21,7 @@
 
     Generates an image and saves the image to the C:\temp folder. Returns the full object from the model.
 .EXAMPLE
-    $invokeStabilityAIDiffusionModelSplat = @{
+    $invokeStabilityAIDiffusionXLModelSplat = @{
         ImagesSavePath    = 'C:\temp'
         ImagePrompt       = 'Make it darker.'
         InitMaskImagePath = 'C:\temp\image.png'
@@ -31,14 +31,14 @@
         ProfileName       = 'default'
         Region            = 'us-west-2'
     }
-    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
+    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 
     This command uses the Stability AI XL Diffusion Model to generate an image based on the provided prompt and mask.
     Masking is a technique used to selectively apply changes to specific parts of an image.
     In this example, the mask image ('C:\images\mask_image.png') contains a white cut-out area that indicates the region to be edited.
     The model will use this white area to focus its modifications, leaving the rest of the image unchanged. The generated image will be saved in the specified folder ('C:\temp').
 .EXAMPLE
-    $invokeStabilityAIDiffusionModelSplat = @{
+    $invokeStabilityAIDiffusionXLModelSplat = @{
         ImagesSavePath     = 'C:\temp'
         ImagePrompt        = 'Create a starship emerging from a nebula.'
         CfgScale           = 7.0
@@ -51,12 +51,12 @@
         ProfileName        = 'default'
         Region             = 'us-west-2'
     }
-    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
+    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 
     This command generates an image based on the provided prompt and saves the image to the specified folder ('C:\images\image.png').
     The image generation process is influenced by the CfgScale, ClipGuidancePreset, Sampler, Steps, and StylePreset parameters.
 .EXAMPLE
-    $invokeStabilityAIDiffusionModelSplat = @{
+    $invokeStabilityAIDiffusionXLModelSplat = @{
         ImagesSavePath = 'C:\temp'
         ImagePrompt    = 'Replace the captain with a different crew member.'
         InitImagePath  = 'C:\temp\image.png'
@@ -66,11 +66,11 @@
         ProfileName    = 'default'
         Region         = 'us-west-2'
     }
-    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
+    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 
     This command generates an image based on the provided prompt and starting image.
 .EXAMPLE
-    $invokeStabilityAIDiffusionModelSplat = @{
+    $invokeStabilityAIDiffusionXLModelSplat = @{
         ImagesSavePath = 'C:\images\image.jpeg'
         CustomPrompt   = @(
             [PSCustomObject]@{
@@ -97,7 +97,7 @@
         Region         = 'us-west-2'
         Verbose        = $false
     }
-    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
+    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 
     This command generates an image based on the provided custom prompt.
 .PARAMETER ImagesSavePath
