@@ -1,11 +1,11 @@
 ﻿<#
 .SYNOPSIS
-    Sends message(s) to an Stability AI Diffusion model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local folder.
+    Sends message(s) to an Stability AI XL Diffusion model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local folder.
 .DESCRIPTION
-    Sends a message to an Stability AI Diffusion model on the Amazon Bedrock platform and returns the model's response.
+    Sends a message to an Stability AI XL Diffusion model on the Amazon Bedrock platform and returns the model's response.
     The response from this model is an image or images generated based on the input parameters.
     The generated image(s) are decoded from base64 and saved to a local folder.
-    This function supports the following Stability AI Diffusion image use cases:
+    This function supports the following Stability AI XL Diffusion image use cases:
         Text-to-image - Generation - Generate an image using a text prompt.
         Image-to-image - modifying new images based on a starting point image.
         Image-to-image-masking - masking out a specific area of an image, and then generating new details based on a provided prompt.
@@ -13,11 +13,11 @@
     Prompts supplied via ImagePrompt will always be given a weight of 1, while prompts supplied via NegativePrompt will always be given a weight of -1.
     If you wish to provide a custom prompt with a specific weight, use the CustomPrompt parameter.
 .EXAMPLE
-    Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-StabilityAIDiffusionXLModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
 
     Generates an image and saves the image to the C:\temp folder.
 .EXAMPLE
-    Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Make the nebula more purple' -InitImagePath 'C:\temp\nebula.png' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-StabilityAIDiffusionXLModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Make the nebula more purple' -InitImagePath 'C:\temp\nebula.png' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
 
     Generates an image and saves the image to the C:\temp folder. Returns the full object from the model.
 .EXAMPLE
@@ -31,9 +31,9 @@
         ProfileName       = 'default'
         Region            = 'us-west-2'
     }
-    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
 
-    This command uses the Stability AI Diffusion Model to generate an image based on the provided prompt and mask.
+    This command uses the Stability AI XL Diffusion Model to generate an image based on the provided prompt and mask.
     Masking is a technique used to selectively apply changes to specific parts of an image.
     In this example, the mask image ('C:\images\mask_image.png') contains a white cut-out area that indicates the region to be edited.
     The model will use this white area to focus its modifications, leaving the rest of the image unchanged. The generated image will be saved in the specified folder ('C:\temp').
@@ -51,7 +51,7 @@
         ProfileName        = 'default'
         Region             = 'us-west-2'
     }
-    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
 
     This command generates an image based on the provided prompt and saves the image to the specified folder ('C:\images\image.png').
     The image generation process is influenced by the CfgScale, ClipGuidancePreset, Sampler, Steps, and StylePreset parameters.
@@ -66,7 +66,7 @@
         ProfileName    = 'default'
         Region         = 'us-west-2'
     }
-    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
 
     This command generates an image based on the provided prompt and starting image.
 .EXAMPLE
@@ -97,7 +97,7 @@
         Region         = 'us-west-2'
         Verbose        = $false
     }
-    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
 
     This command generates an image based on the provided custom prompt.
 .PARAMETER ImagesSavePath
@@ -113,10 +113,10 @@
     The higher the number, the more important the prompt.
 .PARAMETER Width
     The width of the image in pixels.
-    Only precise image sizes are supported. See the Stability AI Diffusion mode Parameters documentation for a list of supported image sizes.
+    Only precise image sizes are supported. See the Stability AI XL Diffusion mode Parameters documentation for a list of supported image sizes.
 .PARAMETER Height
     The height of the image in pixels.
-    Only precise image sizes are supported. See the Stability AI Diffusion mode Parameters documentation for a list of supported image sizes.
+    Only precise image sizes are supported. See the Stability AI XL Diffusion mode Parameters documentation for a list of supported image sizes.
 .PARAMETER InitImagePath
     File path to image that you want to use to initialize the diffusion process.
 .PARAMETER InitImageMode
@@ -186,7 +186,7 @@
 .COMPONENT
     pwshBedrock
 .LINK
-    https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIDiffusionModel/
+    https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIDiffusionXLModel/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-diffusion-1-0-text-image.html
 .LINK
@@ -204,7 +204,7 @@
 .LINK
     https://platform.stability.ai/docs/legacy/grpc-api/features/api-parameters#about-dimensions
 #>
-function Invoke-StabilityAIDiffusionModel {
+function Invoke-StabilityAIDiffusionXLModel {
     [CmdletBinding(DefaultParameterSetName = 'SimplePromptTextToImage')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUsePSCredentialType', '',
         Justification = 'Suppressed to support AWS credential parameter.')]
@@ -285,7 +285,7 @@ function Invoke-StabilityAIDiffusionModel {
             832,
             896
         )]
-        [int]$Width,
+        [int]$Width = 1024,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'The height of the image in pixels.',
@@ -305,7 +305,7 @@ function Invoke-StabilityAIDiffusionModel {
             1216,
             1152
         )]
-        [int]$Height,
+        [int]$Height = 1024,
 
         #_______________________________________________________
         # image-to-image parameters
@@ -794,4 +794,4 @@ function Invoke-StabilityAIDiffusionModel {
         return $response
     }
 
-} #Invoke-StabilityAIDiffusionModel
+} #Invoke-StabilityAIDiffusionXLModel

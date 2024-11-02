@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.0]
+
+- Module changes:
+    - stability.ai
+        - `Invoke-StabilityAIDiffusionModel` renamed to `Invoke-StabilityAIDiffusionXLModel`
+            - Updated help which had incorrect examples
+            - `Height` parameter now defaults to 1024 if no user input is provided.
+            - `Width` parameter now defaults to 1024 if no user input is provided.
+- Build changes:
+    - Updated bootstrap AWS modules from `4.1.621` to `4.1.690`
+
 ## [0.15.0]
 
 - Module changes:

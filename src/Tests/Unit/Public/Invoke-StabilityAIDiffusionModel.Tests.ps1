@@ -11,7 +11,7 @@ InModuleScope 'pwshBedrock' {
     #-------------------------------------------------------------------------
     $WarningPreference = "SilentlyContinue"
     #-------------------------------------------------------------------------
-    Describe 'Invoke-StabilityAIDiffusionModel Public Function Tests' -Tag Unit {
+    Describe 'Invoke-StabilityAIDiffusionXLModel Public Function Tests' -Tag Unit {
         BeforeAll {
             $WarningPreference = 'SilentlyContinue'
             $ErrorActionPreference = 'SilentlyContinue'
@@ -85,7 +85,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -109,7 +109,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -122,7 +122,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -137,7 +137,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName        = 'default'
                         Region             = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -152,7 +152,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -167,7 +167,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -184,7 +184,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName       = 'default'
                         Region            = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -210,7 +210,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName       = 'default'
                         Region            = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -225,7 +225,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -242,7 +242,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName       = 'default'
                         Region            = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -269,7 +269,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName       = 'default'
                         Region            = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -283,7 +283,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -307,7 +307,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
                 Should -Invoke Write-Warning -Exactly 3
             } #it
@@ -322,7 +322,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -336,7 +336,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -350,7 +350,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -370,7 +370,7 @@ InModuleScope 'pwshBedrock' {
                     ProfileName    = 'default'
                     Region         = 'us-west-2'
                 }
-                Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 Should -Invoke Convert-FromBase64ToByte -Exactly 0 -Scope It
                 Should -Invoke Save-BytesToFile -Exactly 0 -Scope It
             } #it
@@ -385,7 +385,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -399,7 +399,7 @@ InModuleScope 'pwshBedrock' {
                         ProfileName    = 'default'
                         Region         = 'us-west-2'
                     }
-                    Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                    Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 } | Should -Throw
             } #it
 
@@ -490,7 +490,7 @@ InModuleScope 'pwshBedrock' {
                     ProfileName    = 'default'
                     Region         = 'us-west-2'
                 }
-                Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 Should -Invoke Test-StabilityAIDiffusionMedia -Exactly 0 -Scope It
                 Should -Invoke Convert-MediaToBase64 -Exactly 0 -Scope It
                 Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
@@ -512,7 +512,7 @@ InModuleScope 'pwshBedrock' {
                     ProfileName    = 'default'
                     Region         = 'us-west-2'
                 }
-                Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 Should -Invoke Test-StabilityAIDiffusionMedia -Exactly 1 -Scope It
                 Should -Invoke Convert-MediaToBase64 -Exactly 1 -Scope It
                 Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
@@ -533,7 +533,7 @@ InModuleScope 'pwshBedrock' {
                     ProfileName       = 'default'
                     Region            = 'us-west-2'
                 }
-                Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 Should -Invoke Test-StabilityAIDiffusionMedia -Exactly 2 -Scope It
                 Should -Invoke Convert-MediaToBase64 -Exactly 2 -Scope It
                 Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
@@ -551,7 +551,7 @@ InModuleScope 'pwshBedrock' {
                     ProfileName    = 'default'
                     Region         = 'us-west-2'
                 }
-                Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat | Should -BeNullOrEmpty
+                Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat | Should -BeNullOrEmpty
             } #it
 
             It 'should warn and return null if the model returns no images' {
@@ -571,7 +571,7 @@ InModuleScope 'pwshBedrock' {
                     ProfileName    = 'default'
                     Region         = 'us-west-2'
                 }
-                Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat | Should -BeNullOrEmpty
+                Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat | Should -BeNullOrEmpty
                 Should -Invoke Write-Warning -Exactly 1
             } #it
 
@@ -598,7 +598,7 @@ InModuleScope 'pwshBedrock' {
                     ProfileName    = 'default'
                     Region         = 'us-west-2'
                 }
-                Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat | Should -BeNullOrEmpty
+                Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat | Should -BeNullOrEmpty
                 Should -Invoke Write-Warning -Exactly 2
             } #it
 
@@ -611,7 +611,7 @@ InModuleScope 'pwshBedrock' {
                     ProfileName      = 'default'
                     Region           = 'us-west-2'
                 }
-                $result = Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                $result = Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 $result | Should -BeOfType [System.Management.Automation.PSCustomObject]
                 $result.artifacts.count | Should -BeExactly 1
             } #it
@@ -634,7 +634,7 @@ InModuleScope 'pwshBedrock' {
                     SecretKey      = 'sk'
                     Region         = 'us-west-2'
                 }
-                Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat | Should -InvokeVerifiable
+                Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat | Should -InvokeVerifiable
             } #it
 
             It 'should call the API with the expected parameters - 2' {
@@ -663,7 +663,7 @@ InModuleScope 'pwshBedrock' {
                     Region            = 'us-west-2'
                     SessionToken      = 'string'
                 }
-                Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat | Should -InvokeVerifiable
+                Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat | Should -InvokeVerifiable
             } #it
 
             It 'should return the expected result when all parameters are provided' {
@@ -682,12 +682,12 @@ InModuleScope 'pwshBedrock' {
                     ProfileName        = 'default'
                     Region             = 'us-west-2'
                 }
-                $result = Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                $result = Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
                 $result | Should -BeOfType [System.Management.Automation.PSCustomObject]
                 $result.artifacts.count | Should -BeExactly 1
             } #it
 
         } #context_Success
 
-    } #describe_Invoke-StabilityAIDiffusionModel
+    } #describe_Invoke-StabilityAIDiffusionXLModel
 } #inModule

@@ -2,7 +2,7 @@
 Module Name: pwshBedrock
 Module Guid: b4f9e4dc-0229-44ef-99a1-08be4c5e81f2
 Download Help Link: NA
-Help Version: 0.15.0
+Help Version: 0.16.0
 Locale: en-US
 ---
 
@@ -59,8 +59,8 @@ Sends message(s) to the Mistral AI chat model on the Amazon Bedrock platform and
 ### [Invoke-MistralAIModel](Invoke-MistralAIModel.md)
 Sends message(s) to a Mistral AI text model on the Amazon Bedrock platform and retrieves the response.
 
-### [Invoke-StabilityAIDiffusionModel](Invoke-StabilityAIDiffusionModel.md)
-Sends message(s) to an Stability AI Diffusion model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local folder.
+### [Invoke-StabilityAIDiffusionXLModel](Invoke-StabilityAIDiffusionXLModel.md)
+Sends message(s) to an Stability AI XL Diffusion model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local folder.
 
 ### [Reset-ModelContext](Reset-ModelContext.md)
 Resets the message context for specified model(s).

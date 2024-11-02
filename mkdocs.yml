@@ -104,6 +104,6 @@ nav:
       - Invoke-MetaModel: Invoke-MetaModel.md
       - Invoke-MistralAIChatModel: Invoke-MistralAIChatModel.md
       - Invoke-MistralAIModel: Invoke-MistralAIModel.md
-      - Invoke-StabilityAIDiffusionModel: Invoke-StabilityAIDiffusionModel.md
+      - Invoke-StabilityAIDiffusionXLModel: Invoke-StabilityAIDiffusionXLModel.md
   - FAQ: pwshBedrock-FAQ.md
   - Change Log: CHANGELOG.md

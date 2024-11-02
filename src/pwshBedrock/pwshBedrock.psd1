@@ -12,7 +12,7 @@
     RootModule        = 'pwshBedrock.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.15.0'
+    ModuleVersion     = '0.16.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -99,7 +99,7 @@
         'Invoke-MetaModel'
         'Invoke-MistralAIChatModel'
         'Invoke-MistralAIModel'
-        'Invoke-StabilityAIDiffusionModel'
+        'Invoke-StabilityAIDiffusionXLModel'
         'Reset-ModelContext'
         'Reset-ModelTally'
         'Save-ModelContext'
