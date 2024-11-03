@@ -272,6 +272,21 @@ $Global:pwshBedRockSessionModelTally = @(
         ImageCount = 0
         ImageCost  = 0
     }
+    [PSCustomObject]@{
+        ModelId    = 'stability.stable-image-ultra-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId    = 'stability.stable-image-core-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId    = 'stability.sd3-large-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
 )
 
 #endregion
@@ -413,6 +428,18 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'stability.stable-diffusion-xl-v1'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'stability.stable-image-ultra-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'stability.stable-image-core-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'stability.sd3-large-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
 )
@@ -1227,7 +1254,80 @@ $script:stabilityAIModelInfo = @(
         # OutputTokenCost            = 0.012
         # pricing structure is different for image models
     }
+    [PSCustomObject]@{
+        ProviderName               = 'Stability AI'
+        ModelName                  = 'Stable Image Ultra'
+        ModelId                    = 'stability.stable-image-ultra-v1:0'
+        Model                      = ''
+        Description                = 'Our most advanced text to image generation service, Stable Image Ultra creates the highest quality images with unprecedented prompt understanding. Ultra excels in typography, complex compositions, dynamic lighting, vibrant hues, and overall cohesion and structure of an art piece.'
+        Strength                   = 'produces the highest quality, photo-realistic outputs, making it perfect for professional print media and large-format applications. This model excels at rendering exceptional detail and realism.'
+        Multilingual               = $false
+        Text                       = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '' #! Couldn't find in documentation
+        ImageCost                  = 0.14
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Stability AI'
+        ModelName                  = 'Stable Image Core'
+        ModelId                    = 'stability.stable-image-core-v1:0'
+        Model                      = ''
+        Description                = 'optimized for fast and affordable image generation, making it great for rapidly iterating on concepts during the ideation phase.'
+        Strength                   = 'fast, affordable image generation. Ideal for ideation and conception.'
+        Multilingual               = $false
+        Text                       = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '' #! Couldn't find in documentation
+        ImageCost                  = 0.04
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Stability AI'
+        ModelName                  = 'Stable Diffusion 3 Large'
+        ModelId                    = 'stability.sd3-large-v1:0'
+        Model                      = ''
+        Description                = 'At 8 billion parameters, with superior quality and prompt adherence, this base model is the most powerful in the Stable Diffusion family. This model is ideal for professional use cases at 1 megapixel resolution.'
+        Strength                   = 'strikes an ideal balance between generation speed and output quality, making it ideal for creating high-volume, high-quality digital assets like websites, newsletters, and marketing materials.'
+        Multilingual               = $false
+        Text                       = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '' #! Couldn't find in documentation
+        ImageCost                  = 0.08
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
 ) #ai21ModelInfo
+
 
 #endregion
 

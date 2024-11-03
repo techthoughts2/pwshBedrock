@@ -26,6 +26,7 @@
         "COLORGUIDED",
         "DDIM",
         "DDPM",
+        "denoising",
         "DPMPP",
         "Gruene",
         "HEUN",

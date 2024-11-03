@@ -159,7 +159,7 @@ Returns the full object from the model.
 
 ### EXAMPLE 3
 ```
-$invokeStabilityAIDiffusionModelSplat = @{
+$invokeStabilityAIDiffusionXLModelSplat = @{
     ImagesSavePath    = 'C:\temp'
     ImagePrompt       = 'Make it darker.'
     InitMaskImagePath = 'C:\temp\image.png'
@@ -169,7 +169,7 @@ $invokeStabilityAIDiffusionModelSplat = @{
     ProfileName       = 'default'
     Region            = 'us-west-2'
 }
-Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
+Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 ```
 
 This command uses the Stability AI XL Diffusion Model to generate an image based on the provided prompt and mask.
@@ -180,7 +180,7 @@ The generated image will be saved in the specified folder ('C:\temp').
 
 ### EXAMPLE 4
 ```
-$invokeStabilityAIDiffusionModelSplat = @{
+$invokeStabilityAIDiffusionXLModelSplat = @{
     ImagesSavePath     = 'C:\temp'
     ImagePrompt        = 'Create a starship emerging from a nebula.'
     CfgScale           = 7.0
@@ -193,7 +193,7 @@ $invokeStabilityAIDiffusionModelSplat = @{
     ProfileName        = 'default'
     Region             = 'us-west-2'
 }
-Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
+Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 ```
 
 This command generates an image based on the provided prompt and saves the image to the specified folder ('C:\images\image.png').
@@ -201,7 +201,7 @@ The image generation process is influenced by the CfgScale, ClipGuidancePreset, 
 
 ### EXAMPLE 5
 ```
-$invokeStabilityAIDiffusionModelSplat = @{
+$invokeStabilityAIDiffusionXLModelSplat = @{
     ImagesSavePath = 'C:\temp'
     ImagePrompt    = 'Replace the captain with a different crew member.'
     InitImagePath  = 'C:\temp\image.png'
@@ -211,14 +211,14 @@ $invokeStabilityAIDiffusionModelSplat = @{
     ProfileName    = 'default'
     Region         = 'us-west-2'
 }
-Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
+Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 ```
 
 This command generates an image based on the provided prompt and starting image.
 
 ### EXAMPLE 6
 ```
-$invokeStabilityAIDiffusionModelSplat = @{
+$invokeStabilityAIDiffusionXLModelSplat = @{
     ImagesSavePath = 'C:\images\image.jpeg'
     CustomPrompt   = @(
         [PSCustomObject]@{
@@ -245,7 +245,7 @@ $invokeStabilityAIDiffusionModelSplat = @{
     Region         = 'us-west-2'
     Verbose        = $false
 }
-Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionModelSplat
+Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 ```
 
 This command generates an image based on the provided custom prompt.

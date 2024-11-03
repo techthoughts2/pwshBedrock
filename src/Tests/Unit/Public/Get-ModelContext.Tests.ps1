@@ -208,6 +208,27 @@ InModuleScope 'pwshBedrock' {
                             content = 'test'
                         }
                     }
+                    [PSCustomObject]@{
+                        ModelId = 'stability.stable-image-ultra-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'stability.stable-image-core-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'stability.sd3-large-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
                 )
             }
 

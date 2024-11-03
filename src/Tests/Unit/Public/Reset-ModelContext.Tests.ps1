@@ -488,6 +488,48 @@ User: "Hi there!
                             }
                         )
                     }
+                    [PSCustomObject]@{
+                        ModelID = 'stability.stable-image-ultra-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Stable image ultra v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'stability.stable-image-core-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Stable image core v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'stability.sd3-large-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'SD3 large v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
                 )
             } #beforeEach
 

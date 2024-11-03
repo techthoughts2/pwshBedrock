@@ -45,6 +45,9 @@ InModuleScope 'pwshBedrock' {
                 'mistral.mistral-small-2402-v1:0',
                 'mistral.mixtral-8x7b-instruct-v0:1'
                 # 'stability.stable-diffusion-xl-v1' # *note: not supported by Converse API
+                # 'stability.stable-image-ultra-v1:0', # *note: not supported by Converse API
+                # 'stability.stable-image-core-v1:0' # *note: not supported by Converse API
+                # 'stability.sd3-large-v1:0' # *note: not supported by Converse API
             )
         }
         BeforeAll {
