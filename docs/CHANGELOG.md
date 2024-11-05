@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - `Invoke-CohereCommandRModel` - minor corrections to debug output
     - Meta
         - `Invoke-MetaModel` - minor corrections to debug output and help
+    - Mistral
+        - `Invoke-MistralAIModel` - minor corrections to debug output and help. Adjusted Max token limit validation.
 - Build changes:
     - Updated bootstrap AWS modules from `4.1.621` to `4.1.690`
 

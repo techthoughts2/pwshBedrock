@@ -42,8 +42,6 @@
     Do not persist the conversation context history. If this parameter is specified, you will not be able to have a continuous conversation with the model. Has no effect if -PromptOnly is specified.
 .PARAMETER MaxTokens
     The maximum number of tokens to generate before stopping.
-    Defaults to 2048. Ranges from 1 to 2048.
-    Note that Anthropic Claude models might stop generating tokens before reaching the value of max_tokens.
 .PARAMETER StopSequences
     Custom text sequences that cause the model to stop generating.
 .PARAMETER Temperature
@@ -126,8 +124,8 @@ function Invoke-MistralAIModel {
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'The maximum number of tokens to generate before stopping.')]
-        [ValidateRange(1, 2048)]
-        [int]$MaxTokens = 2048,
+        [ValidateRange(1, 8192)]
+        [int]$MaxTokens = 8192,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'Custom text sequences that cause the model to stop generating.')]
@@ -189,7 +187,7 @@ function Invoke-MistralAIModel {
 
     )
 
-    $modelInfo = $script:anthropicModelInfo | Where-Object { $_.ModelId -eq $ModelID }
+    $modelInfo = $script:mistralAIModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
 
