@@ -198,9 +198,6 @@ Accept wildcard characters: False
 
 ### -MaxTokens
 The maximum number of tokens to generate before stopping.
-Defaults to 4096.
-Ranges from 1 to 4096.
-Note that Anthropic Claude models might stop generating tokens before reaching the value of max_tokens.
 
 ```yaml
 Type: Int32
