@@ -12,11 +12,9 @@ InModuleScope 'pwshBedrock' {
     Describe 'Converse API Integration Tests' -Tag Integration {
         BeforeDiscovery {
             $converseModels = @(
-                # 'ai21.j2-grande-instruct', # *note: not supported by Converse API
-                # 'ai21.j2-jumbo-instruct', # *note: not supported by Converse API
                 'ai21.jamba-instruct-v1:0',
-                # 'ai21.j2-mid-v1', # *note: not supported by Converse API
-                # 'ai21.j2-ultra-v1', # *note: not supported by Converse API
+                'ai21.jamba-1-5-mini-v1:0',
+                'ai21.jamba-1-5-large-v1:0',
                 # 'amazon.titan-image-generator-v1', # *note: not supported by Converse API
                 # 'amazon.titan-image-generator-v2:0', # *note: not supported by Converse API
                 'amazon.titan-text-express-v1',

@@ -33,11 +33,9 @@ function Save-ModelContext {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
-            # 'ai21.j2-grande-instruct',
-            # 'ai21.j2-jumbo-instruct',
             'ai21.jamba-instruct-v1:0',
-            # 'ai21.j2-mid-v1',
-            # 'ai21.j2-ultra-v1',
+            'ai21.jamba-1-5-mini-v1:0',
+            'ai21.jamba-1-5-large-v1:0',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',

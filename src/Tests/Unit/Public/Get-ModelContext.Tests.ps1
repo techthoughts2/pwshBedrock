@@ -25,20 +25,6 @@ InModuleScope 'pwshBedrock' {
                             content = 'test'
                         }
                     }
-                    # [PSCustomObject]@{
-                    #     ModelId = 'ai21.j2-grande-instruct'
-                    #     Context = [PSCustomObject]@{
-                    #     role    = 'user'
-                    #     content = 'test'
-                    # }
-                    # }
-                    # [PSCustomObject]@{
-                    #     ModelId = 'ai21.j2-jumbo-instruct'
-                    #     Context = [PSCustomObject]@{
-                    #     role    = 'user'
-                    #     content = 'test'
-                    # }
-                    # }
                     [PSCustomObject]@{
                         ModelId = 'ai21.jamba-instruct-v1:0'
                         Context = [PSCustomObject]@{
@@ -46,20 +32,20 @@ InModuleScope 'pwshBedrock' {
                             content = 'test'
                         }
                     }
-                    # [PSCustomObject]@{
-                    #     ModelId = 'ai21.j2-mid-v1'
-                    #     Context = [PSCustomObject]@{
-                    #     role    = 'user'
-                    #     content = 'test'
-                    # }
-                    # }
-                    # [PSCustomObject]@{
-                    #     ModelId = 'ai21.j2-ultra-v1'
-                    #     Context = [PSCustomObject]@{
-                    #     role    = 'user'
-                    #     content = 'test'
-                    # }
-                    # }
+                    [PSCustomObject]@{
+                        ModelId = 'ai21.jamba-1-5-mini-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'ai21.jamba-1-5-large-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
                     # [PSCustomObject]@{
                     #     ModelId = 'amazon.titan-image-generator-v1'
                     #     Context = [PSCustomObject]@{

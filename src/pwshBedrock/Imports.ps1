@@ -18,22 +18,6 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
-        ModelId          = 'ai21.j2-grande-instruct'
-        TotalCost        = 0
-        InputTokenCount  = 0
-        OutputTokenCount = 0
-        InputTokenCost   = 0
-        OutputTokenCost  = 0
-    }
-    [PSCustomObject]@{
-        ModelId          = 'ai21.j2-jumbo-instruct'
-        TotalCost        = 0
-        InputTokenCount  = 0
-        OutputTokenCount = 0
-        InputTokenCost   = 0
-        OutputTokenCost  = 0
-    }
-    [PSCustomObject]@{
         ModelId          = 'ai21.jamba-instruct-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -42,7 +26,7 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
-        ModelId          = 'ai21.j2-mid-v1'
+        ModelId          = 'ai21.jamba-1-5-large-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
         OutputTokenCount = 0
@@ -50,7 +34,7 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
-        ModelId          = 'ai21.j2-ultra-v1'
+        ModelId          = 'ai21.jamba-1-5-mini-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
         OutputTokenCount = 0
@@ -298,26 +282,18 @@ $Global:pwshBedrockModelContext = @(
         ModelId = 'Converse'
         Context = New-Object System.Collections.Generic.List[object]
     }
-    # [PSCustomObject]@{
-    #     ModelId = 'ai21.j2-grande-instruct'
-    #     Context = New-Object System.Collections.Generic.List[object]
-    # }
-    # [PSCustomObject]@{
-    #     ModelId = 'ai21.j2-jumbo-instruct'
-    #     Context = New-Object System.Collections.Generic.List[object]
-    # }
     [PSCustomObject]@{
         ModelId = 'ai21.jamba-instruct-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
-    # [PSCustomObject]@{
-    #     ModelId = 'ai21.j2-mid-v1'
-    #     Context = New-Object System.Collections.Generic.List[object]
-    # }
-    # [PSCustomObject]@{
-    #     ModelId = 'ai21.j2-ultra-v1'
-    #     Context = New-Object System.Collections.Generic.List[object]
-    # }
+    [PSCustomObject]@{
+        ModelId = 'ai21.jamba-1-5-mini-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'ai21.jamba-1-5-large-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
     # [PSCustomObject]@{
     #     ModelId = 'amazon.titan-image-generator-v1'
     #     Context = New-Object System.Collections.Generic.List[object]
@@ -729,7 +705,6 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
 # https://docs.ai21.com/changelog/jurassic-2-and-task-specific-apis-are-now-available
 # https://docs.ai21.com/docs/jurassic-2-models
 # https://docs.ai21.com/docs/instruct-models
-# https://docs.ai21.com/reference/j2-complete-ref
 # https://docs.ai21.com/docs/choosing-the-right-instance-type-for-amazon-sagemaker-models
 
 # https://docs.ai21.com/docs/jamba-models
@@ -737,6 +712,7 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
 # https://docs.ai21.com/reference/jamba-instruct-api#response-details
 # https://docs.ai21.com/docs/migrating-from-jurassic-to-jamba
 # https://docs.ai21.com/docs/prompt-engineering
+# https://docs.ai21.com/docs/jamba-15-models
 
 
 $script:ai21ModelInfo = @(
@@ -763,87 +739,45 @@ $script:ai21ModelInfo = @(
     }
     [PSCustomObject]@{
         ProviderName               = 'AI21 Labs'
-        ModelName                  = 'J2 Grande Instruct'
-        ModelId                    = 'ai21.j2-grande-instruct'
-        Description                = 'Designed specifically for generating text based on minimal context. Highly accurate, and can be fine-tuned to power smart chatbot and other conversational interfaces.'
-        Strength                   = 'Designed to meticulously follow instructions. Trained specifically to handle instructions-only prompts ("zero-shot") without examples ("few-shot"). It is the most natural way to interact with large language models, and it is the best way to get a sense of the optimal output for your task without any examples.'
+        ModelName                  = 'Jamba 1.5 Mini'
+        ModelId                    = 'ai21.jamba-1-5-mini-v1:0'
+        Description                = 'Both Jamba 1.5 Mini and Jamba 1.5 Large models were trained on a massive corpus of text, making them highly versatile general purpose text-generators, capable of composing human-like text and solving complex tasks such as question answering, text summarization, information extraction, drafting, text classification and many others.'
+        Strength                   = 'optimized for low-latency processing of long prompts, enabling fast analysis of lengthy documents and data. Text generation, Sentiment analysis, Paraphrasing, Summarization, Text recommendation, Grammatical error correction, Text segmentation.'
         Multilingual               = $true
         Text                       = $true
         Document                   = $false
         Vision                     = $false
-        SystemPrompt               = $false
+        SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $false
-        ChatHistorySupported       = $false
-        ContextWindow              = 8192
-        MaxOutput                  = 8191
-        TrainingCutoff             = '03-01-2023'
+        ChatHistorySupported       = $true
+        ContextWindow              = 256000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '03-05-2024'
         PayloadLimit               = ''
-        InputTokenCost             = 0.0188 #! this pricing was not available in the documentation. keeping the same as ultra pricing.
-        OutputTokenCost            = 0.0188 #! this pricing was not available in the documentation. keeping the same as ultra pricing.
+        InputTokenCost             = 0.0002
+        OutputTokenCost            = 0.0004
     }
     [PSCustomObject]@{
         ProviderName               = 'AI21 Labs'
-        ModelName                  = 'J2 Jumbo Instruct'
-        ModelId                    = 'ai21.j2-jumbo-instruct'
-        Description                = 'Similar to Grande-Instruct, but with superior language understanding and response generation capabilities. Ideal for users with more advanced conversational interface needs.'
-        Strength                   = 'Designed to meticulously follow instructions. Trained specifically to handle instructions-only prompts ("zero-shot") without examples ("few-shot"). It is the most natural way to interact with large language models, and it is the best way to get a sense of the optimal output for your task without any examples.'
+        ModelName                  = 'Jamba 1.5 Large'
+        ModelId                    = 'ai21.jamba-1-5-large-v1:0'
+        Description                = 'Both Jamba 1.5 Mini and Jamba 1.5 Large models were trained on a massive corpus of text, making them highly versatile general purpose text-generators, capable of composing human-like text and solving complex tasks such as question answering, text summarization, information extraction, drafting, text classification and many others.'
+        Strength                   = 'excels at complex reasoning tasks across all prompt lengths, making it ideal for applications that require high quality outputs on both long and short inputs. Text generation, Sentiment analysis, Paraphrasing, Summarization, Text recommendation, Grammatical error correction, Text segmentation.'
         Multilingual               = $true
         Text                       = $true
         Document                   = $false
         Vision                     = $false
-        SystemPrompt               = $false
+        SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $false
-        ChatHistorySupported       = $false
-        ContextWindow              = 8192
-        MaxOutput                  = 8191
-        TrainingCutoff             = '03-01-2023'
+        ChatHistorySupported       = $true
+        ContextWindow              = 256000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '03-05-2024'
         PayloadLimit               = ''
-        InputTokenCost             = 0.0188 #! this pricing was not available in the documentation. keeping the same as ultra pricing.
-        OutputTokenCost            = 0.0188 #! this pricing was not available in the documentation. keeping the same as ultra pricing.
-    }
-    [PSCustomObject]@{
-        ProviderName               = 'AI21 Labs'
-        ModelName                  = 'Jurassic-2 Mid'
-        ModelId                    = 'ai21.j2-mid-v1'
-        Description                = 'This model offers enhanced text generation capabilities, making it well-suited to language tasks with a greater degree of complexity.'
-        Strength                   = 'Text generation based on prompting, Instruction following, Sentiment analysis, Summarization, Text recommendation including diversifying vocabulary, grammatical error correction, text segmentation, question and answering.'
-        Multilingual               = $true
-        Text                       = $true
-        Document                   = $false
-        Vision                     = $false
-        SystemPrompt               = $false
-        ToolUse                    = $false
-        ResponseStreamingSupported = $false
-        ChatHistorySupported       = $false
-        ContextWindow              = 8192
-        MaxOutput                  = 8191
-        TrainingCutoff             = '03-01-2023'
-        PayloadLimit               = ''
-        InputTokenCost             = 0.0125
-        OutputTokenCost            = 0.0125
-    }
-    [PSCustomObject]@{
-        ProviderName               = 'AI21 Labs'
-        ModelName                  = 'Jurassic-2 Ultra'
-        ModelId                    = 'ai21.j2-ultra-v1'
-        Description                = 'As the largest and most powerful model in the Jurassic series, J2-Ultra is an ideal choice for the most complex language processing tasks and generative text applications.'
-        Strength                   = 'Text generation based on prompting, Instruction following, Sentiment analysis, Summarization, Text recommendation including diversifying vocabulary, grammatical error correction, text segmentation, question and answering.'
-        Multilingual               = $true
-        Text                       = $true
-        Document                   = $false
-        Vision                     = $false
-        SystemPrompt               = $false
-        ToolUse                    = $false
-        ResponseStreamingSupported = $false
-        ChatHistorySupported       = $false
-        ContextWindow              = 8192
-        MaxOutput                  = 8191
-        TrainingCutoff             = '03-01-2023'
-        PayloadLimit               = ''
-        InputTokenCost             = 0.0188
-        OutputTokenCost            = 0.0188
+        InputTokenCost             = 0.002
+        OutputTokenCost            = 0.008
     }
 ) #ai21ModelInfo
 

@@ -95,7 +95,6 @@ nav:
     - Invoke-ConverseAPI: Invoke-ConverseAPI.md
     - Models:
       - Invoke-AI21LabsJambaModel: Invoke-AI21LabsJambaModel.md
-      - Invoke-AI21LabsJurassic2Model: Invoke-AI21LabsJurassic2Model.md
       - Invoke-AmazonImageModel: Invoke-AmazonImageModel.md
       - Invoke-AmazonTextModel: Invoke-AmazonTextModel.md
       - Invoke-AnthropicModel: Invoke-AnthropicModel.md

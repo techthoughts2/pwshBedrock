@@ -471,11 +471,21 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
             } #it
 
-            It 'should call the API with the expected parameters' {
+            It 'should call the API with the expected parameters for <_.ModelId>' -Foreach $script:ai21ModelInfo {
+                $ModelID = $_.ModelId
+                $context = [PSCustomObject]@{
+                    ModelId = $ModelID
+                    Context = New-Object System.Collections.Generic.List[object]
+                }
+                $context.Context = New-Object System.Collections.Generic.List[object]
+                $context.Context.Add([PSCustomObject]@{
+                        role    = 'user'
+                        content = 'Best StarFleet captain?'
+                    })
                 Mock -CommandName Invoke-BDRRModel {
                     $response
                     $Region         | Should -BeExactly 'us-west-2'
-                    $ModelID        | Should -BeExactly 'ai21.jamba-instruct-v1:0'
+                    $ModelID        | Should -BeExactly $ModelID
                     $AccessKey      | Should -BeExactly 'ak'
                     $SecretKey      | Should -BeExactly 'sk'
                     $ContentType    | Should -BeExactly 'application/json'
@@ -483,7 +493,8 @@ InModuleScope 'pwshBedrock' {
                 } -Verifiable
                 $invokeAI21LabsJambaModelSplat = @{
                     Message   = 'Good tea, nice house.'
-                    ModelID   = 'ai21.jamba-instruct-v1:0'
+                    # ModelID   = $ModelID
+                    ModelID   = $ModelID
                     AccessKey = 'ak'
                     SecretKey = 'sk'
                     Region    = 'us-west-2'

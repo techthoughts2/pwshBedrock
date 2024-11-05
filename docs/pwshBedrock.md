@@ -2,7 +2,7 @@
 Module Name: pwshBedrock
 Module Guid: b4f9e4dc-0229-44ef-99a1-08be4c5e81f2
 Download Help Link: NA
-Help Version: 0.18.0
+Help Version: 0.21.0
 Locale: en-US
 ---
 
@@ -28,9 +28,6 @@ Estimates the number of tokens in the provided text.
 
 ### [Invoke-AI21LabsJambaModel](Invoke-AI21LabsJambaModel.md)
 Sends message(s) to the AI21 Labs Jamba model on the Amazon Bedrock platform and retrieves the response.
-
-### [Invoke-AI21LabsJurassic2Model](Invoke-AI21LabsJurassic2Model.md)
-Sends message(s) to an AI21 Labs Jurassic 2 model on the Amazon Bedrock platform and retrieves the response.
 
 ### [Invoke-AmazonImageModel](Invoke-AmazonImageModel.md)
 Sends message(s) to an Amazon Titan image model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local directory.

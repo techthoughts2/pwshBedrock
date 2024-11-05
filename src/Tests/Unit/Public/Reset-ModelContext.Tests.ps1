@@ -12,7 +12,6 @@ InModuleScope 'pwshBedrock' {
     $allModelIDs = ($allModelInfo | Where-Object {
             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
             $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
-            $_.ModelId -notlike 'ai21.j2*' -and
             $_.ModelId -ne 'cohere.command-text-v14' -and
             $_.ModelId -ne 'cohere.command-light-text-v14'
         }).ModelID
@@ -206,6 +205,34 @@ User: "Hi there!
                             }
                         )
                     }
+                    [PSCustomObject]@{
+                        ModelID = 'ai21.jamba-1-5-mini-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'test'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'ai21.jamba-1-5-large-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'test'
+                                    }
+                                )
+                            }
+                        )
+                    }
                     # [PSCustomObject]@{
                     #     ModelID = 'amazon.titan-image-generator-v1'
                     #     Context = @(
@@ -215,36 +242,6 @@ User: "Hi there!
                     #                 [PSCustomObject]@{
                     #                     type = 'text'
                     #                     text = 'Titan image generator context'
-                    #                 }
-                    #             )
-                    #         }
-                    #     )
-                    # }
-                    # 'ai21.j2-grande-instruct',
-                    # 'ai21.j2-jumbo-instruct',
-                    # [PSCustomObject]@{
-                    #     ModelID = 'ai21.j2-mid-v1'
-                    #     Context = @(
-                    #         [PSCustomObject]@{
-                    #             role    = 'user'
-                    #             content = @(
-                    #                 [PSCustomObject]@{
-                    #                     type = 'text'
-                    #                     text = 'J2 mid context'
-                    #                 }
-                    #             )
-                    #         }
-                    #     )
-                    # }
-                    # [PSCustomObject]@{
-                    #     ModelID = 'ai21.j2-ultra-v1'
-                    #     Context = @(
-                    #         [PSCustomObject]@{
-                    #             role    = 'user'
-                    #             content = @(
-                    #                 [PSCustomObject]@{
-                    #                     type = 'text'
-                    #                     text = 'J2 ultra context'
                     #                 }
                     #             )
                     #         }

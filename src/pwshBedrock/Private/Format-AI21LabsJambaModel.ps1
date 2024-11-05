@@ -39,7 +39,9 @@ function Format-AI21LabsJambaModel {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
-            'ai21.jamba-instruct-v1:0'
+            'ai21.jamba-instruct-v1:0',
+            'ai21.jamba-1-5-mini-v1:0',
+            'ai21.jamba-1-5-large-v1:0'
         )]
         [string]$ModelID,
 

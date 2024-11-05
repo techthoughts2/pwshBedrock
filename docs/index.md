@@ -66,15 +66,6 @@ Invoke-AI21LabsJambaModel -Message 'Explain zero-point energy.' -ModelID 'ai21.j
 #------------------------------------------------------------------------------------------------
 ```
 
-##### AI21 Labs Jurassic-2 models
-
-```powershell
-#------------------------------------------------------------------------------------------------
-# Sends a text message to the on-demand AI21 Labs Jurassic 2 model in the specified AWS region and returns the response.
-Invoke-AI21LabsJurassic2Model -Messages 'Explain zero-point energy.' -ModelID 'ai21.j2-ultra-v1' -Credential $awsCredential -Region 'us-west-2'
-#------------------------------------------------------------------------------------------------
-```
-
 ##### Amazon Titan Image Generator G2 model
 
 ```powershell

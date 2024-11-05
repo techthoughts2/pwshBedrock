@@ -55,11 +55,9 @@ function Add-ModelCostEstimate {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
-            'ai21.j2-grande-instruct',
-            'ai21.j2-jumbo-instruct',
             'ai21.jamba-instruct-v1:0',
-            'ai21.j2-mid-v1',
-            'ai21.j2-ultra-v1',
+            'ai21.jamba-1-5-mini-v1:0',
+            'ai21.jamba-1-5-large-v1:0',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',
@@ -109,25 +107,17 @@ function Add-ModelCostEstimate {
             } #if_converse
             else {
                 switch ($ModelID) {
-                    'ai21.j2-grande-instruct' {
-                        $inputTokenCount = $Usage.prompt.tokens[-1].textRange.end
-                        $outputTokenCount = $Usage.completions[-1].data.tokens[-1].textRange.end
-                    }
-                    'ai21.j2-jumbo-instruct' {
-                        $inputTokenCount = $Usage.prompt.tokens[-1].textRange.end
-                        $outputTokenCount = $Usage.completions[-1].data.tokens[-1].textRange.end
-                    }
                     'ai21.jamba-instruct-v1:0' {
                         $inputTokenCount = $Usage.prompt_tokens
                         $outputTokenCount = $Usage.completion_tokens
                     }
-                    'ai21.j2-mid-v1' {
-                        $inputTokenCount = $Usage.prompt.tokens[-1].textRange.end
-                        $outputTokenCount = $Usage.completions[-1].data.tokens[-1].textRange.end
+                    'ai21.jamba-1-5-mini-v1:0' {
+                        $inputTokenCount = $Usage.prompt_tokens
+                        $outputTokenCount = $Usage.completion_tokens
                     }
-                    'ai21.j2-ultra-v1' {
-                        $inputTokenCount = $Usage.prompt.tokens[-1].textRange.end
-                        $outputTokenCount = $Usage.completions[-1].data.tokens[-1].textRange.end
+                    'ai21.jamba-1-5-large-v1:0' {
+                        $inputTokenCount = $Usage.prompt_tokens
+                        $outputTokenCount = $Usage.completion_tokens
                     }
                     'amazon.titan-text-express-v1' {
                         $inputTokenCount = $Usage.'inputTextTokenCount'

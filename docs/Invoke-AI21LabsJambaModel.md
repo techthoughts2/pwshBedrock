@@ -394,3 +394,5 @@ If you request more than one response from the model:
 [https://docs.ai21.com/reference/jamba-instruct-api#response-details](https://docs.ai21.com/reference/jamba-instruct-api#response-details)
 
 [https://docs.ai21.com/docs/migrating-from-jurassic-to-jamba](https://docs.ai21.com/docs/migrating-from-jurassic-to-jamba)
+
+[https://docs.ai21.com/reference/jamba-15-api-ref](https://docs.ai21.com/reference/jamba-15-api-ref)
