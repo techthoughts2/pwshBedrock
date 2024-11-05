@@ -511,7 +511,7 @@ function Invoke-StabilityAIDiffusionXLModel {
 
     Write-Debug -Message ('Parameter Set Name: {0}' -f $PSCmdlet.ParameterSetName)
 
-    $modelInfo = $script:amazonModelInfo | Where-Object { $_.ModelId -eq $ModelID }
+    $modelInfo = $script:stabilityAIModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
 
