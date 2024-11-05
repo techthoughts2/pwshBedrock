@@ -47,7 +47,6 @@
 .PARAMETER MaxTokens
     The maximum number of tokens to generate before stopping.
     Defaults to 2048. Ranges from 1 to 2048.
-    Note that Anthropic Claude models might stop generating tokens before reaching the value of max_tokens.
 .PARAMETER Temperature
     The amount of randomness injected into the response.
     Defaults to 1.0. Ranges from 0.0 to 1.0.
@@ -193,7 +192,7 @@ function Invoke-MetaModel {
 
     )
 
-    $modelInfo = $script:anthropicModelInfo | Where-Object { $_.ModelId -eq $ModelID }
+    $modelInfo = $script:metaModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
 
