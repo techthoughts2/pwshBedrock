@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - AI21 Labs
         - `Invoke-AI21LabsJambaModel` - added support for `ai21.jamba-1-5-mini-v1:0` and `ai21.jamba-1-5-large-v1:0`
         - `Invoke-AI21LabsJurassic2Model` removed. All support for `ai21.j2-grande-instruct`, `ai21.j2-jumbo-instruct`, `ai21.j2-mid-v1`, `ai21.j2-ultra-v1` removed. These models are being [EOL](https://docs.aws.amazon.com/bedrock/latest/userguide/model-lifecycle.html) in Amazon Bedrock. - ***Breaking Change***
+    - Amazon
+        - `Invoke-AmazonTextModel` - minor corrections to debug output and help
 - Build changes:
     - Updated bootstrap AWS modules from `4.1.621` to `4.1.690`
 

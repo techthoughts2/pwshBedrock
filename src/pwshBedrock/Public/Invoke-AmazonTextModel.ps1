@@ -62,8 +62,6 @@ User: No, don't tell me about Worf. Tell me about Klingon culture.
     Do not persist the conversation context history. If this parameter is specified, you will not be able to have a continuous conversation with the model. Has no effect if -PromptOnly is specified.
 .PARAMETER MaxTokens
     The maximum number of tokens to generate before stopping.
-    Defaults to 4096. Ranges from 1 to 4096.
-    Note that Anthropic Claude models might stop generating tokens before reaching the value of max_tokens.
 .PARAMETER Temperature
     The amount of randomness injected into the response.
     Defaults to 1.0. Ranges from 0.0 to 1.0.
@@ -209,7 +207,7 @@ function Invoke-AmazonTextModel {
 
     )
 
-    $modelInfo = $script:anthropicModelInfo | Where-Object { $_.ModelId -eq $ModelID }
+    $modelInfo = $script:amazonModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
 
@@ -390,13 +388,13 @@ function Invoke-AmazonTextModel {
 
     Write-Verbose -Message 'Adding response to model context history.'
     $content = $response.results.outputText
-    $formatAnthropicMessageSplat = @{
+    $formatAmazonMessageSplat = @{
         Role             = 'Bot'
         Message          = $content
         ModelID          = $ModelID
         NoContextPersist = $NoContextPersist
     }
-    Format-AmazonTextMessage @formatAnthropicMessageSplat | Out-Null
+    Format-AmazonTextMessage @formatAmazonMessageSplat | Out-Null
 
     if ($ReturnFullObject) {
         return $response
