@@ -151,10 +151,10 @@ Generates an image and saves the image to the C:\temp folder.
 
 ### EXAMPLE 2
 ```
-Invoke-StabilityAIDiffusionXLModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Make the nebula more purple' -InitImagePath 'C:\temp\nebula.png' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Make the nebula more purple' -InitImagePath 'C:\temp\nebula.png' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
-Generates an image and saves the image to the C:\temp folder.
+Generates an image based on the provided prompt and starting image.
 Returns the full object from the model.
 
 ### EXAMPLE 3
