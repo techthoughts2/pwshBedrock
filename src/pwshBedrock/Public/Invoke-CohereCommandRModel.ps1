@@ -340,7 +340,7 @@ function Invoke-CohereCommandRModel {
 
     )
 
-    $modelInfo = $script:anthropicModelInfo | Where-Object { $_.ModelId -eq $ModelID }
+    $modelInfo = $script:cohereModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
 

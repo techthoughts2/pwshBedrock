@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - `Invoke-AI21LabsJurassic2Model` removed. All support for `ai21.j2-grande-instruct`, `ai21.j2-jumbo-instruct`, `ai21.j2-mid-v1`, `ai21.j2-ultra-v1` removed. These models are being [EOL](https://docs.aws.amazon.com/bedrock/latest/userguide/model-lifecycle.html) in Amazon Bedrock. - ***Breaking Change***
     - Amazon
         - `Invoke-AmazonTextModel` - minor corrections to debug output and help
+    - Cohere
+        - `Invoke-CohereCommandRModel` - minor corrections to debug output
 - Build changes:
     - Updated bootstrap AWS modules from `4.1.621` to `4.1.690`
 
