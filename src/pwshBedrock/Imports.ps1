@@ -212,6 +212,38 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'meta.llama3-2-1b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'meta.llama3-2-3b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'meta.llama3-2-11b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'meta.llama3-2-90b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'mistral.mistral-7b-instruct-v0:2'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -380,6 +412,22 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'meta.llama3-1-405b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-2-1b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-2-3b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-2-11b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-2-90b-instruct-v1:0'
         Context = ''
     }
     [PSCustomObject]@{
@@ -1038,6 +1086,90 @@ $script:metaModelInfo = @(
         PayloadLimit               = ''
         InputTokenCost             = 0.00532
         OutputTokenCost            = 0.016
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.2 1B Instruct'
+        ModelId                    = 'meta.llama3-2-1b-instruct-v1:0'
+        Description                = 'The most lightweight model in the Llama 3.2 collection of models, perfect for retrieval and summarization for edge devices and mobile applications.'
+        Strength                   = 'ideal for the following use cases: personal information management and multilingual knowledge retrieval.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.0001
+        OutputTokenCost            = 0.0001
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.2 3B Instruct'
+        ModelId                    = 'meta.llama3-2-3b-instruct-v1:0'
+        Description                = 'Designed for applications requiring low-latency inferencing and limited computational resources.'
+        Strength                   = 'excels at text summarization, classification, and language translation tasks. This model is ideal for the following use cases: mobile AI-powered writing assistants and customer service applications.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00015
+        OutputTokenCost            = 0.00015
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.2 11B Instruct'
+        ModelId                    = 'meta.llama3-2-11b-instruct-v1:0'
+        Description                = 'Well-suited for content creation, conversational AI, language understanding, and enterprise applications requiring visual reasoning.'
+        Strength                   = 'The model demonstrates strong performance in text summarization, sentiment analysis, code generation, and following instructions, with the added ability to reason about images. This model use cases are similar to the 90B version: image captioning, image-text-retrieval, visual grounding, visual question answering and visual reasoning, and document visual question answering.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00035
+        OutputTokenCost            = 0.00035
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.2 90B Instruct'
+        ModelId                    = 'meta.llama3-2-90b-instruct-v1:0'
+        Description                = "Meta's most advanced model, ideal for enterprise-level applications."
+        Strength                   = 'excels at general knowledge, long-form text generation, multilingual translation, coding, math, and advanced reasoning. It also introduces image reasoning capabilities, allowing for image understanding and visual reasoning tasks. This model is ideal for the following use cases: image captioning, image-text retrieval, visual grounding, visual question answering and visual reasoning, and document visual question answering.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.002
+        OutputTokenCost            = 0.002
     }
 ) #metaModelInfo
 

@@ -376,3 +376,11 @@ Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 [https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-3/](https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-3/)
 
 [https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md](https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md)
+
+[https://www.llama.com/docs/how-to-guides/vision-capabilities/](https://www.llama.com/docs/how-to-guides/vision-capabilities/)

@@ -97,6 +97,14 @@
     https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-3/
 .LINK
     https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md
+.LINK
+    https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md
+.LINK
+    https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md
+.LINK
+    https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md
+.LINK
+    https://www.llama.com/docs/how-to-guides/vision-capabilities/
 #>
 function Invoke-MetaModel {
     [CmdletBinding()]
@@ -119,7 +127,11 @@ function Invoke-MetaModel {
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
             'meta.llama3-1-70b-instruct-v1:0',
-            'meta.llama3-1-405b-instruct-v1:0'
+            'meta.llama3-1-405b-instruct-v1:0',
+            'meta.llama3-2-1b-instruct-v1:0',
+            'meta.llama3-2-3b-instruct-v1:0',
+            'meta.llama3-2-11b-instruct-v1:0',
+            'meta.llama3-2-90b-instruct-v1:0'
         )]
         [string]$ModelID,
 
