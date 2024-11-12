@@ -14,6 +14,11 @@ InModuleScope 'pwshBedrock' {
             $WarningPreference = 'SilentlyContinue'
             $ErrorActionPreference = 'SilentlyContinue'
             $VerbosePreference = 'Continue'
+
+            Set-Location -Path $PSScriptRoot
+            $assetPath = [System.IO.Path]::Combine($PSScriptRoot, '..', 'assets')
+            $mediaFile = [System.IO.Path]::Combine($assetPath, 'tanagra.jpg')
+            $fullMediaFilePath = [System.IO.Path]::GetFullPath($mediaFile)
         } #beforeAll
 
         Context 'Standard Message' {
@@ -55,6 +60,28 @@ InModuleScope 'pwshBedrock' {
                     SystemPrompt     = 'You are a model of very few words'
                     Temperature      = 0.5
                     TopP             = 0.9
+                    Credential       = $awsCredential
+                    Region           = 'us-west-2'
+                    NoContextPersist = $true
+                    ReturnFullObject = $true
+                    Verbose          = $false
+                }
+                $eval = Invoke-MetaModel @invokeMetaModelSplat
+                $eval | Should -BeOfType [System.Management.Automation.PSCustomObject]
+                $eval | Should -Not -BeNullOrEmpty
+                $eval.prompt_token_count | Should -Not -BeNullOrEmpty
+                $eval.generation_token_count | Should -Not -BeNullOrEmpty
+                $eval.generation | Should -Not -BeNullOrEmpty
+                $eval.stop_reason | Should -Not -BeNullOrEmpty
+                Write-Verbose -Message $eval.generation
+            } #it
+
+            It 'should return an object when provided a vision message for <_.ModelId>' -Foreach ($script:metaModelInfo | Where-Object { $_.Vision -eq $true }) {
+                $ModelID = $_.ModelId
+                $invokeMetaModelSplat = @{
+                    ImagePrompt      = 'Describe this image in two sentences.'
+                    MediaPath        = $fullMediaFilePath
+                    ModelID          = $ModelID
                     Credential       = $awsCredential
                     Region           = 'us-west-2'
                     NoContextPersist = $true
