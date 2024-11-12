@@ -12,9 +12,19 @@ Sends message(s) to a Meta model on the Amazon Bedrock platform and retrieves th
 
 ## SYNTAX
 
+### MessageSet
 ```
 Invoke-MetaModel -Message <String> -ModelID <String> [-ReturnFullObject] [-NoContextPersist]
  [-SystemPrompt <String>] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>] [-AccessKey <String>]
+ [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
+ [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
+ [-SessionToken <String>] [<CommonParameters>]
+```
+
+### ImageSet
+```
+Invoke-MetaModel -ImagePrompt <String> -MediaPath <String> -ModelID <String> [-ReturnFullObject]
+ [-NoContextPersist] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>] [-AccessKey <String>]
  [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
  [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
  [-SessionToken <String>] [<CommonParameters>]
@@ -67,6 +77,13 @@ Invoke-MetaModel @invokeMetaModelSplat
 
 Sends a text message to the on-demand Meta model in the specified AWS region with a system prompt and a maximum token limit of 2000.
 
+### EXAMPLE 5
+```
+Invoke-MetaModel -ImagePrompt -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
+```
+
+Sends an image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
+
 ## PARAMETERS
 
 ### -Message
@@ -74,7 +91,39 @@ The message to be sent to the model.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: MessageSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ImagePrompt
+The prompt to the Vision-Instruct model.
+
+```yaml
+Type: String
+Parameter Sets: ImageSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MediaPath
+File path to local media file.
+The media files must adhere to the model's media requirements.
+Only large 3.2 vision models support media files.
+
+```yaml
+Type: String
+Parameter Sets: ImageSet
 Aliases:
 
 Required: True
@@ -137,7 +186,7 @@ If you do not provide a system prompt, the default Llama system prompt will be u
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: MessageSet
 Aliases:
 
 Required: False
@@ -380,6 +429,8 @@ Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 [https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md)
 
 [https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md)
+
+[https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_2/](https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_2/)
 
 [https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md)
 

@@ -33,8 +33,18 @@
     Invoke-MetaModel @invokeMetaModelSplat
 
     Sends a text message to the on-demand Meta model in the specified AWS region with a system prompt and a maximum token limit of 2000.
+.EXAMPLE
+    Invoke-MetaModel -ImagePrompt -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
+
+    Sends an image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
 .PARAMETER Message
     The message to be sent to the model.
+.PARAMETER ImagePrompt
+    The prompt to the Vision-Instruct model.
+.PARAMETER MediaPath
+    File path to local media file.
+    The media files must adhere to the model's media requirements.
+    Only large 3.2 vision models support media files.
 .PARAMETER ModelID
     The unique identifier of the model.
 .PARAMETER ReturnFullObject
@@ -102,6 +112,8 @@
 .LINK
     https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md
 .LINK
+    https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_2/
+.LINK
     https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md
 .LINK
     https://www.llama.com/docs/how-to-guides/vision-capabilities/
@@ -113,10 +125,24 @@ function Invoke-MetaModel {
     param (
         [Parameter(Mandatory = $true,
             HelpMessage = 'The message to be sent to the model.',
-            ParameterSetName = 'Standard')]
+            ParameterSetName = 'MessageSet')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
+
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'The prompt to the Vision-Instruct model.',
+            ParameterSetName = 'ImageSet')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$ImagePrompt,
+
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'File path to local media file.',
+            ParameterSetName = 'ImageSet')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$MediaPath,
 
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
@@ -143,10 +169,9 @@ function Invoke-MetaModel {
             HelpMessage = 'Do not persist the conversation context history.')]
         [switch]$NoContextPersist,
 
-        # model parameters
-
         [Parameter(Mandatory = $false,
-            HelpMessage = 'The system prompt for the request.')]
+            HelpMessage = 'The system prompt for the request.',
+            ParameterSetName = 'MessageSet')]
         [string]$SystemPrompt,
 
         [Parameter(Mandatory = $false,
@@ -208,31 +233,66 @@ function Invoke-MetaModel {
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
 
-    # before we format the message (which creates context), we need to store the current context
-    # this can be used to restore the context if the model fails to respond
-
-    $originalContext = Get-ModelContext -ModelID $ModelID
-    if ([string]::IsNullOrEmpty($originalContext)) {
-        Write-Debug -Message 'No original context'
-        $originalContext = ''
-    }
-
-    $formatMetaTextMessageSplat = @{
-        Role             = 'User'
-        Message          = $Message
-        ModelID          = $ModelID
-        NoContextPersist = $NoContextPersist
-    }
-    if ($SystemPrompt) {
-        $formatMetaTextMessageSplat.Add('SystemPrompt', $SystemPrompt)
-    }
-    $formattedMessages = Format-MetaTextMessage @formatMetaTextMessageSplat
-
-    #region cmdletParams
-
     $bodyObj = @{
         prompt = $formattedMessages
     }
+
+    if ($MediaPath) {
+        Write-Verbose -Message 'Vision message with media path provided.'
+        if ($modelInfo.Vision -ne $true) {
+            Write-Warning -Message ('You provided a media path for model {0}. Vision is not supported for this model.' -f $ModelID)
+            throw 'Vision is not supported for this model.'
+        }
+
+        foreach ($media in $MediaPath) {
+            if (-not (Test-MetaMedia -MediaPath $media)) {
+                throw ('Media test for {0} failed.' -f $media)
+            }
+
+            Write-Verbose -Message ('Converting media to base64: {0}' -f $media)
+            try {
+                $base64 = Convert-MediaToBase64 -MediaPath $media
+            }
+            catch {
+                throw ('Unable to convert media to base64: {0}' -f $media)
+            }
+        }
+
+        $formatMetaTextMessageSplat = @{
+            Role             = 'User'
+            ImagePrompt      = $ImagePrompt
+            ModelID          = $ModelID
+            NoContextPersist = $NoContextPersist
+        }
+        $formattedMessages = Format-MetaTextMessage @formatMetaTextMessageSplat
+
+        $bodyObj.Add('images', @($base64))
+
+    } #MediaPath
+    else {
+        Write-Verbose -Message 'Standard Text provided.'
+        # before we format the message (which creates context), we need to store the current context
+        # this can be used to restore the context if the model fails to respond
+
+        $originalContext = Get-ModelContext -ModelID $ModelID
+        if ([string]::IsNullOrEmpty($originalContext)) {
+            Write-Debug -Message 'No original context'
+            $originalContext = ''
+        }
+
+        $formatMetaTextMessageSplat = @{
+            Role             = 'User'
+            Message          = $Message
+            ModelID          = $ModelID
+            NoContextPersist = $NoContextPersist
+        }
+        if ($SystemPrompt) {
+            $formatMetaTextMessageSplat.Add('SystemPrompt', $SystemPrompt)
+        }
+        $formattedMessages = Format-MetaTextMessage @formatMetaTextMessageSplat
+    } #Standard_Text
+
+    #region cmdletParams
 
     if ($Temperature) {
         $bodyObj.Add('temperature', $Temperature)

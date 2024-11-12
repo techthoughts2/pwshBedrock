@@ -15,10 +15,16 @@
     Format-MetaTextMessage -Role 'User' -Message 'Hello, how are you?' -SystemPrompt 'You are a Star Trek trivia expert.' -ModelID 'meta.llama3-1-8b-instruct-v1:0'
 
     Formats a text message to be sent to the Meta model with a system prompt.
+.EXAMPLE
+    Format-MetaTextMessage -Role 'User' -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0'
+
+    Formats a text message to be sent to the Meta model with an image prompt.
 .PARAMETER Role
     The role of the message sender. Valid values are 'user' or 'assistant'.
 .PARAMETER Message
     The message to be sent to the model.
+.PARAMETER ImagePrompt
+    The image prompt to be sent to the model.
 .PARAMETER SystemPrompt
     The system prompt to be sent to the model.
 .PARAMETER ModelID
@@ -43,9 +49,18 @@ function Format-MetaTextMessage {
         [string]$Role,
 
         [Parameter(Mandatory = $true,
-            HelpMessage = 'The message to be sent to the model.')]
+            HelpMessage = 'The message to be sent to the model.',
+            ParameterSetName = 'MessageSet')]
+        [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
+
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'The prompt to the Vision-Instruct model.',
+            ParameterSetName = 'ImageSet')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$ImagePrompt,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'The system prompt to be sent to the model.')]
@@ -90,6 +105,11 @@ You are a helpful, respectful and honest assistant. Always answer as helpfully a
 If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.<|eot_id|>
 '@
 
+    # https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md
+    $standardVisionPrompt = @'
+<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+'@
+
     # we need to determine if this is the first message in the conversation
     # if it is, we need to create the system prompt scaffolding
     $contextEval = Get-ModelContext -ModelID $ModelID
@@ -122,7 +142,11 @@ If a question does not make any sense, or is not factually coherent, explain why
     elseif ($ModelID -like '*llama3*') {
         Write-Debug 'Processing llama3 model'
         $sysPromptRegex = '(?<=system<\|end_header_id\|>\r?\n)([\s\S]*?)(?=<\|eot_id\|>)'
-        if ($firstMessage -eq $true) {
+
+        if ($ImagePrompt) {
+            $str = "$standardVisionPrompt`n`n" + '<|image|>' + $ImagePrompt + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
+        }
+        elseif ($firstMessage -eq $true) {
             $str = $str + "$standardLlama3Prompt`n`n" + $Message + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
         }
         else {

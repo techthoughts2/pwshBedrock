@@ -87,12 +87,19 @@ You are a Star Trek trivia expert.
 Who is the best captain in Star Trek?[/INST]Captain Picard</s>
 <s>[INST]Because of his fondness for Earl Grey?[/INST]
 '@
+
+                $expectedValue7 = @'
+<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+<|image|>Describe this image in two sentences<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+'@
                 $normalizedExpectedValue1 = $expectedValue1 -replace "`r`n", "`n"
                 $normalizedExpectedValue2 = $expectedValue2 -replace "`r`n", "`n"
                 $normalizedExpectedValue3 = $expectedValue3 -replace "`r`n", "`n"
                 $normalizedExpectedValue4 = $expectedValue4 -replace "`r`n", "`n"
                 $normalizedExpectedValue5 = $expectedValue5 -replace "`r`n", "`n"
                 $normalizedExpectedValue6 = $expectedValue6 -replace "`r`n", "`n"
+                $normalizedExpectedValue7 = $expectedValue7 -replace "`r`n", "`n"
             } #beforeEach
 
             It 'should return a properly formatted initial message for Llama 2 model: <_>' -ForEach $llama2Models {
@@ -213,6 +220,18 @@ Who is the best captain in Star Trek?[/INST]Captain Picard</s>
                 $result | Should -BeOfType 'System.String'
                 $normalizedResult = $result -replace "`r`n", "`n"
                 $normalizedResult | Should -Be $normalizedExpectedValue5
+            } #it
+
+            It 'should handle an image prompt for Llama 3 model' {
+                $formatMetaMessageSplat = @{
+                    ImagePrompt  = 'Describe this image in two sentences'
+                    Role         = 'User'
+                    ModelID      = 'meta.llama3-2-11b-instruct-v1:0'
+                }
+                $result = Format-MetaTextMessage @formatMetaMessageSplat
+                $result | Should -BeOfType 'System.String'
+                $normalizedResult = $result -replace "`r`n", "`n"
+                $normalizedResult | Should -Be $normalizedExpectedValue7
             } #it
 
             It 'should populate context for the <_> model' -ForEach $metaModels {

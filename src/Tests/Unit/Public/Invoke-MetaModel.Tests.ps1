@@ -36,6 +36,12 @@ Who is the best captain in Star Trek?[/INST]
                 Mock -CommandName Format-MetaTextMessage -MockWith {
                     $standardMessage
                 }
+                Mock -CommandName Test-MetaMedia -MockWith {
+                    $true
+                } #endMock
+                Mock -CommandName Convert-MediaToBase64 -MockWith {
+                    'base64'
+                } #endMock
                 $response = [Amazon.BedrockRuntime.Model.InvokeModelResponse]::new()
                 $response.ContentType = 'application/json'
                 $jsonPayload = @'
@@ -81,6 +87,60 @@ Who is the best captain in Star Trek?[/INST]
                     $invokeMetaModelSplat = @{
                         Message     = 'Assimilate this.'
                         ModelID     = 'NotSupported'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if more than one image is provided' {
+                {
+                    $invokeMetaModelSplat = @{
+                        ImagePrompt = 'Describe this image in two sentences.'
+                        MediaPath   = @('image1', 'image2')
+                        ModelID     = 'meta.llama3-8b-instruct-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if an image is provided for a model that does not support images' {
+                {
+                    $invokeMetaModelSplat = @{
+                        ImagePrompt = 'Describe this image in two sentences.'
+                        MediaPath   = 'image'
+                        ModelID     = 'meta.llama2-13b-chat-v1'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if the media file evaluation does not return true' {
+                Mock -CommandName Test-MetaMedia -MockWith { $false }
+                {
+                    $invokeMetaModelSplat = @{
+                        ImagePrompt = 'Describe this image in two sentences.'
+                        MediaPath   = 'image'
+                        ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if the media file can not be converted to base64' {
+                Mock -CommandName Convert-MediaToBase64 -MockWith { throw 'Error' }
+                {
+                    $invokeMetaModelSplat = @{
+                        ImagePrompt = 'Describe this image in two sentences.'
+                        MediaPath   = 'image'
+                        ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
                     }
@@ -237,6 +297,11 @@ Who is the best captain in Star Trek?[/INST]
                         Context = 'test'
                     }
                 )
+                $standardVisionMessage = @'
+<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+<|image|>Describe this image in two sentences<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+'@
                 $standardMessage = @'
 <s>[INST] <<SYS>>
 You are a Star Trek trivia expert.
@@ -247,6 +312,12 @@ Who is the best captain in Star Trek?[/INST]
                 Mock -CommandName Format-MetaTextMessage -MockWith {
                     $standardMessage
                 }
+                Mock -CommandName Test-MetaMedia -MockWith {
+                    $true
+                } #endMock
+                Mock -CommandName Convert-MediaToBase64 -MockWith {
+                    'base64'
+                } #endMock
                 $response = [Amazon.BedrockRuntime.Model.InvokeModelResponse]::new()
                 $response.ContentType = 'application/json'
                 $jsonPayload = @'
@@ -411,6 +482,24 @@ Who is the best captain in Star Trek?[/INST]
                     Region           = 'us-west-2'
                 }
                 Invoke-MetaModel @invokeMetaModelSplat | Should -InvokeVerifiable
+            } #it
+
+            It 'should run all expected subcommands for a vision message' {
+                $invokeMetaModelSplat = @{
+                    ImagePrompt = 'Describe this image in two sentences.'
+                    MediaPath   = 'image'
+                    ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
+                    AccessKey   = 'ak'
+                    SecretKey   = 'sk'
+                    Region      = 'us-west-2'
+                }
+                $result = Invoke-MetaModel @invokeMetaModelSplat
+                Should -Invoke Test-MetaMedia -Exactly 1 -Scope It
+                Should -Invoke Convert-MediaToBase64 -Exactly 1 -Scope It
+                Should -Invoke Format-MetaTextMessage -Exactly 2 -Scope It
+                Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
+                Should -Invoke ConvertFrom-MemoryStreamToString -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
             } #it
 
         } #context_Success
