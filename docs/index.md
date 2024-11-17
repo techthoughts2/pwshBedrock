@@ -89,10 +89,10 @@ Invoke-AmazonTextModel -Message 'Explain zero-point energy.' -ModelID amazon.tit
 ```powershell
 #------------------------------------------------------------------------------------------------
 # Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the response.
-Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 # Sending a media file to an Anthropic model and retrieving the response
-Invoke-AnthropicModel -Message 'What can you tell me about this picture?' -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0' -MediaPath 'C:\images\tanagra.jpg' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AnthropicModel -Message 'What can you tell me about this picture?' -ModelID 'anthropic.claude-3-5-sonnet-20241022-v2:0' -MediaPath 'C:\images\tanagra.jpg' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 ```
 
@@ -120,6 +120,9 @@ Invoke-CohereCommandRModel -Message 'Explain zero-point energy.' -ModelID 'coher
 #------------------------------------------------------------------------------------------------
 # Sends a text message to the on-demand Meta model in the specified AWS region and returns the response.
 Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-8b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
+#------------------------------------------------------------------------------------------------
+# Sending a media file to a Meta model and retriveing the response
+Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 ```
 
@@ -152,7 +155,7 @@ Invoke-StabilityAIImageModel -ImagesSavePath 'C:\images' -ImagePrompt 'Create a 
 ```powershell
 #------------------------------------------------------------------------------------------------
 # Returns the message context history for the specified model.
-Get-ModelContext -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
+Get-ModelContext -ModelID 'anthropic.claude-3-5-sonnet-20241022-v2:0'
 #------------------------------------------------------------------------------------------------
 # Estimates the cost of using the model with 1000 input tokens and 1000 output tokens.
 Get-ModelCostEstimate -InputTokenCount 1000 -OutputTokenCount 1000 -ModelID 'cohere.command-r-plus-v1:0'

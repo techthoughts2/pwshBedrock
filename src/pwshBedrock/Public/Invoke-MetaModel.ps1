@@ -34,7 +34,7 @@
 
     Sends a text message to the on-demand Meta model in the specified AWS region with a system prompt and a maximum token limit of 2000.
 .EXAMPLE
-    Invoke-MetaModel -ImagePrompt -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
 
     Sends an image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
 .PARAMETER Message

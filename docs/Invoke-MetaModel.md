@@ -88,7 +88,7 @@ Sends a text message to the on-demand Meta model in the specified AWS region wit
 
 ### EXAMPLE 5
 ```
-Invoke-MetaModel -ImagePrompt -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
+Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends an image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
