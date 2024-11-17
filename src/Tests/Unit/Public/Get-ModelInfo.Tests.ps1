@@ -77,7 +77,7 @@ InModuleScope 'pwshBedrock' {
             It 'should return all model values for a specific provider' {
                 $eval = Get-ModelInfo -Provider 'AI21 Labs'
                 $eval[0] | Should -BeOfType [System.Management.Automation.PSCustomObject]
-                $eval.Count | Should -BeExactly 5
+                $eval.Count | Should -BeExactly 3
             } #it
 
         } #context_Success

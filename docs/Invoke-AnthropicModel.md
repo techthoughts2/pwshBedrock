@@ -61,21 +61,21 @@ See the pwshBedrock documentation for more information on Function Calling and t
 
 ### EXAMPLE 1
 ```
-Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the response.
 
 ### EXAMPLE 2
 ```
-Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -ProfileName default -Region 'us-west-2' -ReturnFullObject
+Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2' -ReturnFullObject
 ```
 
 Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object.
 
 ### EXAMPLE 3
 ```
-Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -ProfileName default -Region 'us-west-2' -NoContextPersist
+Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2' -NoContextPersist
 ```
 
 Sends a text message to the on-demand Anthropic model in the specified AWS region without persisting the conversation context history.
@@ -136,7 +136,7 @@ Stop sequences are provided to stop the model from generating more text when it 
 
 ### EXAMPLE 7
 ```
-Invoke-AnthropicModel -CustomConversation $customConversation -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -ProfileName default -Region 'us-west-2'
+Invoke-AnthropicModel -CustomConversation $customConversation -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2'
 ```
 
 Sends a custom conversation to the on-demand Anthropic model in the specified AWS region and returns the response.
@@ -611,9 +611,13 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
+* For a full tools example, see the advanced documentation on the pwshBedrock website.
+
 ## RELATED LINKS
 
 [https://www.pwshbedrock.dev/en/latest/Invoke-AnthropicModel/](https://www.pwshbedrock.dev/en/latest/Invoke-AnthropicModel/)
+
+[https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/](https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/)
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)
 

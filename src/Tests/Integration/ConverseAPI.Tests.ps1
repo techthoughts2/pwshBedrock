@@ -12,11 +12,9 @@ InModuleScope 'pwshBedrock' {
     Describe 'Converse API Integration Tests' -Tag Integration {
         BeforeDiscovery {
             $converseModels = @(
-                # 'ai21.j2-grande-instruct', # *note: not supported by Converse API
-                # 'ai21.j2-jumbo-instruct', # *note: not supported by Converse API
                 'ai21.jamba-instruct-v1:0',
-                # 'ai21.j2-mid-v1', # *note: not supported by Converse API
-                # 'ai21.j2-ultra-v1', # *note: not supported by Converse API
+                'ai21.jamba-1-5-mini-v1:0',
+                'ai21.jamba-1-5-large-v1:0',
                 # 'amazon.titan-image-generator-v1', # *note: not supported by Converse API
                 # 'amazon.titan-image-generator-v2:0', # *note: not supported by Converse API
                 'amazon.titan-text-express-v1',
@@ -25,8 +23,10 @@ InModuleScope 'pwshBedrock' {
                 'amazon.titan-tg1-large',
                 'anthropic.claude-v2:1',
                 'anthropic.claude-3-haiku-20240307-v1:0',
+                'anthropic.claude-3-5-haiku-20241022-v1:0',
                 'anthropic.claude-3-opus-20240229-v1:0',
                 'anthropic.claude-3-sonnet-20240229-v1:0',
+                'anthropic.claude-3-5-sonnet-20241022-v2:0',
                 'anthropic.claude-3-5-sonnet-20240620-v1:0',
                 # 'cohere.command-text-v14', # *note: not supported by Converse API
                 # 'cohere.command-light-text-v14', # *note: not supported by Converse API
@@ -39,12 +39,19 @@ InModuleScope 'pwshBedrock' {
                 'meta.llama3-1-8b-instruct-v1:0',
                 'meta.llama3-1-70b-instruct-v1:0',
                 'meta.llama3-1-405b-instruct-v1:0',
+                'meta.llama3-2-1b-instruct-v1:0',
+                'meta.llama3-2-3b-instruct-v1:0',
+                'meta.llama3-2-11b-instruct-v1:0',
+                'meta.llama3-2-90b-instruct-v1:0',
                 'mistral.mistral-7b-instruct-v0:2',
                 'mistral.mistral-large-2402-v1:0',
                 'mistral.mistral-large-2407-v1:0',
                 'mistral.mistral-small-2402-v1:0',
                 'mistral.mixtral-8x7b-instruct-v0:1'
                 # 'stability.stable-diffusion-xl-v1' # *note: not supported by Converse API
+                # 'stability.stable-image-ultra-v1:0', # *note: not supported by Converse API
+                # 'stability.stable-image-core-v1:0' # *note: not supported by Converse API
+                # 'stability.sd3-large-v1:0' # *note: not supported by Converse API
             )
         }
         BeforeAll {

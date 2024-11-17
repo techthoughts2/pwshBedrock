@@ -55,11 +55,9 @@ function Add-ModelCostEstimate {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
-            'ai21.j2-grande-instruct',
-            'ai21.j2-jumbo-instruct',
             'ai21.jamba-instruct-v1:0',
-            'ai21.j2-mid-v1',
-            'ai21.j2-ultra-v1',
+            'ai21.jamba-1-5-mini-v1:0',
+            'ai21.jamba-1-5-large-v1:0',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',
@@ -68,8 +66,10 @@ function Add-ModelCostEstimate {
             'amazon.titan-tg1-large',
             'anthropic.claude-v2:1',
             'anthropic.claude-3-haiku-20240307-v1:0',
+            'anthropic.claude-3-5-haiku-20241022-v1:0',
             'anthropic.claude-3-opus-20240229-v1:0',
             'anthropic.claude-3-sonnet-20240229-v1:0',
+            'anthropic.claude-3-5-sonnet-20241022-v2:0',
             'anthropic.claude-3-5-sonnet-20240620-v1:0',
             'cohere.command-text-v14',
             'cohere.command-light-text-v14',
@@ -82,12 +82,19 @@ function Add-ModelCostEstimate {
             'meta.llama3-1-8b-instruct-v1:0',
             'meta.llama3-1-70b-instruct-v1:0',
             'meta.llama3-1-405b-instruct-v1:0',
+            'meta.llama3-2-1b-instruct-v1:0',
+            'meta.llama3-2-3b-instruct-v1:0',
+            'meta.llama3-2-11b-instruct-v1:0',
+            'meta.llama3-2-90b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-large-2407-v1:0',
             'mistral.mistral-small-2402-v1:0',
             'mistral.mixtral-8x7b-instruct-v0:1',
-            'stability.stable-diffusion-xl-v1'
+            'stability.stable-diffusion-xl-v1',
+            'stability.stable-image-ultra-v1:0',
+            'stability.stable-image-core-v1:0',
+            'stability.sd3-large-v1:0'
         )]
         [string]$ModelID,
 
@@ -106,25 +113,17 @@ function Add-ModelCostEstimate {
             } #if_converse
             else {
                 switch ($ModelID) {
-                    'ai21.j2-grande-instruct' {
-                        $inputTokenCount = $Usage.prompt.tokens[-1].textRange.end
-                        $outputTokenCount = $Usage.completions[-1].data.tokens[-1].textRange.end
-                    }
-                    'ai21.j2-jumbo-instruct' {
-                        $inputTokenCount = $Usage.prompt.tokens[-1].textRange.end
-                        $outputTokenCount = $Usage.completions[-1].data.tokens[-1].textRange.end
-                    }
                     'ai21.jamba-instruct-v1:0' {
                         $inputTokenCount = $Usage.prompt_tokens
                         $outputTokenCount = $Usage.completion_tokens
                     }
-                    'ai21.j2-mid-v1' {
-                        $inputTokenCount = $Usage.prompt.tokens[-1].textRange.end
-                        $outputTokenCount = $Usage.completions[-1].data.tokens[-1].textRange.end
+                    'ai21.jamba-1-5-mini-v1:0' {
+                        $inputTokenCount = $Usage.prompt_tokens
+                        $outputTokenCount = $Usage.completion_tokens
                     }
-                    'ai21.j2-ultra-v1' {
-                        $inputTokenCount = $Usage.prompt.tokens[-1].textRange.end
-                        $outputTokenCount = $Usage.completions[-1].data.tokens[-1].textRange.end
+                    'ai21.jamba-1-5-large-v1:0' {
+                        $inputTokenCount = $Usage.prompt_tokens
+                        $outputTokenCount = $Usage.completion_tokens
                     }
                     'amazon.titan-text-express-v1' {
                         $inputTokenCount = $Usage.'inputTextTokenCount'
@@ -150,11 +149,19 @@ function Add-ModelCostEstimate {
                         $inputTokenCount = $Usage.'input_tokens'
                         $outputTokenCount = $Usage.'output_tokens'
                     }
+                    'anthropic.claude-3-5-haiku-20241022-v1:0' {
+                        $inputTokenCount = $Usage.'input_tokens'
+                        $outputTokenCount = $Usage.'output_tokens'
+                    }
                     'anthropic.claude-3-opus-20240229-v1:0' {
                         $inputTokenCount = $Usage.'input_tokens'
                         $outputTokenCount = $Usage.'output_tokens'
                     }
                     'anthropic.claude-3-sonnet-20240229-v1:0' {
+                        $inputTokenCount = $Usage.'input_tokens'
+                        $outputTokenCount = $Usage.'output_tokens'
+                    }
+                    'anthropic.claude-3-5-sonnet-20241022-v2:0' {
                         $inputTokenCount = $Usage.'input_tokens'
                         $outputTokenCount = $Usage.'output_tokens'
                     }
@@ -212,6 +219,22 @@ function Add-ModelCostEstimate {
                         $outputTokenCount = $Usage.generation_token_count
                     }
                     'meta.llama3-1-405b-instruct-v1:0' {
+                        $inputTokenCount = $Usage.prompt_token_count
+                        $outputTokenCount = $Usage.generation_token_count
+                    }
+                    'meta.llama3-2-1b-instruct-v1:0' {
+                        $inputTokenCount = $Usage.prompt_token_count
+                        $outputTokenCount = $Usage.generation_token_count
+                    }
+                    'meta.llama3-2-3b-instruct-v1:0' {
+                        $inputTokenCount = $Usage.prompt_token_count
+                        $outputTokenCount = $Usage.generation_token_count
+                    }
+                    'meta.llama3-2-11b-instruct-v1:0' {
+                        $inputTokenCount = $Usage.prompt_token_count
+                        $outputTokenCount = $Usage.generation_token_count
+                    }
+                    'meta.llama3-2-90b-instruct-v1:0' {
                         $inputTokenCount = $Usage.prompt_token_count
                         $outputTokenCount = $Usage.generation_token_count
                     }

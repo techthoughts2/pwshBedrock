@@ -25,20 +25,6 @@ InModuleScope 'pwshBedrock' {
                             content = 'test'
                         }
                     }
-                    # [PSCustomObject]@{
-                    #     ModelId = 'ai21.j2-grande-instruct'
-                    #     Context = [PSCustomObject]@{
-                    #     role    = 'user'
-                    #     content = 'test'
-                    # }
-                    # }
-                    # [PSCustomObject]@{
-                    #     ModelId = 'ai21.j2-jumbo-instruct'
-                    #     Context = [PSCustomObject]@{
-                    #     role    = 'user'
-                    #     content = 'test'
-                    # }
-                    # }
                     [PSCustomObject]@{
                         ModelId = 'ai21.jamba-instruct-v1:0'
                         Context = [PSCustomObject]@{
@@ -46,20 +32,20 @@ InModuleScope 'pwshBedrock' {
                             content = 'test'
                         }
                     }
-                    # [PSCustomObject]@{
-                    #     ModelId = 'ai21.j2-mid-v1'
-                    #     Context = [PSCustomObject]@{
-                    #     role    = 'user'
-                    #     content = 'test'
-                    # }
-                    # }
-                    # [PSCustomObject]@{
-                    #     ModelId = 'ai21.j2-ultra-v1'
-                    #     Context = [PSCustomObject]@{
-                    #     role    = 'user'
-                    #     content = 'test'
-                    # }
-                    # }
+                    [PSCustomObject]@{
+                        ModelId = 'ai21.jamba-1-5-mini-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'ai21.jamba-1-5-large-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
                     # [PSCustomObject]@{
                     #     ModelId = 'amazon.titan-image-generator-v1'
                     #     Context = [PSCustomObject]@{
@@ -105,6 +91,13 @@ InModuleScope 'pwshBedrock' {
                         }
                     }
                     [PSCustomObject]@{
+                        ModelId = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
                         ModelId = 'anthropic.claude-3-opus-20240229-v1:0'
                         Context = [PSCustomObject]@{
                             role    = 'user'
@@ -113,6 +106,13 @@ InModuleScope 'pwshBedrock' {
                     }
                     [PSCustomObject]@{
                         ModelId = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
                         Context = [PSCustomObject]@{
                             role    = 'user'
                             content = 'test'
@@ -182,6 +182,22 @@ InModuleScope 'pwshBedrock' {
                         Context = 'test'
                     }
                     [PSCustomObject]@{
+                        ModelId = 'meta.llama3-2-1b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama3-2-3b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama3-2-11b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama3-2-90b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
                         ModelId = 'mistral.mistral-7b-instruct-v0:2'
                         Context = 'test'
                     }
@@ -203,6 +219,27 @@ InModuleScope 'pwshBedrock' {
                     }
                     [PSCustomObject]@{
                         ModelId = 'stability.stable-diffusion-xl-v1'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'stability.stable-image-ultra-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'stability.stable-image-core-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'stability.sd3-large-v1:0'
                         Context = [PSCustomObject]@{
                             role    = 'user'
                             content = 'test'

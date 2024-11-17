@@ -33,11 +33,48 @@ You are a Star Trek trivia expert.
 
 Who is the best captain in Star Trek?[/INST]
 '@
+                $standardTools = @(
+                    [PSCustomObject]@{
+                        name        = 'string'
+                        description = 'string'
+                        parameters  = @{
+                            'parameter_name' = [PSCustomObject]@{
+                                param_type  = 'string'
+                                description = 'string'
+                                required    = $true
+                            }
+                        }
+                    }
+                )
+                Mock -CommandName Test-MetaTool -MockWith {
+                    $true
+                } #endMock
+                Mock -CommandName Test-MetaToolResult -MockWith {
+                    $true
+                } #endMock
                 Mock -CommandName Format-MetaTextMessage -MockWith {
                     $standardMessage
-                }
+                } #endMock
+                Mock -CommandName Test-MetaMedia -MockWith {
+                    $true
+                } #endMock
+                Mock -CommandName Convert-MediaToBase64 -MockWith {
+                    'base64'
+                } #endMock
                 $response = [Amazon.BedrockRuntime.Model.InvokeModelResponse]::new()
                 $response.ContentType = 'application/json'
+                $toolResults = [PSCustomObject]@{
+                    output = @(
+                        [PSCustomObject]@{
+                            name = "John"
+                            age  = 30
+                        },
+                        [PSCustomObject]@{
+                            name = "Jane"
+                            age  = 25
+                        }
+                    )
+                }
                 $jsonPayload = @'
 {
     "generation": "\n\nCaptain Picard.",
@@ -81,6 +118,124 @@ Who is the best captain in Star Trek?[/INST]
                     $invokeMetaModelSplat = @{
                         Message     = 'Assimilate this.'
                         ModelID     = 'NotSupported'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if a 3.2 model is provided in an unsupported region' {
+                {
+                    $invokeMetaModelSplat = @{
+                        Message     = 'Resistance is futile.'
+                        ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'ap-northeast-1'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if a tool is provided for a model below 3.1' {
+                {
+                    $invokeMetaModelSplat = @{
+                        Message     = 'Lookup current trek trivia information using the Star Trek trivia tool.'
+                        ModelID     = 'meta.llama2-13b-chat-v1'
+                        Tools       = $standardTools
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if a tools result is provided for a model below 3.1' {
+                {
+                    $invokeMetaModelSplat = @{
+                        ToolsResults = $toolResults
+                        ModelID      = 'meta.llama2-13b-chat-v1'
+                        ProfileName  = 'default'
+                        Region       = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if a tool is provided that does not pass tool validation' {
+                Mock -CommandName Test-MetaTool -MockWith { $false }
+                {
+                    $invokeMetaModelSplat = @{
+                        Message     = 'Lookup current trek trivia information using the Star Trek trivia tool.'
+                        ModelID     = 'meta.llama3-1-70b-instruct-v1:0'
+                        Tools       = $standardTools
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if a tool result is provided that does not pass tool result validation' {
+                Mock -CommandName Test-MetaToolResult -MockWith { $false }
+                {
+                    $invokeMetaModelSplat = @{
+                        ToolsResults = $toolResults
+                        ModelID      = 'meta.llama3-1-70b-instruct-v1:0'
+                        ProfileName  = 'default'
+                        Region       = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if more than one image is provided' {
+                {
+                    $invokeMetaModelSplat = @{
+                        ImagePrompt = 'Describe this image in two sentences.'
+                        MediaPath   = @('image1', 'image2')
+                        ModelID     = 'meta.llama3-8b-instruct-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if an image is provided for a model that does not support images' {
+                {
+                    $invokeMetaModelSplat = @{
+                        ImagePrompt = 'Describe this image in two sentences.'
+                        MediaPath   = 'image'
+                        ModelID     = 'meta.llama2-13b-chat-v1'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if the media file evaluation does not return true' {
+                Mock -CommandName Test-MetaMedia -MockWith { $false }
+                {
+                    $invokeMetaModelSplat = @{
+                        ImagePrompt = 'Describe this image in two sentences.'
+                        MediaPath   = 'image'
+                        ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if the media file can not be converted to base64' {
+                Mock -CommandName Convert-MediaToBase64 -MockWith { throw 'Error' }
+                {
+                    $invokeMetaModelSplat = @{
+                        ImagePrompt = 'Describe this image in two sentences.'
+                        MediaPath   = 'image'
+                        ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
                     }
@@ -237,6 +392,11 @@ Who is the best captain in Star Trek?[/INST]
                         Context = 'test'
                     }
                 )
+                $standardVisionMessage = @'
+<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+<|image|>Describe this image in two sentences<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+'@
                 $standardMessage = @'
 <s>[INST] <<SYS>>
 You are a Star Trek trivia expert.
@@ -244,11 +404,51 @@ You are a Star Trek trivia expert.
 
 Who is the best captain in Star Trek?[/INST]
 '@
+                $standardTools = @(
+                    [PSCustomObject]@{
+                        name        = 'string'
+                        description = 'string'
+                        parameters  = @{
+                            'parameter_name' = [PSCustomObject]@{
+                                param_type  = 'string'
+                                description = 'string'
+                                required    = $true
+                            }
+                        }
+                    }
+                )
+                Mock -CommandName Test-MetaTool -MockWith {
+                    $true
+                } #endMock
+                Mock -CommandName Test-MetaToolResult -MockWith {
+                    $true
+                } #endMock
+                Mock -CommandName Format-MetaTextMessage -MockWith {
+                    $standardMessage
+                } #endMock
                 Mock -CommandName Format-MetaTextMessage -MockWith {
                     $standardMessage
                 }
+                Mock -CommandName Test-MetaMedia -MockWith {
+                    $true
+                } #endMock
+                Mock -CommandName Convert-MediaToBase64 -MockWith {
+                    'base64'
+                } #endMock
                 $response = [Amazon.BedrockRuntime.Model.InvokeModelResponse]::new()
                 $response.ContentType = 'application/json'
+                $toolResults = [PSCustomObject]@{
+                    output = @(
+                        [PSCustomObject]@{
+                            name = "John"
+                            age  = 30
+                        },
+                        [PSCustomObject]@{
+                            name = "Jane"
+                            age  = 25
+                        }
+                    )
+                }
                 $jsonPayload = @'
 {
     "generation": "\n\nCaptain Picard.",
@@ -350,6 +550,69 @@ Who is the best captain in Star Trek?[/INST]
                 Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
             } #it
 
+            It 'should run all expected subcommands for a tools message' {
+                Mock -CommandName ConvertFrom-MemoryStreamToString -MockWith {
+                    @'
+{
+    "generation": "<function=spotify_trending_songs>{\"test\": 5}</function>",
+    "prompt_token_count": 16,
+    "generation_token_count": 68,
+    "stop_reason": "stop"
+}
+'@
+                } #endMock
+                $Global:pwshBedrockModelContext = @(
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama3-1-70b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                )
+                $invokeMetaModelSplat = @{
+                    Message          = 'Lookup current trek trivia information using the Star Trek trivia tool.'
+                    ModelID          = 'meta.llama3-1-70b-instruct-v1:0'
+                    Tools            = $standardTools
+                    NoContextPersist = $false
+                    AccessKey        = 'ak'
+                    SecretKey        = 'sk'
+                    Region           = 'us-west-2'
+                }
+                $result = Invoke-MetaModel @invokeMetaModelSplat
+                Should -Invoke Format-MetaTextMessage -Exactly 2 -Scope It
+                Should -Invoke Convert-MediaToBase64 -Exactly 0 -Scope It
+                Should -Invoke Test-MetaMedia -Exactly 0 -Scope It
+                Should -Invoke Test-MetaTool -Exactly 1 -Scope It
+                Should -Invoke Test-MetaToolResult -Exactly 0 -Scope It
+                Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
+                Should -Invoke ConvertFrom-MemoryStreamToString -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+            } #it
+
+            It 'should run all expected subcommands for a tools results message' {
+                $Global:pwshBedrockModelContext = @(
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama3-1-70b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                )
+                $invokeMetaModelSplat = @{
+                    ToolsResults     = $toolResults
+                    ModelID          = 'meta.llama3-1-70b-instruct-v1:0'
+                    NoContextPersist = $false
+                    AccessKey        = 'ak'
+                    SecretKey        = 'sk'
+                    Region           = 'us-west-2'
+                }
+                $result = Invoke-MetaModel @invokeMetaModelSplat
+                Should -Invoke Format-MetaTextMessage -Exactly 2 -Scope It
+                Should -Invoke Convert-MediaToBase64 -Exactly 0 -Scope It
+                Should -Invoke Test-MetaMedia -Exactly 0 -Scope It
+                Should -Invoke Test-MetaTool -Exactly 0 -Scope It
+                Should -Invoke Test-MetaToolResult -Exactly 1 -Scope It
+                Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
+                Should -Invoke ConvertFrom-MemoryStreamToString -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+            } #it
+
             It 'should call the API with the expected parameters' {
                 Mock -CommandName Invoke-BDRRModel {
                     $response
@@ -398,6 +661,34 @@ Who is the best captain in Star Trek?[/INST]
                 Invoke-MetaModel @invokeMetaModelSplat | Should -InvokeVerifiable
             } #it
 
+            It 'should call the API with the expected parameters - 3.2 models' {
+                $awsCred = [Amazon.Runtime.BasicAWSCredentials]::new('FAKEACCESSKEY', 'FAKESECRETKEY')
+                # load a standard System.Management.Automation.PSCredential
+                $networkCred = [System.Management.Automation.PSCredential]::new('FAKEUSERNAME', (ConvertTo-SecureString -String 'FAKEPASSWORD' -AsPlainText -Force))
+                Mock -CommandName Invoke-BDRRModel {
+                    $response
+                    $Region             | Should -BeExactly 'us-west-2'
+                    $ModelID            | Should -BeExactly 'us.meta.llama3-2-90b-instruct-v1:0'
+                    $Credential         | Should -Not -BeNullOrEmpty
+                    $EndpointUrl        | Should -BeExactly 'string'
+                    $NetworkCredential  | Should -Not -BeNullOrEmpty
+                    $ProfileLocation    | Should -BeExactly 'default'
+                    $ContentType        | Should -BeExactly 'application/json'
+                    $Body               | Should -BeOfType [byte]
+                } -Verifiable
+                $invokeMetaModelSplat = @{
+                    Message           = "My Dear Doctor, they're all true. 'Even the lies?' Especially the lies"
+                    ModelID           = 'meta.llama3-2-90b-instruct-v1:0'
+                    Credential        = $awsCred
+                    EndpointUrl       = 'string'
+                    NetworkCredential = $networkCred
+                    ProfileLocation   = 'default'
+                    Region            = 'us-west-2'
+                    SessionToken      = 'string'
+                }
+                Invoke-MetaModel @invokeMetaModelSplat | Should -InvokeVerifiable
+            } #it
+
             It 'should call Format-MetaTextMessage with the expected parameters when NoContextPersist is specified' {
                 Mock -CommandName Format-MetaTextMessage {
                     $NoContextPersist | Should -BeExactly $true
@@ -411,6 +702,24 @@ Who is the best captain in Star Trek?[/INST]
                     Region           = 'us-west-2'
                 }
                 Invoke-MetaModel @invokeMetaModelSplat | Should -InvokeVerifiable
+            } #it
+
+            It 'should run all expected subcommands for a vision message' {
+                $invokeMetaModelSplat = @{
+                    ImagePrompt = 'Describe this image in two sentences.'
+                    MediaPath   = 'image'
+                    ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
+                    AccessKey   = 'ak'
+                    SecretKey   = 'sk'
+                    Region      = 'eu-west-1'
+                }
+                $result = Invoke-MetaModel @invokeMetaModelSplat
+                Should -Invoke Test-MetaMedia -Exactly 1 -Scope It
+                Should -Invoke Convert-MediaToBase64 -Exactly 1 -Scope It
+                Should -Invoke Format-MetaTextMessage -Exactly 2 -Scope It
+                Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
+                Should -Invoke ConvertFrom-MemoryStreamToString -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
             } #it
 
         } #context_Success

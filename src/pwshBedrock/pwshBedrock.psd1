@@ -12,7 +12,7 @@
     RootModule        = 'pwshBedrock.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.15.0'
+    ModuleVersion     = '0.33.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -89,7 +89,6 @@
         'Get-ModelTally'
         'Get-TokenCountEstimate'
         'Invoke-AI21LabsJambaModel'
-        'Invoke-AI21LabsJurassic2Model'
         'Invoke-AmazonImageModel'
         'Invoke-AmazonTextModel'
         'Invoke-AnthropicModel'
@@ -99,7 +98,8 @@
         'Invoke-MetaModel'
         'Invoke-MistralAIChatModel'
         'Invoke-MistralAIModel'
-        'Invoke-StabilityAIDiffusionModel'
+        'Invoke-StabilityAIImageModel'
+        'Invoke-StabilityAIDiffusionXLModel'
         'Reset-ModelContext'
         'Reset-ModelTally'
         'Save-ModelContext'
@@ -165,7 +165,6 @@
                 'ImageGeneration',
                 'Jamba',
                 'Jurassic',
-                'Jurassic2',
                 'LanguageAI',
                 'LanguageModels',
                 'Llama',

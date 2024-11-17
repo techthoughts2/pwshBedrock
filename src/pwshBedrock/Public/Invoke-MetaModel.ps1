@@ -33,8 +33,18 @@
     Invoke-MetaModel @invokeMetaModelSplat
 
     Sends a text message to the on-demand Meta model in the specified AWS region with a system prompt and a maximum token limit of 2000.
+.EXAMPLE
+    Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
+
+    Sends an image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
 .PARAMETER Message
     The message to be sent to the model.
+.PARAMETER ImagePrompt
+    The prompt to the Vision-Instruct model.
+.PARAMETER MediaPath
+    File path to local media file.
+    The media files must adhere to the model's media requirements.
+    Only large 3.2 vision models support media files.
 .PARAMETER ModelID
     The unique identifier of the model.
 .PARAMETER ReturnFullObject
@@ -47,13 +57,18 @@
 .PARAMETER MaxTokens
     The maximum number of tokens to generate before stopping.
     Defaults to 2048. Ranges from 1 to 2048.
-    Note that Anthropic Claude models might stop generating tokens before reaching the value of max_tokens.
 .PARAMETER Temperature
     The amount of randomness injected into the response.
     Defaults to 1.0. Ranges from 0.0 to 1.0.
     Use a lower value to decrease randomness in responses.
 .PARAMETER TopP
     Use a lower value to ignore less probable options and decrease the diversity of responses.
+.PARAMETER Tools
+    A list of available tools (functions) that the model may suggest invoking before producing a text response.
+    This must be in a properly formatted PSObject array with all required Tools properties.
+    For more information, see the Meta documentation.
+.PARAMETER ToolsResults
+    A list of results from invoking tools recommended by the model in the previous chat turn.
 .PARAMETER AccessKey
     The AWS access key for the user account. This can be a temporary access key if the corresponding session token is supplied to the -SessionToken parameter.
 .PARAMETER Credential
@@ -82,10 +97,31 @@
     System.Management.Automation.PSCustomObject
 .NOTES
     Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
+
+    * For a full tools example, see the advanced documentation on the pwshBedrock website.
+
+    If Tools are provided for a 3.1+ model, a new system prompt will be generated with the tools included.
+    This means that the context will be RESET when tools are provided. This is because system prompts are created at the beginning of the conversation.
+    Start a conversation with tools by providing them in the first message.
+    Adding tools to a conversation after the first message will not work as a reset will occur.
+
+    Note: The Meta models require the system prompt to be set at the beginning of the conversation.
+    When using the Format-MetaTextMessage and Invoke-MetaModel functions, the system prompt is inserted
+    at the start of the conversation context stored in memory. If you modify the system prompt after the
+    conversation has begun, the functions will replace the original system prompt in the in-memory context.
+    This action does not affect previous exchanges but may influence subsequent interactions.
+
+    Be aware that changing the system prompt mid-conversation can lead to instability or confusion in the model's responses.
+    This is particularly significant if you initially used a specialized system prompt to enable tool usage within the conversation.
+    Overwriting the system prompt in such cases can disrupt the intended functionality and cause the model to behave unpredictably.
+
+    For consistent and reliable interactions, it is recommended to set your desired system prompt at the onset of the conversation and avoid altering it later.
 .COMPONENT
     pwshBedrock
 .LINK
     https://www.pwshbedrock.dev/en/latest/Invoke-MetaModel/
+.LINK
+    https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-meta.html
 .LINK
@@ -98,6 +134,22 @@
     https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-3/
 .LINK
     https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md
+.LINK
+    https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_1
+.LINK
+    https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/MODEL_CARD.md
+.LINK
+    https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md
+.LINK
+    https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md
+.LINK
+    https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_2/
+.LINK
+    https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md
+.LINK
+    https://www.llama.com/docs/how-to-guides/vision-capabilities/
+.LINK
+    https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html
 #>
 function Invoke-MetaModel {
     [CmdletBinding()]
@@ -106,10 +158,24 @@ function Invoke-MetaModel {
     param (
         [Parameter(Mandatory = $true,
             HelpMessage = 'The message to be sent to the model.',
-            ParameterSetName = 'Standard')]
+            ParameterSetName = 'MessageSet')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
+
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'The prompt to the Vision-Instruct model.',
+            ParameterSetName = 'ImageSet')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$ImagePrompt,
+
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'File path to local media file.',
+            ParameterSetName = 'ImageSet')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$MediaPath,
 
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
@@ -120,7 +186,11 @@ function Invoke-MetaModel {
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
             'meta.llama3-1-70b-instruct-v1:0',
-            'meta.llama3-1-405b-instruct-v1:0'
+            'meta.llama3-1-405b-instruct-v1:0',
+            'meta.llama3-2-1b-instruct-v1:0',
+            'meta.llama3-2-3b-instruct-v1:0',
+            'meta.llama3-2-11b-instruct-v1:0',
+            'meta.llama3-2-90b-instruct-v1:0'
         )]
         [string]$ModelID,
 
@@ -132,10 +202,9 @@ function Invoke-MetaModel {
             HelpMessage = 'Do not persist the conversation context history.')]
         [switch]$NoContextPersist,
 
-        # model parameters
-
         [Parameter(Mandatory = $false,
-            HelpMessage = 'The system prompt for the request.')]
+            HelpMessage = 'The system prompt for the request.',
+            ParameterSetName = 'MessageSet')]
         [string]$SystemPrompt,
 
         [Parameter(Mandatory = $false,
@@ -152,6 +221,16 @@ function Invoke-MetaModel {
             HelpMessage = 'Use a lower value to ignore less probable options and decrease the diversity of responses.')]
         [ValidateRange(0.0, 1.0)]
         [float]$TopP,
+
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'MessageSet',
+            HelpMessage = 'A list of available tools (functions) that the model may suggest invoking before producing a text response.')]
+        [PSCustomObject[]]$Tools,
+
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'ToolsResultsSet',
+            HelpMessage = 'A list of results from invoking tools recommended by the model in the previous chat turn.')]
+        [PSCustomObject]$ToolsResults,
 
         # Common Parameters
 
@@ -193,35 +272,148 @@ function Invoke-MetaModel {
 
     )
 
-    $modelInfo = $script:anthropicModelInfo | Where-Object { $_.ModelId -eq $ModelID }
+    if ($ModelID -like 'meta.llama3-2-*') {
+        Write-Debug -Message '3.2 Model provided. This requires region inference.'
+        if ($Region -like 'us*') {
+            Write-Debug -Message 'Region is US. Adding us. to ModelID.'
+            $processedModelID = 'us.' + $ModelID
+        }
+        elseif ($Region -like 'eu*') {
+            Write-Debug -Message 'Region is EU. Adding eu. to ModelID.'
+            $processedModelID = 'eu.' + $ModelID
+        }
+        else {
+            Write-Warning -Message 'Only US and EU regions are supported for 3.2 models.'
+            throw 'Only US and EU regions are supported for 3.2 models.'
+        }
+    }
+    else {
+        $processedModelID = $ModelID
+    }
+
+    $modelInfo = $script:metaModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
 
-    # before we format the message (which creates context), we need to store the current context
-    # this can be used to restore the context if the model fails to respond
+    $bodyObj = @{}
 
-    $originalContext = Get-ModelContext -ModelID $ModelID
-    if ([string]::IsNullOrEmpty($originalContext)) {
-        Write-Debug -Message 'No original context'
-        $originalContext = ''
-    }
+    if ($MediaPath) {
+        Write-Verbose -Message 'Vision message with media path provided.'
+        if ($modelInfo.Vision -ne $true) {
+            Write-Warning -Message ('You provided a media path for model {0}. Vision is not supported for this model.' -f $ModelID)
+            throw 'Vision is not supported for this model.'
+        }
 
-    $formatMetaTextMessageSplat = @{
-        Role             = 'User'
-        Message          = $Message
-        ModelID          = $ModelID
-        NoContextPersist = $NoContextPersist
+        foreach ($media in $MediaPath) {
+            if (-not (Test-MetaMedia -MediaPath $media)) {
+                throw ('Media test for {0} failed.' -f $media)
+            }
+
+            Write-Verbose -Message ('Converting media to base64: {0}' -f $media)
+            try {
+                $base64 = Convert-MediaToBase64 -MediaPath $media
+            }
+            catch {
+                throw ('Unable to convert media to base64: {0}' -f $media)
+            }
+        }
+
+        $formatMetaTextMessageSplat = @{
+            Role             = 'User'
+            ImagePrompt      = $ImagePrompt
+            ModelID          = $ModelID
+            NoContextPersist = $NoContextPersist
+        }
+        $formattedMessages = Format-MetaTextMessage @formatMetaTextMessageSplat
+
+        $bodyObj.Add('images', @($base64))
+
+    } #MediaPath
+    elseif ($Tools) {
+        Write-Verbose -Message 'Tools provided.'
+        # tools is only supported for models 3.1 and above
+        if ($ModelID -like 'meta.llama3-1-*' -or $ModelID -like 'meta.llama3-2-*') {
+            Write-Debug -Message 'Model supports tools.'
+        }
+        else {
+            Write-Warning -Message 'Tools are not supported for this model.'
+            throw 'Tools are not supported for this model.'
+        }
+        # Tools - must be formed properly
+        $toolsEval = Test-MetaTool -Tools $Tools
+        if ($toolsEval -ne $true) {
+            throw 'Tools validation failed.'
+        }
+        else {
+            Write-Debug -Message 'Tools validation passed.'
+            Write-Debug -Message 'Resetting context due to tools.'
+            Reset-ModelContext -ModelID $ModelID
+        }
+
+        $formatMetaTextMessageSplat = @{
+            Message          = $Message
+            Role             = 'ipython'
+            Tools            = $Tools
+            ModelID          = $ModelID
+            NoContextPersist = $NoContextPersist
+        }
+        $formattedMessages = Format-MetaTextMessage @formatMetaTextMessageSplat
     }
-    if ($SystemPrompt) {
-        $formatMetaTextMessageSplat.Add('SystemPrompt', $SystemPrompt)
+    elseif ($ToolsResults) {
+        Write-Verbose -Message 'Tools results provided.'
+        # tools is only supported for models 3.1 and above
+        if ($ModelID -like 'meta.llama3-1-*' -or $ModelID -like 'meta.llama3-2-*') {
+            Write-Debug -Message 'Model supports tools.'
+        }
+        else {
+            Write-Warning -Message 'Tools are not supported for this model.'
+            throw 'Tools are not supported for this model.'
+        }
+        # ToolsResults - must be formed properly
+        $toolsResultsEval = Test-MetaToolResult -ToolResults $ToolsResults
+        if ($toolsResultsEval -ne $true) {
+            throw 'Tools results validation failed.'
+        }
+        else {
+            Write-Debug -Message 'Tools results validation passed.'
+            Write-Debug -Message 'Resetting context due to tools results.'
+            Reset-ModelContext -ModelID $ModelID
+        }
+
+        $formatMetaTextMessageSplat = @{
+            Role             = 'ipython'
+            ToolsResults     = $ToolsResults
+            ModelID          = $ModelID
+            NoContextPersist = $NoContextPersist
+        }
+        $formattedMessages = Format-MetaTextMessage @formatMetaTextMessageSplat
     }
-    $formattedMessages = Format-MetaTextMessage @formatMetaTextMessageSplat
+    else {
+        Write-Verbose -Message 'Standard Text provided.'
+        # before we format the message (which creates context), we need to store the current context
+        # this can be used to restore the context if the model fails to respond
+
+        $originalContext = Get-ModelContext -ModelID $ModelID
+        if ([string]::IsNullOrEmpty($originalContext)) {
+            Write-Debug -Message 'No original context'
+            $originalContext = ''
+        }
+
+        $formatMetaTextMessageSplat = @{
+            Role             = 'User'
+            Message          = $Message
+            ModelID          = $ModelID
+            NoContextPersist = $NoContextPersist
+        }
+        if ($SystemPrompt) {
+            $formatMetaTextMessageSplat.Add('SystemPrompt', $SystemPrompt)
+        }
+        $formattedMessages = Format-MetaTextMessage @formatMetaTextMessageSplat
+    } #Standard_Text
+
+    $bodyObj.Add('prompt', $formattedMessages)
 
     #region cmdletParams
-
-    $bodyObj = @{
-        prompt = $formattedMessages
-    }
 
     if ($Temperature) {
         $bodyObj.Add('temperature', $Temperature)
@@ -237,7 +429,7 @@ function Invoke-MetaModel {
 
     $cmdletParams = @{
         ContentType = 'application/json'
-        ModelId     = $ModelID
+        ModelId     = $processedModelID
         Body        = $byteArray
     }
 
@@ -347,8 +539,22 @@ function Invoke-MetaModel {
 
     Write-Verbose -Message 'Adding response to model context history.'
     $content = $response.generation
+
+    if ($content -like '*<function=*</function>*') {
+        $functionReturn = $true
+        Write-Debug -Message 'Function detected in response.'
+        $role = 'ipython'
+        # we need to retrieve just the json from the function return like: <function=spotify_trending_songs>{"n": 5}</function>
+        $jsonFunctionContent = [regex]::Match($content, '<function=.*?>(.*?)</function>').Groups[1].Value
+        $response.generation = $jsonFunctionContent
+    }
+    else {
+        Write-Debug -Message 'No function detected in response.'
+        $functionReturn = $false
+        $role = 'Model'
+    }
     $formatMetaTextMessageSplat = @{
-        Role             = 'Model'
+        Role             = $role
         Message          = $content
         ModelID          = $ModelID
         NoContextPersist = $NoContextPersist
@@ -362,7 +568,12 @@ function Invoke-MetaModel {
         return $response
     }
     else {
-        return $content
+        if ($functionReturn -eq $true) {
+            return $jsonFunctionContent
+        }
+        else {
+            return $content
+        }
     }
 
 } #Invoke-MetaModel

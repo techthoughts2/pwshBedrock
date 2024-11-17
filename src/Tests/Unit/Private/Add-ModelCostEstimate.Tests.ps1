@@ -197,19 +197,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.ImageCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:ai21ModelInfo | Where-Object { $_.ModelId -ne 'ai21.jamba-instruct-v1:0' }) {
-                $modelId = $_.ModelId
-                Add-ModelCostEstimate -Usage $ai21LabsUsage -ModelID $modelId
-                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
-                $eval = Get-ModelTally -ModelID $modelId
-                $eval.TotalCost | Should -BeGreaterThan 0
-                $eval.InputTokenCount | Should -BeGreaterThan 0
-                $eval.OutputTokenCount | Should -BeGreaterThan 0
-                $eval.InputTokenCost | Should -BeGreaterThan 0
-                $eval.OutputTokenCost | Should -BeGreaterThan 0
-            } #it
-
-            It 'should update the tally for ai21.jamba-instruct-v1:0 model' {
+            It 'should update the tally for <_.ModelId> model' -ForEach $script:ai21ModelInfo {
                 $modelId = 'ai21.jamba-instruct-v1:0'
                 Add-ModelCostEstimate -Usage $ai21LabsJambaUsage -ModelID $modelId
                 $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }

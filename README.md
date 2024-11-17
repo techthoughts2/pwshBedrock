@@ -81,16 +81,7 @@ Invoke-ConverseAPI -ModelID anthropic.claude-3-5-sonnet-20240620-v1:0 -Message '
 ```powershell
 #------------------------------------------------------------------------------------------------
 # Sends a chat message to the on-demand AI21 Labs Jamba model in the specified AWS region and returns the response.
-Invoke-AI21LabsJambaModel -Message 'Explain zero-point energy.' -ModelID 'ai21.jamba-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
-#------------------------------------------------------------------------------------------------
-```
-
-##### AI21 Labs Jurassic-2 models
-
-```powershell
-#------------------------------------------------------------------------------------------------
-# Sends a text message to the on-demand AI21 Labs Jurassic 2 model in the specified AWS region and returns the response.
-Invoke-AI21LabsJurassic2Model -Messages 'Explain zero-point energy.' -ModelID 'ai21.j2-ultra-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AI21LabsJambaModel -Message 'Explain zero-point energy.' -ModelID 'ai21.jamba-1-5-large-v1:0' -Credential $awsCredential -Region 'us-east-1'
 #------------------------------------------------------------------------------------------------
 ```
 
@@ -117,10 +108,10 @@ Invoke-AmazonTextModel -Message 'Explain zero-point energy.' -ModelID amazon.tit
 ```powershell
 #------------------------------------------------------------------------------------------------
 # Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the response.
-Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 # Sending a media file to an Anthropic model and retrieving the response
-Invoke-AnthropicModel -Message 'What can you tell me about this picture?' -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0' -MediaPath 'C:\images\tanagra.jpg' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AnthropicModel -Message 'What can you tell me about this picture?' -ModelID 'anthropic.claude-3-5-sonnet-20241022-v2:0' -MediaPath 'C:\images\tanagra.jpg' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 ```
 
@@ -149,6 +140,9 @@ Invoke-CohereCommandRModel -Message 'Explain zero-point energy.' -ModelID 'coher
 # Sends a text message to the on-demand Meta model in the specified AWS region and returns the response.
 Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-8b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
+# Sending a media file to a Meta model and retriveing the response
+Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
+#------------------------------------------------------------------------------------------------
 ```
 
 ##### Mistral AI models
@@ -163,12 +157,15 @@ Invoke-MistralAIModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mi
 #------------------------------------------------------------------------------------------------
 ```
 
-##### Stability AI Diffusion models
+##### Stability AI models
 
 ```powershell
 #------------------------------------------------------------------------------------------------
-# Generates an image and saves the image to the C:\temp folder.
-Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
+# Generates an image using the on-demand StabilityAI diffusion image model. The returned image is saved to the provided output path.
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
+#------------------------------------------------------------------------------------------------
+# Generates an image using the on-demand StabilityAI image model. The returned image is saved to the provided output path.
+Invoke-StabilityAIImageModel -ImagesSavePath 'C:\images' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-image-ultra-v1:0' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 ```
 
@@ -177,7 +174,7 @@ Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starshi
 ```powershell
 #------------------------------------------------------------------------------------------------
 # Returns the message context history for the specified model.
-Get-ModelContext -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
+Get-ModelContext -ModelID 'anthropic.claude-3-5-sonnet-20241022-v2:0'
 #------------------------------------------------------------------------------------------------
 # Estimates the cost of using the model with 1000 input tokens and 1000 output tokens.
 Get-ModelCostEstimate -InputTokenCount 1000 -OutputTokenCount 1000 -ModelID 'cohere.command-r-plus-v1:0'

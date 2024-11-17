@@ -24,7 +24,8 @@ on:
 jobs:
   test:
     name: Run Tests
-    runs-on: codebuild-pwshBedrock-pwsh_gha_cb_linux-${{ github.run_id }}-${{ github.run_attempt }}
+    # runs-on: codebuild-pwshBedrock-pwsh_gha_cb_linux-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
     steps:

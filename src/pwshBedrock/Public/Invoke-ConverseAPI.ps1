@@ -228,10 +228,14 @@
     This was incredibly hard to make.
 
     * Note: parameter value ranges such as TopP, Temperature, and MaxTokens are model-specific. This function does not validate the values provided against the model's requirements.
+
+    * For a full tools example, see the advanced documentation on the pwshBedrock website.
 .COMPONENT
     pwshBedrock
 .LINK
     https://www.pwshbedrock.dev/en/latest/Invoke-ConverseAPI/
+.LINK
+    https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html
 .LINK
@@ -253,11 +257,9 @@ function Invoke-ConverseAPI {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
-            # 'ai21.j2-grande-instruct', # *note: not supported by Converse API
-            # 'ai21.j2-jumbo-instruct', # *note: not supported by Converse API
             'ai21.jamba-instruct-v1:0',
-            # 'ai21.j2-mid-v1', # *note: not supported by Converse API
-            # 'ai21.j2-ultra-v1', # *note: not supported by Converse API
+            'ai21.jamba-1-5-mini-v1:0',
+            'ai21.jamba-1-5-large-v1:0',
             # 'amazon.titan-image-generator-v1', # *note: not supported by Converse API
             # 'amazon.titan-image-generator-v2:0', # *note: not supported by Converse API
             'amazon.titan-text-express-v1',
@@ -266,8 +268,10 @@ function Invoke-ConverseAPI {
             'amazon.titan-tg1-large',
             'anthropic.claude-v2:1',
             'anthropic.claude-3-haiku-20240307-v1:0',
+            'anthropic.claude-3-5-haiku-20241022-v1:0',
             'anthropic.claude-3-opus-20240229-v1:0',
             'anthropic.claude-3-sonnet-20240229-v1:0',
+            'anthropic.claude-3-5-sonnet-20241022-v2:0',
             'anthropic.claude-3-5-sonnet-20240620-v1:0',
             # 'cohere.command-text-v14', # *note: not supported by Converse API
             # 'cohere.command-light-text-v14', # *note: not supported by Converse API
@@ -280,6 +284,10 @@ function Invoke-ConverseAPI {
             'meta.llama3-1-8b-instruct-v1:0',
             'meta.llama3-1-70b-instruct-v1:0',
             'meta.llama3-1-405b-instruct-v1:0',
+            'meta.llama3-2-1b-instruct-v1:0',
+            'meta.llama3-2-3b-instruct-v1:0',
+            'meta.llama3-2-11b-instruct-v1:0',
+            'meta.llama3-2-90b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-large-2407-v1:0',

@@ -43,7 +43,7 @@ InModuleScope 'pwshBedrock' {
 
             It 'should get the tally for all models' {
                 $eval = Get-ModelTally -AllModels
-                $eval.Count | Should -BeExactly 34
+                $eval.Count | Should -BeExactly 41
                 foreach ($model in $eval) {
                     if ($null -ne $model.ImageCount) {
                         $model.ImageCount | Should -BeExactly 0

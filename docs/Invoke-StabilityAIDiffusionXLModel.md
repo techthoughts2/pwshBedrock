@@ -1,30 +1,63 @@
 ---
 external help file: pwshBedrock-help.xml
 Module Name: pwshBedrock
-online version: https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIDiffusionModel/
+online version: https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIDiffusionXLModel/
 schema: 2.0.0
 ---
 
-# Invoke-StabilityAIDiffusionModel
+# Invoke-StabilityAIDiffusionXLModel
 
 ## SYNOPSIS
-Sends message(s) to an Stability AI Diffusion model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local folder.
+Sends message(s) to an Stability AI XL Diffusion model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local folder.
 
 ## SYNTAX
 
 ### SimplePromptTextToImage (Default)
 ```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -ImagePrompt <String[]> [-NegativePrompt <String[]>]
- [-Width <Int32>] [-Height <Int32>] [-CfgScale <Single>] [-ClipGuidancePreset <String>] [-Sampler <String>]
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -ImagePrompt <String[]>
+ [-NegativePrompt <String[]>] [-Width <Int32>] [-Height <Int32>] [-CfgScale <Single>]
+ [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>] [-Steps <Int32>]
+ [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>]
+ [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
+ [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
+ [-SessionToken <String>] [<CommonParameters>]
+```
+
+### SimplePromptImageToImageMask
+```
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -ImagePrompt <String[]>
+ [-NegativePrompt <String[]>] -InitMaskImagePath <String> -MaskSource <String> -MaskImagePath <String>
+ [-CfgScale <Single>] [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>]
+ [-Steps <Int32>] [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>]
+ [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
+ [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
+ [-SessionToken <String>] [<CommonParameters>]
+```
+
+### SimplePromptImageToImage
+```
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -ImagePrompt <String[]>
+ [-NegativePrompt <String[]>] -InitImagePath <String> [-InitImageMode <String>] [-ImageStrength <Single>]
+ [-CfgScale <Single>] [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>]
+ [-Steps <Int32>] [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>]
+ [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
+ [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
+ [-SessionToken <String>] [<CommonParameters>]
+```
+
+### SimplePrompt
+```
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -ImagePrompt <String[]>
+ [-NegativePrompt <String[]>] [-CfgScale <Single>] [-ClipGuidancePreset <String>] [-Sampler <String>]
  [-Samples <Int32>] [-Seed <Int32>] [-Steps <Int32>] [-StylePreset <String>] [-ModelID <String>]
  [-ReturnFullObject] [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
  [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
  [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
-### SimplePromptImageToImageMask
+### CustomPromptImageToImageMask
 ```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -ImagePrompt <String[]> [-NegativePrompt <String[]>]
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -CustomPrompt <Object[]>
  -InitMaskImagePath <String> -MaskSource <String> -MaskImagePath <String> [-CfgScale <Single>]
  [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>] [-Steps <Int32>]
  [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>]
@@ -33,41 +66,9 @@ Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -ImagePrompt <String[]
  [-SessionToken <String>] [<CommonParameters>]
 ```
 
-### SimplePromptImageToImage
-```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -ImagePrompt <String[]> [-NegativePrompt <String[]>]
- -InitImagePath <String> [-InitImageMode <String>] [-ImageStrength <Single>] [-CfgScale <Single>]
- [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>] [-Steps <Int32>]
- [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
-```
-
-### SimplePrompt
-```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -ImagePrompt <String[]> [-NegativePrompt <String[]>]
- [-CfgScale <Single>] [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>]
- [-Steps <Int32>] [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
-```
-
-### CustomPromptImageToImageMask
-```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -CustomPrompt <Object[]> -InitMaskImagePath <String>
- -MaskSource <String> -MaskImagePath <String> [-CfgScale <Single>] [-ClipGuidancePreset <String>]
- [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>] [-Steps <Int32>] [-StylePreset <String>]
- [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>] [-Credential <AWSCredentials>]
- [-EndpointUrl <String>] [-NetworkCredential <PSCredential>] [-ProfileLocation <String>]
- [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>] [-SessionToken <String>]
- [<CommonParameters>]
-```
-
 ### CustomPromptImageToImage
 ```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -CustomPrompt <Object[]> -InitImagePath <String>
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -CustomPrompt <Object[]> -InitImagePath <String>
  [-InitImageMode <String>] [-ImageStrength <Single>] [-CfgScale <Single>] [-ClipGuidancePreset <String>]
  [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>] [-Steps <Int32>] [-StylePreset <String>]
  [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>] [-Credential <AWSCredentials>]
@@ -78,7 +79,7 @@ Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -CustomPrompt <Object[
 
 ### CustomPromptTextToImage
 ```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -CustomPrompt <Object[]> [-Width <Int32>]
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -CustomPrompt <Object[]> [-Width <Int32>]
  [-Height <Int32>] [-CfgScale <Single>] [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>]
  [-Seed <Int32>] [-Steps <Int32>] [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject]
  [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
@@ -88,7 +89,7 @@ Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -CustomPrompt <Object[
 
 ### CustomPrompt
 ```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -CustomPrompt <Object[]> [-CfgScale <Single>]
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -CustomPrompt <Object[]> [-CfgScale <Single>]
  [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>] [-Steps <Int32>]
  [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>]
  [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
@@ -98,7 +99,7 @@ Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -CustomPrompt <Object[
 
 ### TextToImage
 ```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> [-Width <Int32>] [-Height <Int32>]
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> [-Width <Int32>] [-Height <Int32>]
  [-CfgScale <Single>] [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>]
  [-Steps <Int32>] [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>]
  [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
@@ -108,7 +109,7 @@ Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> [-Width <Int32>] [-Hei
 
 ### ImageToImage
 ```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -InitImagePath <String> [-InitImageMode <String>]
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -InitImagePath <String> [-InitImageMode <String>]
  [-ImageStrength <Single>] -InitMaskImagePath <String> [-CfgScale <Single>] [-ClipGuidancePreset <String>]
  [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>] [-Steps <Int32>] [-StylePreset <String>]
  [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>] [-Credential <AWSCredentials>]
@@ -119,7 +120,7 @@ Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -InitImagePath <String
 
 ### ImageToImageMask
 ```
-Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -MaskSource <String> -MaskImagePath <String>
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath <Object> -MaskSource <String> -MaskImagePath <String>
  [-CfgScale <Single>] [-ClipGuidancePreset <String>] [-Sampler <String>] [-Samples <Int32>] [-Seed <Int32>]
  [-Steps <Int32>] [-StylePreset <String>] [-ModelID <String>] [-ReturnFullObject] [-AccessKey <String>]
  [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
@@ -128,10 +129,10 @@ Invoke-StabilityAIDiffusionModel -ImagesSavePath <Object> -MaskSource <String> -
 ```
 
 ## DESCRIPTION
-Sends a message to an Stability AI Diffusion model on the Amazon Bedrock platform and returns the model's response.
+Sends a message to an Stability AI XL Diffusion model on the Amazon Bedrock platform and returns the model's response.
 The response from this model is an image or images generated based on the input parameters.
 The generated image(s) are decoded from base64 and saved to a local folder.
-This function supports the following Stability AI Diffusion image use cases:
+This function supports the following Stability AI XL Diffusion image use cases:
     Text-to-image - Generation - Generate an image using a text prompt.
     Image-to-image - modifying new images based on a starting point image.
     Image-to-image-masking - masking out a specific area of an image, and then generating new details based on a provided prompt.
@@ -143,22 +144,22 @@ If you wish to provide a custom prompt with a specific weight, use the CustomPro
 
 ### EXAMPLE 1
 ```
-Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Generates an image and saves the image to the C:\temp folder.
 
 ### EXAMPLE 2
 ```
-Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Make the nebula more purple' -InitImagePath 'C:\temp\nebula.png' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-StabilityAIDiffusionXLModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Make the nebula more purple' -InitImagePath 'C:\temp\nebula.png' -ModelID 'stability.stable-diffusion-xl-v1' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
-Generates an image and saves the image to the C:\temp folder.
+Generates an image based on the provided prompt and starting image.
 Returns the full object from the model.
 
 ### EXAMPLE 3
 ```
-$invokeStabilityAIDiffusionModelSplat = @{
+$invokeStabilityAIDiffusionXLModelSplat = @{
     ImagesSavePath    = 'C:\temp'
     ImagePrompt       = 'Make it darker.'
     InitMaskImagePath = 'C:\temp\image.png'
@@ -168,10 +169,10 @@ $invokeStabilityAIDiffusionModelSplat = @{
     ProfileName       = 'default'
     Region            = 'us-west-2'
 }
-Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 ```
 
-This command uses the Stability AI Diffusion Model to generate an image based on the provided prompt and mask.
+This command uses the Stability AI XL Diffusion Model to generate an image based on the provided prompt and mask.
 Masking is a technique used to selectively apply changes to specific parts of an image.
 In this example, the mask image ('C:\images\mask_image.png') contains a white cut-out area that indicates the region to be edited.
 The model will use this white area to focus its modifications, leaving the rest of the image unchanged.
@@ -179,7 +180,7 @@ The generated image will be saved in the specified folder ('C:\temp').
 
 ### EXAMPLE 4
 ```
-$invokeStabilityAIDiffusionModelSplat = @{
+$invokeStabilityAIDiffusionXLModelSplat = @{
     ImagesSavePath     = 'C:\temp'
     ImagePrompt        = 'Create a starship emerging from a nebula.'
     CfgScale           = 7.0
@@ -192,7 +193,7 @@ $invokeStabilityAIDiffusionModelSplat = @{
     ProfileName        = 'default'
     Region             = 'us-west-2'
 }
-Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 ```
 
 This command generates an image based on the provided prompt and saves the image to the specified folder ('C:\images\image.png').
@@ -200,7 +201,7 @@ The image generation process is influenced by the CfgScale, ClipGuidancePreset, 
 
 ### EXAMPLE 5
 ```
-$invokeStabilityAIDiffusionModelSplat = @{
+$invokeStabilityAIDiffusionXLModelSplat = @{
     ImagesSavePath = 'C:\temp'
     ImagePrompt    = 'Replace the captain with a different crew member.'
     InitImagePath  = 'C:\temp\image.png'
@@ -210,14 +211,14 @@ $invokeStabilityAIDiffusionModelSplat = @{
     ProfileName    = 'default'
     Region         = 'us-west-2'
 }
-Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 ```
 
 This command generates an image based on the provided prompt and starting image.
 
 ### EXAMPLE 6
 ```
-$invokeStabilityAIDiffusionModelSplat = @{
+$invokeStabilityAIDiffusionXLModelSplat = @{
     ImagesSavePath = 'C:\images\image.jpeg'
     CustomPrompt   = @(
         [PSCustomObject]@{
@@ -244,7 +245,7 @@ $invokeStabilityAIDiffusionModelSplat = @{
     Region         = 'us-west-2'
     Verbose        = $false
 }
-Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
 ```
 
 This command generates an image based on the provided custom prompt.
@@ -317,7 +318,7 @@ Accept wildcard characters: False
 ### -Width
 The width of the image in pixels.
 Only precise image sizes are supported.
-See the Stability AI Diffusion mode Parameters documentation for a list of supported image sizes.
+See the Stability AI XL Diffusion mode Parameters documentation for a list of supported image sizes.
 
 ```yaml
 Type: Int32
@@ -326,7 +327,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: 1024
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -334,7 +335,7 @@ Accept wildcard characters: False
 ### -Height
 The height of the image in pixels.
 Only precise image sizes are supported.
-See the Stability AI Diffusion mode Parameters documentation for a list of supported image sizes.
+See the Stability AI XL Diffusion mode Parameters documentation for a list of supported image sizes.
 
 ```yaml
 Type: Int32
@@ -343,7 +344,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: 1024
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -762,7 +763,7 @@ The true pixel limit is 1048576.
 
 ## RELATED LINKS
 
-[https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIDiffusionModel/](https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIDiffusionModel/)
+[https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIDiffusionXLModel/](https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIDiffusionXLModel/)
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-diffusion-1-0-text-image.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-diffusion-1-0-text-image.html)
 

@@ -31,11 +31,11 @@ $modulesToInstall = New-Object System.Collections.Generic.List[object]
         }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'AWS.Tools.Common'
-            ModuleVersion = '4.1.621'
+            ModuleVersion = '4.1.700'
         }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'AWS.Tools.BedrockRuntime'
-            ModuleVersion = '4.1.621'
+            ModuleVersion = '4.1.700'
         }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'Convert'
@@ -50,6 +50,7 @@ foreach ($module in $modulesToInstall) {
         RequiredVersion    = $module.ModuleVersion
         Repository         = 'PSGallery'
         SkipPublisherCheck = $true
+        AllowClobber       = $true
         Force              = $true
         ErrorAction        = 'Stop'
     }

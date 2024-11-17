@@ -707,9 +707,13 @@ This was incredibly hard to make.
 * Note: parameter value ranges such as TopP, Temperature, and MaxTokens are model-specific.
 This function does not validate the values provided against the model's requirements.
 
+* For a full tools example, see the advanced documentation on the pwshBedrock website.
+
 ## RELATED LINKS
 
 [https://www.pwshbedrock.dev/en/latest/Invoke-ConverseAPI/](https://www.pwshbedrock.dev/en/latest/Invoke-ConverseAPI/)
+
+[https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/](https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/)
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html)
 

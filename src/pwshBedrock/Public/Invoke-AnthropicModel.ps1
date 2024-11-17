@@ -12,15 +12,15 @@
     If you are providing Tools to enable Function Calling, it is recommended that you use the ReturnFullObject parameter to capture the full response object.
     See the pwshBedrock documentation for more information on Function Calling and the Anthropic model.
 .EXAMPLE
-    Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -Credential $awsCredential -Region 'us-west-2'
 
     Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the response.
 .EXAMPLE
-    Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -ProfileName default -Region 'us-west-2' -ReturnFullObject
+    Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2' -ReturnFullObject
 
     Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object.
 .EXAMPLE
-    Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -ProfileName default -Region 'us-west-2' -NoContextPersist
+    Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2' -NoContextPersist
 
     Sends a text message to the on-demand Anthropic model in the specified AWS region without persisting the conversation context history. This is useful for one-off interactions.
 .EXAMPLE
@@ -63,7 +63,7 @@
 
     Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object. A system prompt is provided to give additional context to the model on how to respond. Temperature is set to 1 for creative responses. Stop sequences are provided to stop the model from generating more text when it encounters the word 'Picard'.
 .EXAMPLE
-    Invoke-AnthropicModel -CustomConversation $customConversation -ModelID 'anthropic.claude-3-haiku-20240307-v1:0' -ProfileName default -Region 'us-west-2'
+    Invoke-AnthropicModel -CustomConversation $customConversation -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2'
 
     Sends a custom conversation to the on-demand Anthropic model in the specified AWS region and returns the response. The custom conversation must adhere to the Anthropic model conversation format. Reference the pwshBedrock documentation for more information on the custom conversation format.
 .EXAMPLE
@@ -165,10 +165,14 @@
     System.Management.Automation.PSCustomObject
 .NOTES
     Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
+
+    * For a full tools example, see the advanced documentation on the pwshBedrock website.
 .COMPONENT
     pwshBedrock
 .LINK
     https://www.pwshbedrock.dev/en/latest/Invoke-AnthropicModel/
+.LINK
+    https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html
 .LINK
@@ -216,7 +220,9 @@ function Invoke-AnthropicModel {
         [ValidateSet(
             'anthropic.claude-v2:1',
             'anthropic.claude-3-haiku-20240307-v1:0',
+            'anthropic.claude-3-5-haiku-20241022-v1:0',
             'anthropic.claude-3-sonnet-20240229-v1:0',
+            'anthropic.claude-3-5-sonnet-20241022-v2:0',
             'anthropic.claude-3-5-sonnet-20240620-v1:0',
             'anthropic.claude-3-opus-20240229-v1:0'
         )]

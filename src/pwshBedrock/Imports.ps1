@@ -18,22 +18,6 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
-        ModelId          = 'ai21.j2-grande-instruct'
-        TotalCost        = 0
-        InputTokenCount  = 0
-        OutputTokenCount = 0
-        InputTokenCost   = 0
-        OutputTokenCost  = 0
-    }
-    [PSCustomObject]@{
-        ModelId          = 'ai21.j2-jumbo-instruct'
-        TotalCost        = 0
-        InputTokenCount  = 0
-        OutputTokenCount = 0
-        InputTokenCost   = 0
-        OutputTokenCost  = 0
-    }
-    [PSCustomObject]@{
         ModelId          = 'ai21.jamba-instruct-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -42,7 +26,7 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
-        ModelId          = 'ai21.j2-mid-v1'
+        ModelId          = 'ai21.jamba-1-5-large-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
         OutputTokenCount = 0
@@ -50,7 +34,7 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
-        ModelId          = 'ai21.j2-ultra-v1'
+        ModelId          = 'ai21.jamba-1-5-mini-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
         OutputTokenCount = 0
@@ -116,6 +100,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'anthropic.claude-3-opus-20240229-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -125,6 +117,14 @@ $Global:pwshBedRockSessionModelTally = @(
     }
     [PSCustomObject]@{
         ModelId          = 'anthropic.claude-3-sonnet-20240229-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
         TotalCost        = 0
         InputTokenCount  = 0
         OutputTokenCount = 0
@@ -228,6 +228,38 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'meta.llama3-2-1b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'meta.llama3-2-3b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'meta.llama3-2-11b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'meta.llama3-2-90b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'mistral.mistral-7b-instruct-v0:2'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -272,6 +304,21 @@ $Global:pwshBedRockSessionModelTally = @(
         ImageCount = 0
         ImageCost  = 0
     }
+    [PSCustomObject]@{
+        ModelId    = 'stability.stable-image-ultra-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId    = 'stability.stable-image-core-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId    = 'stability.sd3-large-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
 )
 
 #endregion
@@ -283,26 +330,18 @@ $Global:pwshBedrockModelContext = @(
         ModelId = 'Converse'
         Context = New-Object System.Collections.Generic.List[object]
     }
-    # [PSCustomObject]@{
-    #     ModelId = 'ai21.j2-grande-instruct'
-    #     Context = New-Object System.Collections.Generic.List[object]
-    # }
-    # [PSCustomObject]@{
-    #     ModelId = 'ai21.j2-jumbo-instruct'
-    #     Context = New-Object System.Collections.Generic.List[object]
-    # }
     [PSCustomObject]@{
         ModelId = 'ai21.jamba-instruct-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
-    # [PSCustomObject]@{
-    #     ModelId = 'ai21.j2-mid-v1'
-    #     Context = New-Object System.Collections.Generic.List[object]
-    # }
-    # [PSCustomObject]@{
-    #     ModelId = 'ai21.j2-ultra-v1'
-    #     Context = New-Object System.Collections.Generic.List[object]
-    # }
+    [PSCustomObject]@{
+        ModelId = 'ai21.jamba-1-5-mini-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'ai21.jamba-1-5-large-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
     # [PSCustomObject]@{
     #     ModelId = 'amazon.titan-image-generator-v1'
     #     Context = New-Object System.Collections.Generic.List[object]
@@ -336,11 +375,19 @@ $Global:pwshBedrockModelContext = @(
         Context = New-Object System.Collections.Generic.List[object]
     }
     [PSCustomObject]@{
+        ModelId = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
         ModelId = 'anthropic.claude-3-opus-20240229-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
     [PSCustomObject]@{
         ModelId = 'anthropic.claude-3-sonnet-20240229-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
     [PSCustomObject]@{
@@ -392,6 +439,22 @@ $Global:pwshBedrockModelContext = @(
         Context = ''
     }
     [PSCustomObject]@{
+        ModelId = 'meta.llama3-2-1b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-2-3b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-2-11b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-2-90b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
         ModelId = 'mistral.mistral-7b-instruct-v0:2'
         Context = ''
     }
@@ -413,6 +476,18 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'stability.stable-diffusion-xl-v1'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'stability.stable-image-ultra-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'stability.stable-image-core-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'stability.sd3-large-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
 )
@@ -476,6 +551,27 @@ $script:anthropicModelInfo = @(
     }
     [PSCustomObject]@{
         ProviderName               = 'Anthropic'
+        ModelName                  = 'Claude 3.5 Haiku'
+        ModelId                    = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+        Description                = 'Our fastest model'
+        Strength                   = 'Intelligence at blazing speeds'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 200000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '07-01-2024'
+        PayloadLimit               = '20MB'
+        InputTokenCost             = 0.001
+        OutputTokenCost            = 0.005
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Anthropic'
         ModelName                  = 'Claude 3 Sonnet'
         ModelId                    = 'anthropic.claude-3-sonnet-20240229-v1:0'
         Description                = 'Ideal balance of intelligence and speed for enterprise workloads'
@@ -491,6 +587,27 @@ $script:anthropicModelInfo = @(
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '08-01-2023'
+        PayloadLimit               = '20MB'
+        InputTokenCost             = 0.003
+        OutputTokenCost            = 0.015
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Anthropic'
+        ModelName                  = 'Claude 3.5 Sonnet Upgraded Version'
+        ModelId                    = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
+        Description                = 'Most intelligent model'
+        Strength                   = 'Highest level of intelligence and capability'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 200000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '04-01-2024'
         PayloadLimit               = '20MB'
         InputTokenCost             = 0.003
         OutputTokenCost            = 0.015
@@ -702,7 +819,6 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
 # https://docs.ai21.com/changelog/jurassic-2-and-task-specific-apis-are-now-available
 # https://docs.ai21.com/docs/jurassic-2-models
 # https://docs.ai21.com/docs/instruct-models
-# https://docs.ai21.com/reference/j2-complete-ref
 # https://docs.ai21.com/docs/choosing-the-right-instance-type-for-amazon-sagemaker-models
 
 # https://docs.ai21.com/docs/jamba-models
@@ -710,6 +826,7 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
 # https://docs.ai21.com/reference/jamba-instruct-api#response-details
 # https://docs.ai21.com/docs/migrating-from-jurassic-to-jamba
 # https://docs.ai21.com/docs/prompt-engineering
+# https://docs.ai21.com/docs/jamba-15-models
 
 
 $script:ai21ModelInfo = @(
@@ -736,87 +853,45 @@ $script:ai21ModelInfo = @(
     }
     [PSCustomObject]@{
         ProviderName               = 'AI21 Labs'
-        ModelName                  = 'J2 Grande Instruct'
-        ModelId                    = 'ai21.j2-grande-instruct'
-        Description                = 'Designed specifically for generating text based on minimal context. Highly accurate, and can be fine-tuned to power smart chatbot and other conversational interfaces.'
-        Strength                   = 'Designed to meticulously follow instructions. Trained specifically to handle instructions-only prompts ("zero-shot") without examples ("few-shot"). It is the most natural way to interact with large language models, and it is the best way to get a sense of the optimal output for your task without any examples.'
+        ModelName                  = 'Jamba 1.5 Mini'
+        ModelId                    = 'ai21.jamba-1-5-mini-v1:0'
+        Description                = 'Both Jamba 1.5 Mini and Jamba 1.5 Large models were trained on a massive corpus of text, making them highly versatile general purpose text-generators, capable of composing human-like text and solving complex tasks such as question answering, text summarization, information extraction, drafting, text classification and many others.'
+        Strength                   = 'optimized for low-latency processing of long prompts, enabling fast analysis of lengthy documents and data. Text generation, Sentiment analysis, Paraphrasing, Summarization, Text recommendation, Grammatical error correction, Text segmentation.'
         Multilingual               = $true
         Text                       = $true
         Document                   = $false
         Vision                     = $false
-        SystemPrompt               = $false
+        SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $false
-        ChatHistorySupported       = $false
-        ContextWindow              = 8192
-        MaxOutput                  = 8191
-        TrainingCutoff             = '03-01-2023'
+        ChatHistorySupported       = $true
+        ContextWindow              = 256000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '03-05-2024'
         PayloadLimit               = ''
-        InputTokenCost             = 0.0188 #! this pricing was not available in the documentation. keeping the same as ultra pricing.
-        OutputTokenCost            = 0.0188 #! this pricing was not available in the documentation. keeping the same as ultra pricing.
+        InputTokenCost             = 0.0002
+        OutputTokenCost            = 0.0004
     }
     [PSCustomObject]@{
         ProviderName               = 'AI21 Labs'
-        ModelName                  = 'J2 Jumbo Instruct'
-        ModelId                    = 'ai21.j2-jumbo-instruct'
-        Description                = 'Similar to Grande-Instruct, but with superior language understanding and response generation capabilities. Ideal for users with more advanced conversational interface needs.'
-        Strength                   = 'Designed to meticulously follow instructions. Trained specifically to handle instructions-only prompts ("zero-shot") without examples ("few-shot"). It is the most natural way to interact with large language models, and it is the best way to get a sense of the optimal output for your task without any examples.'
+        ModelName                  = 'Jamba 1.5 Large'
+        ModelId                    = 'ai21.jamba-1-5-large-v1:0'
+        Description                = 'Both Jamba 1.5 Mini and Jamba 1.5 Large models were trained on a massive corpus of text, making them highly versatile general purpose text-generators, capable of composing human-like text and solving complex tasks such as question answering, text summarization, information extraction, drafting, text classification and many others.'
+        Strength                   = 'excels at complex reasoning tasks across all prompt lengths, making it ideal for applications that require high quality outputs on both long and short inputs. Text generation, Sentiment analysis, Paraphrasing, Summarization, Text recommendation, Grammatical error correction, Text segmentation.'
         Multilingual               = $true
         Text                       = $true
         Document                   = $false
         Vision                     = $false
-        SystemPrompt               = $false
+        SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $false
-        ChatHistorySupported       = $false
-        ContextWindow              = 8192
-        MaxOutput                  = 8191
-        TrainingCutoff             = '03-01-2023'
+        ChatHistorySupported       = $true
+        ContextWindow              = 256000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '03-05-2024'
         PayloadLimit               = ''
-        InputTokenCost             = 0.0188 #! this pricing was not available in the documentation. keeping the same as ultra pricing.
-        OutputTokenCost            = 0.0188 #! this pricing was not available in the documentation. keeping the same as ultra pricing.
-    }
-    [PSCustomObject]@{
-        ProviderName               = 'AI21 Labs'
-        ModelName                  = 'Jurassic-2 Mid'
-        ModelId                    = 'ai21.j2-mid-v1'
-        Description                = 'This model offers enhanced text generation capabilities, making it well-suited to language tasks with a greater degree of complexity.'
-        Strength                   = 'Text generation based on prompting, Instruction following, Sentiment analysis, Summarization, Text recommendation including diversifying vocabulary, grammatical error correction, text segmentation, question and answering.'
-        Multilingual               = $true
-        Text                       = $true
-        Document                   = $false
-        Vision                     = $false
-        SystemPrompt               = $false
-        ToolUse                    = $false
-        ResponseStreamingSupported = $false
-        ChatHistorySupported       = $false
-        ContextWindow              = 8192
-        MaxOutput                  = 8191
-        TrainingCutoff             = '03-01-2023'
-        PayloadLimit               = ''
-        InputTokenCost             = 0.0125
-        OutputTokenCost            = 0.0125
-    }
-    [PSCustomObject]@{
-        ProviderName               = 'AI21 Labs'
-        ModelName                  = 'Jurassic-2 Ultra'
-        ModelId                    = 'ai21.j2-ultra-v1'
-        Description                = 'As the largest and most powerful model in the Jurassic series, J2-Ultra is an ideal choice for the most complex language processing tasks and generative text applications.'
-        Strength                   = 'Text generation based on prompting, Instruction following, Sentiment analysis, Summarization, Text recommendation including diversifying vocabulary, grammatical error correction, text segmentation, question and answering.'
-        Multilingual               = $true
-        Text                       = $true
-        Document                   = $false
-        Vision                     = $false
-        SystemPrompt               = $false
-        ToolUse                    = $false
-        ResponseStreamingSupported = $false
-        ChatHistorySupported       = $false
-        ContextWindow              = 8192
-        MaxOutput                  = 8191
-        TrainingCutoff             = '03-01-2023'
-        PayloadLimit               = ''
-        InputTokenCost             = 0.0188
-        OutputTokenCost            = 0.0188
+        InputTokenCost             = 0.002
+        OutputTokenCost            = 0.008
     }
 ) #ai21ModelInfo
 
@@ -1078,6 +1153,90 @@ $script:metaModelInfo = @(
         InputTokenCost             = 0.00532
         OutputTokenCost            = 0.016
     }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.2 1B Instruct'
+        ModelId                    = 'meta.llama3-2-1b-instruct-v1:0'
+        Description                = 'The most lightweight model in the Llama 3.2 collection of models, perfect for retrieval and summarization for edge devices and mobile applications.'
+        Strength                   = 'ideal for the following use cases: personal information management and multilingual knowledge retrieval.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.0001
+        OutputTokenCost            = 0.0001
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.2 3B Instruct'
+        ModelId                    = 'meta.llama3-2-3b-instruct-v1:0'
+        Description                = 'Designed for applications requiring low-latency inferencing and limited computational resources.'
+        Strength                   = 'excels at text summarization, classification, and language translation tasks. This model is ideal for the following use cases: mobile AI-powered writing assistants and customer service applications.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00015
+        OutputTokenCost            = 0.00015
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.2 11B Instruct'
+        ModelId                    = 'meta.llama3-2-11b-instruct-v1:0'
+        Description                = 'Well-suited for content creation, conversational AI, language understanding, and enterprise applications requiring visual reasoning.'
+        Strength                   = 'The model demonstrates strong performance in text summarization, sentiment analysis, code generation, and following instructions, with the added ability to reason about images. This model use cases are similar to the 90B version: image captioning, image-text-retrieval, visual grounding, visual question answering and visual reasoning, and document visual question answering.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00035
+        OutputTokenCost            = 0.00035
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.2 90B Instruct'
+        ModelId                    = 'meta.llama3-2-90b-instruct-v1:0'
+        Description                = "Meta's most advanced model, ideal for enterprise-level applications."
+        Strength                   = 'excels at general knowledge, long-form text generation, multilingual translation, coding, math, and advanced reasoning. It also introduces image reasoning capabilities, allowing for image understanding and visual reasoning tasks. This model is ideal for the following use cases: image captioning, image-text retrieval, visual grounding, visual question answering and visual reasoning, and document visual question answering.'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.002
+        OutputTokenCost            = 0.002
+    }
 ) #metaModelInfo
 
 #endregion
@@ -1190,8 +1349,8 @@ $script:mistralAIModelInfo = @(
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
         PayloadLimit               = ''
-        InputTokenCost             = 0.004
-        OutputTokenCost            = 0.012
+        InputTokenCost             = 0.002
+        OutputTokenCost            = 0.006
     }
 ) #mistralModelInfo
 
@@ -1227,7 +1386,80 @@ $script:stabilityAIModelInfo = @(
         # OutputTokenCost            = 0.012
         # pricing structure is different for image models
     }
+    [PSCustomObject]@{
+        ProviderName               = 'Stability AI'
+        ModelName                  = 'Stable Image Ultra'
+        ModelId                    = 'stability.stable-image-ultra-v1:0'
+        Model                      = ''
+        Description                = 'Our most advanced text to image generation service, Stable Image Ultra creates the highest quality images with unprecedented prompt understanding. Ultra excels in typography, complex compositions, dynamic lighting, vibrant hues, and overall cohesion and structure of an art piece.'
+        Strength                   = 'produces the highest quality, photo-realistic outputs, making it perfect for professional print media and large-format applications. This model excels at rendering exceptional detail and realism.'
+        Multilingual               = $false
+        Text                       = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '' #! Couldn't find in documentation
+        ImageCost                  = 0.14
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Stability AI'
+        ModelName                  = 'Stable Image Core'
+        ModelId                    = 'stability.stable-image-core-v1:0'
+        Model                      = ''
+        Description                = 'optimized for fast and affordable image generation, making it great for rapidly iterating on concepts during the ideation phase.'
+        Strength                   = 'fast, affordable image generation. Ideal for ideation and conception.'
+        Multilingual               = $false
+        Text                       = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '' #! Couldn't find in documentation
+        ImageCost                  = 0.04
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Stability AI'
+        ModelName                  = 'Stable Diffusion 3 Large'
+        ModelId                    = 'stability.sd3-large-v1:0'
+        Model                      = ''
+        Description                = 'At 8 billion parameters, with superior quality and prompt adherence, this base model is the most powerful in the Stable Diffusion family. This model is ideal for professional use cases at 1 megapixel resolution.'
+        Strength                   = 'strikes an ideal balance between generation speed and output quality, making it ideal for creating high-volume, high-quality digital assets like websites, newsletters, and marketing materials.'
+        Multilingual               = $false
+        Text                       = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '' #! Couldn't find in documentation
+        ImageCost                  = 0.08
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
 ) #ai21ModelInfo
+
 
 #endregion
 

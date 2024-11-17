@@ -12,7 +12,6 @@ InModuleScope 'pwshBedrock' {
     $allModelIDs = ($allModelInfo | Where-Object {
             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
             $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
-            $_.ModelId -notlike 'ai21.j2*' -and
             $_.ModelId -ne 'cohere.command-text-v14' -and
             $_.ModelId -ne 'cohere.command-light-text-v14'
         }).ModelID
@@ -127,6 +126,20 @@ InModuleScope 'pwshBedrock' {
                         )
                     },
                     [PSCustomObject]@{
+                        ModelID = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = '5 Haiku context'
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    [PSCustomObject]@{
                         ModelID = 'anthropic.claude-3-sonnet-20240229-v1:0'
                         Context = @(
                             [PSCustomObject]@{
@@ -135,6 +148,20 @@ InModuleScope 'pwshBedrock' {
                                     [PSCustomObject]@{
                                         type = 'text'
                                         text = 'Sonnet context'
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    [PSCustomObject]@{
+                        ModelID = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = '5 Sonnet context'
                                     }
                                 )
                             }
@@ -206,6 +233,34 @@ User: "Hi there!
                             }
                         )
                     }
+                    [PSCustomObject]@{
+                        ModelID = 'ai21.jamba-1-5-mini-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'test'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'ai21.jamba-1-5-large-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'test'
+                                    }
+                                )
+                            }
+                        )
+                    }
                     # [PSCustomObject]@{
                     #     ModelID = 'amazon.titan-image-generator-v1'
                     #     Context = @(
@@ -215,36 +270,6 @@ User: "Hi there!
                     #                 [PSCustomObject]@{
                     #                     type = 'text'
                     #                     text = 'Titan image generator context'
-                    #                 }
-                    #             )
-                    #         }
-                    #     )
-                    # }
-                    # 'ai21.j2-grande-instruct',
-                    # 'ai21.j2-jumbo-instruct',
-                    # [PSCustomObject]@{
-                    #     ModelID = 'ai21.j2-mid-v1'
-                    #     Context = @(
-                    #         [PSCustomObject]@{
-                    #             role    = 'user'
-                    #             content = @(
-                    #                 [PSCustomObject]@{
-                    #                     type = 'text'
-                    #                     text = 'J2 mid context'
-                    #                 }
-                    #             )
-                    #         }
-                    #     )
-                    # }
-                    # [PSCustomObject]@{
-                    #     ModelID = 'ai21.j2-ultra-v1'
-                    #     Context = @(
-                    #         [PSCustomObject]@{
-                    #             role    = 'user'
-                    #             content = @(
-                    #                 [PSCustomObject]@{
-                    #                     type = 'text'
-                    #                     text = 'J2 ultra context'
                     #                 }
                     #             )
                     #         }
@@ -405,6 +430,62 @@ User: "Hi there!
                         )
                     }
                     [PSCustomObject]@{
+                        ModelID = 'meta.llama3-2-1b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama3 2 1b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'meta.llama3-2-3b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama3 2 3b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'meta.llama3-2-11b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama3 2 11b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'meta.llama3-2-90b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama3 2 90b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
                         ModelID = 'mistral.mistral-7b-instruct-v0:2'
                         Context = @(
                             [PSCustomObject]@{
@@ -483,6 +564,48 @@ User: "Hi there!
                                     [PSCustomObject]@{
                                         type = 'text'
                                         text = 'Stable diffusion xl v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'stability.stable-image-ultra-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Stable image ultra v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'stability.stable-image-core-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Stable image core v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'stability.sd3-large-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'SD3 large v1 context'
                                     }
                                 )
                             }

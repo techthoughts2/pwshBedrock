@@ -30,7 +30,7 @@ InModuleScope 'pwshBedrock' {
             $variationMainImage = [System.IO.Path]::GetFullPath($variationMainFile)
         } #beforeAll
 
-        Context 'Image Model' {
+        Context 'Diffusion XL Model' {
 
             BeforeEach {
                 $outFile = $env:TEMP
@@ -40,9 +40,9 @@ InModuleScope 'pwshBedrock' {
                 Start-Sleep -Milliseconds 5500
             }
 
-            It 'should return an image when using text-to-image for <_.ModelId>' -Foreach $script:stabilityAIModelInfo {
+            It 'should return an image when using text-to-image for <_.ModelId>' -Foreach ($script:stabilityAIModelInfo | Where-Object { $_.ModelID -eq 'stability.stable-diffusion-xl-v1' }) {
                 $ModelID = $_.ModelID
-                $invokeStabilityAIDiffusionModelSplat = @{
+                $invokeStabilityAIDiffusionXLModelSplat = @{
                     ImagesSavePath   = $outFile
                     CustomPrompt     = @(
                         [PSCustomObject]@{
@@ -70,14 +70,14 @@ InModuleScope 'pwshBedrock' {
                     Region           = 'us-west-2'
                     Verbose          = $false
                 }
-                $eval = Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                $eval = Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
                 $eval | Should -Not -BeNullOrEmpty
                 $eval.artifacts.count | Should -Be 1
             } #it
 
-            It 'should return an image when using Image-to-Mask with a mask prompt for <_.ModelId>' -Foreach $script:stabilityAIModelInfo {
+            It 'should return an image when using Image-to-Mask with a mask prompt for <_.ModelId>' -Foreach ($script:stabilityAIModelInfo | Where-Object { $_.ModelID -eq 'stability.stable-diffusion-xl-v1' }) {
                 $ModelID = $_.ModelID
-                $invokeStabilityAIDiffusionModelSplat = @{
+                $invokeStabilityAIDiffusionXLModelSplat = @{
                     ImagesSavePath    = $outFile
                     ImagePrompt       = 'Replace the cat face with the face of a wise wolf who is a jedi master.'
                     InitMaskImagePath = $inpaintingMainImage
@@ -89,14 +89,14 @@ InModuleScope 'pwshBedrock' {
                     Region            = 'us-west-2'
                     Verbose           = $false
                 }
-                $eval = Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                $eval = Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
                 $eval | Should -Not -BeNullOrEmpty
                 $eval.artifacts.count | Should -Be 1
             } #it
 
-            It 'should return an image when using Image-to-Mask with a extension mask prompt for <_.ModelId>' -Foreach $script:stabilityAIModelInfo {
+            It 'should return an image when using Image-to-Mask with a extension mask prompt for <_.ModelId>' -Foreach ($script:stabilityAIModelInfo | Where-Object { $_.ModelID -eq 'stability.stable-diffusion-xl-v1' }) {
                 $ModelID = $_.ModelID
-                $invokeStabilityAIDiffusionModelSplat = @{
+                $invokeStabilityAIDiffusionXLModelSplat = @{
                     ImagesSavePath    = $outFile
                     ImagePrompt       = 'Extend the nebula and let us see the rest of the ship.'
                     InitMaskImagePath = $outpaintingMainImage
@@ -108,14 +108,14 @@ InModuleScope 'pwshBedrock' {
                     Region            = 'us-west-2'
                     Verbose           = $false
                 }
-                $eval = Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                $eval = Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
                 $eval | Should -Not -BeNullOrEmpty
                 $eval.artifacts.count | Should -Be 1
             } #it
 
-            It 'should return an image when using Image-To-Image for <_.ModelId>' -Foreach $script:stabilityAIModelInfo {
+            It 'should return an image when using Image-To-Image for <_.ModelId>' -Foreach ($script:stabilityAIModelInfo | Where-Object { $_.ModelID -eq 'stability.stable-diffusion-xl-v1' }) {
                 $ModelID = $_.ModelID
-                $invokeStabilityAIDiffusionModelSplat = @{
+                $invokeStabilityAIDiffusionXLModelSplat = @{
                     ImagesSavePath   = $outFile
                     ImagePrompt      = 'Replace the captain with a different crew member.'
                     InitImagePath    = $variationMainImage
@@ -127,12 +127,61 @@ InModuleScope 'pwshBedrock' {
                     Region           = 'us-west-2'
                     Verbose          = $false
                 }
-                $eval = Invoke-StabilityAIDiffusionModel @invokeStabilityAIDiffusionModelSplat
+                $eval = Invoke-StabilityAIDiffusionXLModel @invokeStabilityAIDiffusionXLModelSplat
                 $eval | Should -Not -BeNullOrEmpty
                 $eval.artifacts.count | Should -Be 1
             } #it
 
-        } #context_image_model
+        } #context_DiffusionXLModel
+
+        Context 'Image Model' {
+
+            BeforeEach {
+                $outFile = $env:TEMP
+                # $outFile = 'D:\Code\Bedrock'
+            }
+            AfterEach {
+                Start-Sleep -Milliseconds 5500
+            }
+
+            It 'should return an image when using text-to-image for <_.ModelId>' -Foreach ($script:stabilityAIModelInfo | Where-Object { $_.ModelID -ne 'stability.stable-diffusion-xl-v1' }) {
+                $ModelID = $_.ModelID
+                $invokeStabilityAIImageModelSplat = @{
+                    ImagesSavePath   = $outFile
+                    ImagePrompt      = 'Create a starship emerging from a nebula.'
+                    AspectRatio      = '1:1'
+                    OutputFormat     = 'jpeg'
+                    NegativePrompt   = 'stars'
+                    ModelID          = $ModelID
+                    ReturnFullObject = $true
+                    Credential       = $awsCredential
+                    Region           = 'us-west-2'
+                    Verbose          = $false
+                }
+                $eval = Invoke-StabilityAIImageModel @invokeStabilityAIImageModelSplat
+                $eval | Should -Not -BeNullOrEmpty
+            } #it
+
+            It 'should return an image when using image-to-image for <_.ModelId>' -Foreach ($script:stabilityAIModelInfo | Where-Object { $_.ModelID -eq 'stability.sd3-large-v1:0' }) {
+                $ModelID = $_.ModelID
+                $invokeStabilityAIImageModelSplat = @{
+                    ImagesSavePath   = $outFile
+                    ImagePrompt      = 'Create a starship emerging from a nebula.'
+                    InitImagePath    = $variationMainImage
+                    AspectRatio      = '1:1'
+                    OutputFormat     = 'jpeg'
+                    NegativePrompt   = 'stars'
+                    ModelID          = $ModelID
+                    ReturnFullObject = $true
+                    Credential       = $awsCredential
+                    Region           = 'us-west-2'
+                    Verbose          = $false
+                }
+                $eval = Invoke-StabilityAIImageModel @invokeStabilityAIImageModelSplat
+                $eval | Should -Not -BeNullOrEmpty
+            } #it
+
+        } #context_ImageModel
 
     } #describe
 } #inModule

@@ -12,9 +12,28 @@ Sends message(s) to a Meta model on the Amazon Bedrock platform and retrieves th
 
 ## SYNTAX
 
+### MessageSet
 ```
 Invoke-MetaModel -Message <String> -ModelID <String> [-ReturnFullObject] [-NoContextPersist]
- [-SystemPrompt <String>] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>] [-AccessKey <String>]
+ [-SystemPrompt <String>] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>] [-Tools <PSObject[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+```
+
+### ImageSet
+```
+Invoke-MetaModel -ImagePrompt <String> -MediaPath <String> -ModelID <String> [-ReturnFullObject]
+ [-NoContextPersist] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>] [-AccessKey <String>]
+ [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
+ [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
+ [-SessionToken <String>] [<CommonParameters>]
+```
+
+### ToolsResultsSet
+```
+Invoke-MetaModel -ModelID <String> [-ReturnFullObject] [-NoContextPersist] [-MaxTokens <Int32>]
+ [-Temperature <Single>] [-TopP <Single>] -ToolsResults <PSObject> [-AccessKey <String>]
  [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
  [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
  [-SessionToken <String>] [<CommonParameters>]
@@ -67,6 +86,13 @@ Invoke-MetaModel @invokeMetaModelSplat
 
 Sends a text message to the on-demand Meta model in the specified AWS region with a system prompt and a maximum token limit of 2000.
 
+### EXAMPLE 5
+```
+Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
+```
+
+Sends an image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
+
 ## PARAMETERS
 
 ### -Message
@@ -74,7 +100,39 @@ The message to be sent to the model.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: MessageSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ImagePrompt
+The prompt to the Vision-Instruct model.
+
+```yaml
+Type: String
+Parameter Sets: ImageSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MediaPath
+File path to local media file.
+The media files must adhere to the model's media requirements.
+Only large 3.2 vision models support media files.
+
+```yaml
+Type: String
+Parameter Sets: ImageSet
 Aliases:
 
 Required: True
@@ -137,7 +195,7 @@ If you do not provide a system prompt, the default Llama system prompt will be u
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: MessageSet
 Aliases:
 
 Required: False
@@ -151,7 +209,6 @@ Accept wildcard characters: False
 The maximum number of tokens to generate before stopping.
 Defaults to 2048.
 Ranges from 1 to 2048.
-Note that Anthropic Claude models might stop generating tokens before reaching the value of max_tokens.
 
 ```yaml
 Type: Int32
@@ -194,6 +251,38 @@ Aliases:
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tools
+A list of available tools (functions) that the model may suggest invoking before producing a text response.
+This must be in a properly formatted PSObject array with all required Tools properties.
+For more information, see the Meta documentation.
+
+```yaml
+Type: PSObject[]
+Parameter Sets: MessageSet
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ToolsResults
+A list of results from invoking tools recommended by the model in the previous chat turn.
+
+```yaml
+Type: PSObject
+Parameter Sets: ToolsResultsSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -362,9 +451,32 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
+* For a full tools example, see the advanced documentation on the pwshBedrock website.
+
+If Tools are provided for a 3.1+ model, a new system prompt will be generated with the tools included.
+This means that the context will be RESET when tools are provided.
+This is because system prompts are created at the beginning of the conversation.
+Start a conversation with tools by providing them in the first message.
+Adding tools to a conversation after the first message will not work as a reset will occur.
+
+Note: The Meta models require the system prompt to be set at the beginning of the conversation.
+When using the Format-MetaTextMessage and Invoke-MetaModel functions, the system prompt is inserted
+at the start of the conversation context stored in memory.
+If you modify the system prompt after the
+conversation has begun, the functions will replace the original system prompt in the in-memory context.
+This action does not affect previous exchanges but may influence subsequent interactions.
+
+Be aware that changing the system prompt mid-conversation can lead to instability or confusion in the model's responses.
+This is particularly significant if you initially used a specialized system prompt to enable tool usage within the conversation.
+Overwriting the system prompt in such cases can disrupt the intended functionality and cause the model to behave unpredictably.
+
+For consistent and reliable interactions, it is recommended to set your desired system prompt at the onset of the conversation and avoid altering it later.
+
 ## RELATED LINKS
 
 [https://www.pwshbedrock.dev/en/latest/Invoke-MetaModel/](https://www.pwshbedrock.dev/en/latest/Invoke-MetaModel/)
+
+[https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/](https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/)
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-meta.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-meta.html)
 
@@ -377,3 +489,19 @@ Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 [https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-3/](https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-3/)
 
 [https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md](https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md)
+
+[https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_1](https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_1)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/MODEL_CARD.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/MODEL_CARD.md)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md)
+
+[https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_2/](https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_2/)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md)
+
+[https://www.llama.com/docs/how-to-guides/vision-capabilities/](https://www.llama.com/docs/how-to-guides/vision-capabilities/)
+
+[https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html)

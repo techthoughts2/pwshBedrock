@@ -92,6 +92,8 @@
     https://docs.ai21.com/reference/jamba-instruct-api#response-details
 .LINK
     https://docs.ai21.com/docs/migrating-from-jurassic-to-jamba
+.LINK
+    https://docs.ai21.com/reference/jamba-15-api-ref
 #>
 function Invoke-AI21LabsJambaModel {
     [CmdletBinding()]
@@ -113,7 +115,9 @@ function Invoke-AI21LabsJambaModel {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
-            'ai21.jamba-instruct-v1:0'
+            'ai21.jamba-instruct-v1:0',
+            'ai21.jamba-1-5-mini-v1:0',
+            'ai21.jamba-1-5-large-v1:0'
         )]
         [string]$ModelID,
 
@@ -192,7 +196,7 @@ function Invoke-AI21LabsJambaModel {
 
     )
 
-    $modelInfo = $script:mistralAIModelInfo | Where-Object { $_.ModelId -eq $ModelID }
+    $modelInfo = $script:ai21ModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
 
@@ -243,7 +247,7 @@ function Invoke-AI21LabsJambaModel {
     }
 
     if ($StopSequences) {
-        $bodyObj.Add('stop_sequences', $StopSequences)
+        $bodyObj.Add('stop', $StopSequences)
     }
 
     if ($ResponseNumber) {

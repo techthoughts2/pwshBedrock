@@ -1,133 +1,213 @@
 ---
 external help file: pwshBedrock-help.xml
 Module Name: pwshBedrock
-online version: https://www.pwshbedrock.dev/en/latest/Invoke-AmazonTextModel/
+online version: https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIImageModel/
 schema: 2.0.0
 ---
 
-# Invoke-AmazonTextModel
+# Invoke-StabilityAIImageModel
 
 ## SYNOPSIS
-Sends message(s) to an Amazon Titan model on the Amazon Bedrock platform and retrieves the response.
+Sends message(s) to an Stability AI Image Core model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local folder.
 
 ## SYNTAX
 
-### Standard
 ```
-Invoke-AmazonTextModel -Message <String> -ModelID <String> [-ReturnFullObject] [-PromptOnly]
- [-NoContextPersist] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
-```
-
-### PreCraftedMessages
-```
-Invoke-AmazonTextModel -CustomConversation <String> -ModelID <String> [-ReturnFullObject] [-PromptOnly]
- [-NoContextPersist] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
+Invoke-StabilityAIImageModel [-ImagesSavePath] <Object> [-ImagePrompt] <String> [[-InitImagePath] <String>]
+ [[-ImageStrength] <Single>] [[-AspectRatio] <String>] [[-OutputFormat] <String>] [[-Seed] <Int32>]
+ [[-NegativePrompt] <String>] [[-ModelID] <String>] [-ReturnFullObject] [[-AccessKey] <String>]
+ [[-Credential] <AWSCredentials>] [[-EndpointUrl] <String>] [[-NetworkCredential] <PSCredential>]
+ [[-ProfileLocation] <String>] [[-ProfileName] <String>] [[-Region] <Object>] [[-SecretKey] <String>]
+ [[-SessionToken] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Sends a message to an Amazon Titan model on the Amazon Bedrock platform and returns the model's response.
-By default, a conversation prompt style is used and the conversation context history is persisted to maintain a continuous interaction with the model.
-You can disable this by using the NoContextPersist parameter.
-Alternatively, you can use the PromptOnly parameter to have a less conversational response.
-Additionally, the cmdlet estimates the cost of model usage based on the provided
-input and output tokens and adds the estimate to the models tally information.
+Sends a message to an Stability AI Image Core model on the Amazon Bedrock platform and returns the model's response.
+The response from this model is an image or images generated based on the input parameters.
+The generated image(s) are decoded from base64 and saved to a local folder.
+This function supports the following Stability AI Image Core image use cases:
+    Text-to-image - Generation - Generate an image using a text prompt.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Invoke-AmazonTextModel -Message 'Explain zero-point energy.' -ModelID amazon.titan-text-lite-v1 -Credential $awsCredential -Region 'us-west-2'
+Invoke-StabilityAIImageModel -ImagesSavePath 'C:\images' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-image-core-v1:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
-Sends a text message to the on-demand Amazon Titan model in the specified AWS region and returns the response.
+Generates an image and saves the image to the C:\images folder.
 
 ### EXAMPLE 2
 ```
-Invoke-AmazonTextModel -Message 'Explain zero-point energy.' -ModelID amazon.titan-text-lite-v1 -ProfileName default -Region 'us-west-2' -ReturnFullObject
+Invoke-StabilityAIImageModel -ImagesSavePath 'C:\images' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-image-ultra-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
-Sends a text message to the on-demand Amazon Titan model in the specified AWS region and returns the full response object.
+Generates an image and saves the image to the C:\images folder.
+Returns the full object from the model.
 
 ### EXAMPLE 3
 ```
-Invoke-AmazonTextModel -Message 'Explain zero-point energy.' -ModelID amazon.titan-text-lite-v1 -ProfileName default -Region 'us-west-2' -NoContextPersist
+$invokeStabilityAIImageModelSplat = @{
+    ImagesSavePath     = 'C:\images'
+    ImagePrompt        = 'Create a starship emerging from a nebula.'
+    AspectRatio        = '1:1'
+    OutputFormat       = 'jpeg'
+    Seed               = 1234
+    NegativePrompt     = 'stars'
+    ModelID            = 'stability.stable-image-core-v1:0'
+    ReturnFullObject   = $true
+    Credential         = $awsCredential
+    Region             = 'us-west-2'
+}
+Invoke-StabilityAIImageModel @invokeStabilityAIImageModelSplat
 ```
 
-Sends a text message to the on-demand Amazon Titan model in the specified AWS region without persisting the conversation context history.
-This is useful for one-off interactions.
+This command generates an image based on the provided prompt and saves the image to the specified folder ('C:\images\image.png').
+This image will have a 1:1 aspect ratio and be in JPEG format.
+The seed is set to 1234, and the model is told to avoid the concept of stars.
 
 ### EXAMPLE 4
 ```
-Invoke-AmazonTextModel -Message 'Explain zero-point energy.' -ModelID amazon.titan-text-lite-v1 -ProfileName default -Region 'us-west-2' -PromptOnly
-```
-
-Sends a text message to the on-demand Amazon Titan model in the specified AWS region with a less conversational response.
-No conversation context history is persisted.
-
-### EXAMPLE 5
-```
-$customConversation = @'
-User: How are you?
-Bot: I am doing well, thank you. How can I help you today?
-User: Tell me about Klingon culture.
-Bot: Worf is the son of Mogh.
-User: No, don't tell me about Worf. Tell me about Klingon culture.
-'@
-Invoke-AmazonTextModel -CustomConversation $customConversation -ModelID amazon.titan-text-lite-v1 -ProfileName default -Region 'us-west-2'
-```
-
-Sends a custom conversation to the on-demand Amazon Titan model in the specified AWS region and returns the response.
-
-### EXAMPLE 6
-```
-$invokeAmazonTextModelSplat = @{
-    Message          = 'Explain zero-point energy.'
-    ModelID          = 'amazon.titan-text-lite-v1'
-    Temperature      = 0.5
-    MaxTokens        = 256
-    Credential       = $credential
-    Region           = 'us-west-2'
-    ReturnFullObject = $true
+$invokeStabilityAIImageModelSplat = @{
+    ImagesSavePath = 'C:\images'
+    ImagePrompt    = 'Create a starship emerging from a nebula.'
+    InitImagePath  = 'C:\images\init.jpg'
+    ImageStrength  = 0.5
+    ModelID        = 'stability.sd3-large-v1:0'
+    Credential     = $awsCredential
+    Region         = 'us-west-2'
 }
-Invoke-AmazonTextModel @invokeAmazonTextModelSplat
+Invoke-StabilityAIImageModel @invokeStabilityAIImageModelSplat
 ```
 
-Sends a text message to the on-demand Amazon Titan model in the specified AWS region with a temperature of 0.5 and a maximum of 256 tokens generated.
-The full response object is returned.
+This command generates an image based on the provided prompt and initial image and saves the image to the specified folder ('C:\images\image.png').
+The image strength is set to 0.5.
+The provided init image is used as a starting point for the generation.
 
 ## PARAMETERS
 
-### -Message
-The message to be sent to the model.
+### -ImagesSavePath
+The local file path to save the generated images.
 
 ```yaml
-Type: String
-Parameter Sets: Standard
+Type: Object
+Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -CustomConversation
-A properly formatted string that represents a custom conversation.
+### -ImagePrompt
+A text prompt used to generate the image.
 
 ```yaml
 Type: String
-Parameter Sets: PreCraftedMessages
+Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InitImagePath
+File path to image to use as the starting point for the generation.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ImageStrength
+Sometimes referred to as denoising, this parameter controls how much influence the image parameter has on the generated image.
+A value of 0 would yield an image that is identical to the input.
+A value of 1 would be as if you passed in no image at all.
+
+```yaml
+Type: Single
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AspectRatio
+Controls the aspect ratio of the generated image.
+Only valid for text-to-image requests.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: 1:1
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OutputFormat
+Specifies the format of the output image.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 6
+Default value: Png
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Seed
+The seed determines the initial noise setting.
+Use the same seed and the same settings as a previous run to allow inference to create a similar image.
+If you don't set this value, or the value is 0, it is set as a random number.
+If a seed is provided, the resulting generated image will be deterministic.
+What this means is that as long as all generation parameters remain the same, you can always recall the same image simply by generating it again.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NegativePrompt
+Use a negative prompt to tell the model to avoid certain concepts.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 8
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -141,15 +221,16 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: Named
-Default value: None
+Required: False
+Position: 9
+Default value: Stability.stable-image-core-v1:0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -ReturnFullObject
-Specify if you want the full object returned instead of just the message reply.
+Specify if you want the full object returned from the model.
+This will include the raw base64 image data and other information.
 
 ```yaml
 Type: SwitchParameter
@@ -159,87 +240,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PromptOnly
-When specified, the model will have a less conversational response.
-It will also not persist the conversation context history.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -NoContextPersist
-Do not persist the conversation context history.
-If this parameter is specified, you will not be able to have a continuous conversation with the model.
-Has no effect if -PromptOnly is specified.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -MaxTokens
-The maximum number of tokens to generate before stopping.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: 8192
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Temperature
-The amount of randomness injected into the response.
-Defaults to 1.0.
-Ranges from 0.0 to 1.0.
-Use a lower value to decrease randomness in responses.
-
-```yaml
-Type: Single
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TopP
-Use a lower value to ignore less probable options and decrease the diversity of responses.
-
-```yaml
-Type: Single
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -254,7 +254,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 10
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -269,7 +269,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 11
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -287,7 +287,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 12
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -304,7 +304,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 13
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -323,7 +323,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 14
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -340,7 +340,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 15
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -357,7 +357,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 16
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -373,7 +373,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 17
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -388,7 +388,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 18
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -402,14 +402,14 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### System.String
-### or
 ### System.Management.Automation.PSCustomObject
 ## NOTES
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 ## RELATED LINKS
 
-[https://www.pwshbedrock.dev/en/latest/Invoke-AmazonTextModel/](https://www.pwshbedrock.dev/en/latest/Invoke-AmazonTextModel/)
+[https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIImageModel/](https://www.pwshbedrock.dev/en/latest/Invoke-StabilityAIImageModel/)
 
-[https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-titan-text.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-titan-text.html)
+[https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-diffusion-stable-image-core-text-image-request-response.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-diffusion-stable-image-core-text-image-request-response.html)
+
+[https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1core/post](https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1core/post)
