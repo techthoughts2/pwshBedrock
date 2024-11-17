@@ -22,7 +22,8 @@ on:
 jobs:
   test:
     name: Run Tests
-    runs-on: codebuild-pwshBedrock-powershell_gha_cb_windows-${{ github.run_id }}-${{ github.run_attempt }}
+    # runs-on: codebuild-pwshBedrock-powershell_gha_cb_windows-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: windows-latest
     strategy:
       fail-fast: false
     steps:
