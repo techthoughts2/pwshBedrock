@@ -370,7 +370,7 @@ $toolResult = @(
         )
     }
 )
-$invokeAmazonTextModelSplat = @{
+$invokeCohereCommandRModelSplat = @{
     ModelID          = 'cohere.command-r-plus-v1:0'
     Preamble         = 'You are a savvy foodie who loves giving restaurant recommendations.'
     ReturnFullObject = $true
@@ -379,7 +379,7 @@ $invokeAmazonTextModelSplat = @{
     Credential       = $awsCredential
     Region           = 'us-west-2'
 }
-$finalResponse = Invoke-CohereCommandRModel @invokeAmazonTextModelSplat
+$finalResponse = Invoke-CohereCommandRModel @invokeCohereCommandRModelSplat
 $finalResponse
 #------------------------------------------------------------------------------------------------
 ```
@@ -474,5 +474,95 @@ $invokeMistralAIChatModelSplat = @{
 }
 $finalResponse = Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
 $finalResponse.choices[0].message
+#------------------------------------------------------------------------------------------------
+```
+
+#### Meta Tool Example
+
+```powershell
+#------------------------------------------------------------------------------------------------
+# declare the tool configuration
+$toolConfig = @(
+    [PSCustomObject]@{
+        name                  = 'restaurant'
+        description           = 'This tool will look up restaurant information in a provided geographic area.'
+        parameters = @{
+            'location' = [PSCustomObject]@{
+                param_type  = 'string'
+                description = 'The geographic location or locale. This could be a city, state, country, or full address.'
+                required    = $true
+            }
+            'cuisine'  = [PSCustomObject]@{
+                param_type  = 'string'
+                description = 'The type of cuisine to look up. This could be a specific type of food or a general category like "Italian" or "Mexican". If the user does not specify a cuisine, do not include this parameter in the response.'
+                required    = $false
+            }
+            'budget'   = [PSCustomObject]@{
+                param_type  = 'string'
+                description = 'The budget range for the restaurant. This has to be returned as a number from 1 to 5. The user could use words like "cheap", "moderate", or "expensive". They could provide "high end", or refer to a dollar amount like $$ or $$$$.'
+                required    = $false
+            }
+            'rating'   = [PSCustomObject]@{
+                param_type  = 'string'
+                description = 'The minimum rating for the restaurant. This has to be returned as a number from 1 to 5. The user may specify phrases like "good" or "excellent", or "highly rated"'
+                required    = $false
+            }
+        }
+    }
+)
+#------------------------------------------------------------------------------------------------
+# make a call using the Meta model to get a restaurant recommendation and pass in the tool configuration
+$invokeMetaCommandRModelSplat = @{
+    Message          = 'Can you recommend a good restaurant in New Braunfels, TX?'
+    ModelID          = 'meta.llama3-1-70b-instruct-v1:0'
+    ReturnFullObject = $true
+    Tools            = $toolConfig
+    Credential       = $awsCredential
+    Region           = 'us-west-2'
+}
+$response = Invoke-MetaModel @invokeMetaCommandRModelSplat
+#------------------------------------------------------------------------------------------------
+# use the ToolsResponse from Meta model to look up restaurant information using the tool
+$responseObj = $response.generation | ConvertFrom-Json -Depth 10
+$invokeGMapGeoCodeSplat = @{
+    GoogleAPIKey = $GoogleAPIKey
+    Address      = $responseObj.location
+}
+$localInfo = Invoke-GMapGeoCode @invokeGMapGeoCodeSplat
+
+$searchGMapNearbyPlaceSplat = @{
+    GoogleAPIKey = $GoogleAPIKey
+    Latitude     = $localInfo.Latitude
+    Longitude    = $localInfo.Longitude
+    Radius       = 5000
+    Type         = "restaurant"
+
+}
+if ($arguments.cuisine) {
+    $searchGMapNearbyPlaceSplat.Add('Keyword', $arguments.cuisine)
+}
+
+$restaurantQuery = Search-GMapNearbyPlace @searchGMapNearbyPlaceSplat
+
+$results = $restaurantQuery | Select-Object -Property name, rating, price_level, Open
+$topResult = $results | Sort-Object -Property rating -Descending | Select-Object -First 1
+#------------------------------------------------------------------------------------------------
+# format the tool response and send it back to the Meta model
+$toolResult = @(
+    [PSCustomObject]@{
+        output = @(
+            $topResult
+        )
+    }
+)
+$invokeAmazonTextModelSplat = @{
+    ToolsResults     = $toolResult
+    ModelID          = 'meta.llama3-1-70b-instruct-v1:0'
+    ReturnFullObject = $true
+    Credential       = $awsCredential
+    Region           = 'us-west-2'
+}
+$finalResponse = Invoke-MetaModel @invokeAmazonTextModelSplat
+$finalResponse
 #------------------------------------------------------------------------------------------------
 ```

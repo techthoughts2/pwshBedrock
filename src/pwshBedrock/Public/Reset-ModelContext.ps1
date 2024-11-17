@@ -118,9 +118,25 @@ function Reset-ModelContext {
                     Write-Verbose -Message ('Resetting message context for {0}' -f $ModelID)
                     $context = $Global:pwshBedrockModelContext | Where-Object { $_.ModelID -eq $ModelID }
                     Write-Debug -Message ($context | Out-String)
-                    if ($modelID -eq 'amazon.titan-text-express-v1' -or
-                        $modelID -eq 'amazon.titan-text-lite-v1' -or
-                        $modelID -eq 'amazon.titan-tg1-large') {
+                    if ($model -eq 'amazon.titan-text-express-v1' -or
+                        $model -eq 'amazon.titan-text-lite-v1' -or
+                        $model -eq 'amazon.titan-tg1-large' -or
+                        $model -eq 'meta.llama2-13b-chat-v1' -or
+                        $model -eq 'meta.llama2-70b-chat-v1' -or
+                        $model -eq 'meta.llama3-8b-instruct-v1:0' -or
+                        $model -eq 'meta.llama3-70b-instruct-v1:0' -or
+                        $model -eq 'meta.llama3-1-8b-instruct-v1:0' -or
+                        $model -eq 'meta.llama3-1-70b-instruct-v1:0' -or
+                        $model -eq 'meta.llama3-1-405b-instruct-v1:0' -or
+                        $model -eq 'meta.llama3-2-1b-instruct-v1:0' -or
+                        $model -eq 'meta.llama3-2-3b-instruct-v1:0' -or
+                        $model -eq 'meta.llama3-2-11b-instruct-v1:0' -or
+                        $model -eq 'meta.llama3-2-90b-instruct-v1:0' -or
+                        $model -eq 'mistral.mistral-7b-instruct-v0:2' -or
+                        $model -eq 'mistral.mixtral-8x7b-instruct-v0:1' -or
+                        $model -eq 'mistral.mistral-large-2402-v1:0' -or
+                        $model -eq 'mistral.mistral-large-2407-v1:0' -or
+                        $model -eq 'mistral.mistral-small-2402-v1:0') {
                         $context.Context = ''
                     }
                     else {
