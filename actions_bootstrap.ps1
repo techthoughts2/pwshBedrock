@@ -31,11 +31,11 @@ $modulesToInstall = New-Object System.Collections.Generic.List[object]
         }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'AWS.Tools.Common'
-            ModuleVersion = '4.1.690'
+            ModuleVersion = '4.1.700'
         }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'AWS.Tools.BedrockRuntime'
-            ModuleVersion = '4.1.690'
+            ModuleVersion = '4.1.700'
         }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'Convert'

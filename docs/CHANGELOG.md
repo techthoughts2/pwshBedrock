@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - `Invoke-AnthropicModel` - added support for new models: `anthropic.claude-3-5-haiku-20241022-v1:0`, `anthropic.claude-3-5-sonnet-20241022-v2:0`
     - Updated pricing for all models
 - Build changes:
-    - Updated bootstrap AWS modules from `4.1.621` to `4.1.690`
+    - Updated bootstrap AWS modules from `4.1.621` to `4.1.700`
 
 ## [0.15.0]
 
