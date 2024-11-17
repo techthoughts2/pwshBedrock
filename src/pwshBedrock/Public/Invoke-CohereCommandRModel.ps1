@@ -162,6 +162,8 @@
 .NOTES
     Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
+    * For a full tools example, see the advanced documentation on the pwshBedrock website.
+
     The Cohere Command R/R+ models support a unique feature that allows you to directly pass conversation chat history as a dedicated parameter.
     This helps maintain context across multiple messages, useful for a conversational flow.
 
@@ -181,6 +183,8 @@
     pwshBedrock
 .LINK
     https://www.pwshbedrock.dev/en/latest/Invoke-CohereCommandRModel/
+.LINK
+    https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-cohere-command-r-plus.html
 .LINK

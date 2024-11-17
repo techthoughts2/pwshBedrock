@@ -165,10 +165,14 @@
     System.Management.Automation.PSCustomObject
 .NOTES
     Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
+
+    * For a full tools example, see the advanced documentation on the pwshBedrock website.
 .COMPONENT
     pwshBedrock
 .LINK
     https://www.pwshbedrock.dev/en/latest/Invoke-AnthropicModel/
+.LINK
+    https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html
 .LINK

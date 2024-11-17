@@ -611,9 +611,13 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
+* For a full tools example, see the advanced documentation on the pwshBedrock website.
+
 ## RELATED LINKS
 
 [https://www.pwshbedrock.dev/en/latest/Invoke-AnthropicModel/](https://www.pwshbedrock.dev/en/latest/Invoke-AnthropicModel/)
+
+[https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/](https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/)
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)
 

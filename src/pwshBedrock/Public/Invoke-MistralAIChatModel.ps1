@@ -95,11 +95,15 @@
 .NOTES
     Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
+    * For a full tools example, see the advanced documentation on the pwshBedrock website.
+
     This was incredibly hard to make.
 .COMPONENT
     pwshBedrock
 .LINK
     https://www.pwshbedrock.dev/en/latest/Invoke-MistralAIChatModel/
+.LINK
+    https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-mistral-chat-completion.html
 .LINK
