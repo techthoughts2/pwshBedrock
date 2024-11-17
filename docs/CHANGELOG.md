@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.32.0] - **BREAKING CHANGES**
+## [0.33.0] - **BREAKING CHANGES**
 
 - Module changes:
     - stability.ai
@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - `Invoke-MistralAIModel` - minor corrections to debug output and help. Adjusted Max token limit validation.
     - Anthropic
         - `Invoke-AnthropicModel` - added support for new models: `anthropic.claude-3-5-haiku-20241022-v1:0`, `anthropic.claude-3-5-sonnet-20241022-v2:0`
+    - Updated pricing for all models
 - Build changes:
     - Updated bootstrap AWS modules from `4.1.621` to `4.1.690`
 

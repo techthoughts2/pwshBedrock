@@ -567,8 +567,8 @@ $script:anthropicModelInfo = @(
         MaxOutput                  = 4096
         TrainingCutoff             = '07-01-2024'
         PayloadLimit               = '20MB'
-        InputTokenCost             = 0.003
-        OutputTokenCost            = 0.015
+        InputTokenCost             = 0.001
+        OutputTokenCost            = 0.005
     }
     [PSCustomObject]@{
         ProviderName               = 'Anthropic'
@@ -1349,8 +1349,8 @@ $script:mistralAIModelInfo = @(
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
         PayloadLimit               = ''
-        InputTokenCost             = 0.004
-        OutputTokenCost            = 0.012
+        InputTokenCost             = 0.002
+        OutputTokenCost            = 0.006
     }
 ) #mistralModelInfo
 
