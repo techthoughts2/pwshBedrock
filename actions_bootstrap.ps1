@@ -50,6 +50,7 @@ foreach ($module in $modulesToInstall) {
         RequiredVersion    = $module.ModuleVersion
         Repository         = 'PSGallery'
         SkipPublisherCheck = $true
+        AllowClobber       = $true
         Force              = $true
         ErrorAction        = 'Stop'
     }
