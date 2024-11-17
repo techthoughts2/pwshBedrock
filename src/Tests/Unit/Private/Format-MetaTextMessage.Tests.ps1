@@ -280,7 +280,7 @@ Use the tool to find the info<|eot_id|><|start_header_id|>assistant<|end_header_
                 $normalizedResult | Should -Be $normalizedExpectedValue5
             } #it
 
-            It 'should handle a tool prompt for Llama 3.1+ model' {
+            It 'should handle a tool prompt for Llama 3.1+ model' -Skip:($PSVersionTable.PSVersion.Major -lt 6) {
                 $standardTools = @(
                     [PSCustomObject]@{
                         name        = 'string'
