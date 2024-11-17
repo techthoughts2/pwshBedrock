@@ -126,6 +126,20 @@ InModuleScope 'pwshBedrock' {
                         )
                     },
                     [PSCustomObject]@{
+                        ModelID = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = '5 Haiku context'
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    [PSCustomObject]@{
                         ModelID = 'anthropic.claude-3-sonnet-20240229-v1:0'
                         Context = @(
                             [PSCustomObject]@{
@@ -134,6 +148,20 @@ InModuleScope 'pwshBedrock' {
                                     [PSCustomObject]@{
                                         type = 'text'
                                         text = 'Sonnet context'
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    [PSCustomObject]@{
+                        ModelID = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = '5 Sonnet context'
                                     }
                                 )
                             }

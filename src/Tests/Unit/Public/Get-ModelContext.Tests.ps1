@@ -91,6 +91,13 @@ InModuleScope 'pwshBedrock' {
                         }
                     }
                     [PSCustomObject]@{
+                        ModelId = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
                         ModelId = 'anthropic.claude-3-opus-20240229-v1:0'
                         Context = [PSCustomObject]@{
                             role    = 'user'
@@ -99,6 +106,13 @@ InModuleScope 'pwshBedrock' {
                     }
                     [PSCustomObject]@{
                         ModelId = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
                         Context = [PSCustomObject]@{
                             role    = 'user'
                             content = 'test'

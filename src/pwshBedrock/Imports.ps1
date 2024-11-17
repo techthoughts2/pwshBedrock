@@ -100,6 +100,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'anthropic.claude-3-opus-20240229-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -109,6 +117,14 @@ $Global:pwshBedRockSessionModelTally = @(
     }
     [PSCustomObject]@{
         ModelId          = 'anthropic.claude-3-sonnet-20240229-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
         TotalCost        = 0
         InputTokenCount  = 0
         OutputTokenCount = 0
@@ -359,11 +375,19 @@ $Global:pwshBedrockModelContext = @(
         Context = New-Object System.Collections.Generic.List[object]
     }
     [PSCustomObject]@{
+        ModelId = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
         ModelId = 'anthropic.claude-3-opus-20240229-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
     [PSCustomObject]@{
         ModelId = 'anthropic.claude-3-sonnet-20240229-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
     [PSCustomObject]@{
@@ -527,6 +551,27 @@ $script:anthropicModelInfo = @(
     }
     [PSCustomObject]@{
         ProviderName               = 'Anthropic'
+        ModelName                  = 'Claude 3.5 Haiku'
+        ModelId                    = 'anthropic.claude-3-5-haiku-20241022-v1:0'
+        Description                = 'Our fastest model'
+        Strength                   = 'Intelligence at blazing speeds'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $true
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 200000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '07-01-2024'
+        PayloadLimit               = '20MB'
+        InputTokenCost             = 0.003
+        OutputTokenCost            = 0.015
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Anthropic'
         ModelName                  = 'Claude 3 Sonnet'
         ModelId                    = 'anthropic.claude-3-sonnet-20240229-v1:0'
         Description                = 'Ideal balance of intelligence and speed for enterprise workloads'
@@ -542,6 +587,27 @@ $script:anthropicModelInfo = @(
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '08-01-2023'
+        PayloadLimit               = '20MB'
+        InputTokenCost             = 0.003
+        OutputTokenCost            = 0.015
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Anthropic'
+        ModelName                  = 'Claude 3.5 Sonnet Upgraded Version'
+        ModelId                    = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
+        Description                = 'Most intelligent model'
+        Strength                   = 'Highest level of intelligence and capability'
+        Multilingual               = $true
+        Text                       = $true
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        ContextWindow              = 200000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '04-01-2024'
         PayloadLimit               = '20MB'
         InputTokenCost             = 0.003
         OutputTokenCost            = 0.015
