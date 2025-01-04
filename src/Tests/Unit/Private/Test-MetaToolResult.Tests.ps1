@@ -58,7 +58,7 @@ InModuleScope 'pwshBedrock' {
             } #beforeEach
 
             It 'Should return true for a standard tool object' {
-                $result = Test-MetaToolResult -ToolResults $standardTools -debug
+                $result = Test-MetaToolResult -ToolResults $standardTools
                 $result | Should -Be $true
             } #it
 

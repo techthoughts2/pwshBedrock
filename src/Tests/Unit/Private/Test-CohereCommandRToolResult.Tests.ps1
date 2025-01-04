@@ -120,7 +120,7 @@ InModuleScope 'pwshBedrock' {
             } #beforeEach
 
             It 'Should return true for a standard tool object' {
-                $result = Test-CohereCommandRToolResult -ToolResults $standardTools -debug
+                $result = Test-CohereCommandRToolResult -ToolResults $standardTools
                 $result | Should -Be $true
             } #it
 
