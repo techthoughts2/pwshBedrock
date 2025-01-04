@@ -376,34 +376,6 @@ User: "Hi there!
                         )
                     }
                     [PSCustomObject]@{
-                        ModelID = 'meta.llama2-13b-chat-v1'
-                        Context = @(
-                            [PSCustomObject]@{
-                                role    = 'user'
-                                content = @(
-                                    [PSCustomObject]@{
-                                        type = 'text'
-                                        text = 'Llama2 13b chat context'
-                                    }
-                                )
-                            }
-                        )
-                    }
-                    [PSCustomObject]@{
-                        ModelID = 'meta.llama2-70b-chat-v1'
-                        Context = @(
-                            [PSCustomObject]@{
-                                role    = 'user'
-                                content = @(
-                                    [PSCustomObject]@{
-                                        type = 'text'
-                                        text = 'Llama2 70b chat context'
-                                    }
-                                )
-                            }
-                        )
-                    }
-                    [PSCustomObject]@{
                         ModelID = 'meta.llama3-8b-instruct-v1:0'
                         Context = @(
                             [PSCustomObject]@{

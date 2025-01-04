@@ -166,14 +166,6 @@ InModuleScope 'pwshBedrock' {
                         }
                     }
                     [PSCustomObject]@{
-                        ModelId = 'meta.llama2-13b-chat-v1'
-                        Context = 'test'
-                    }
-                    [PSCustomObject]@{
-                        ModelId = 'meta.llama2-70b-chat-v1'
-                        Context = 'test'
-                    }
-                    [PSCustomObject]@{
                         ModelId = 'meta.llama3-70b-instruct-v1:0'
                         Context = 'test'
                     }

@@ -206,22 +206,6 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
-        ModelId          = 'meta.llama2-13b-chat-v1'
-        TotalCost        = 0
-        InputTokenCount  = 0
-        OutputTokenCount = 0
-        InputTokenCost   = 0
-        OutputTokenCost  = 0
-    }
-    [PSCustomObject]@{
-        ModelId          = 'meta.llama2-70b-chat-v1'
-        TotalCost        = 0
-        InputTokenCount  = 0
-        OutputTokenCount = 0
-        InputTokenCost   = 0
-        OutputTokenCost  = 0
-    }
-    [PSCustomObject]@{
         ModelId          = 'meta.llama3-70b-instruct-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -463,14 +447,6 @@ $Global:pwshBedrockModelContext = @(
     [PSCustomObject]@{
         ModelId = 'cohere.command-r-plus-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
-    }
-    [PSCustomObject]@{
-        ModelId = 'meta.llama2-13b-chat-v1'
-        Context = ''
-    }
-    [PSCustomObject]@{
-        ModelId = 'meta.llama2-70b-chat-v1'
-        Context = ''
     }
     [PSCustomObject]@{
         ModelId = 'meta.llama3-70b-instruct-v1:0'
@@ -1251,54 +1227,6 @@ $script:cohereModelInfo = @(
 # https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/MODEL_CARD.md
 
 $script:metaModelInfo = @(
-    [PSCustomObject]@{
-        ProviderName               = 'Meta'
-        ModelName                  = 'Llama 2 Chat 13B'
-        ModelId                    = 'meta.llama2-13b-chat-v1'
-        Description                = 'Our fine-tuned LLMs, called Llama-2-Chat, are optimized for dialogue use cases. Llama-2-Chat models outperform open-source chat models on most benchmarks we tested, and in our human evaluations for helpfulness and safety, are on par with some popular closed-source models like ChatGPT and PaLM.'
-        Strength                   = 'Tuned models are intended for assistant-like chat'
-        Multilingual               = $false
-        Text                       = $true
-        Image                      = $false
-        Video                      = $false
-        Document                   = $true
-        Vision                     = $false
-        SystemPrompt               = $true
-        ToolUse                    = $false
-        ResponseStreamingSupported = $true
-        ChatHistorySupported       = $true
-        InferenceProfile           = $false
-        ContextWindow              = 4000
-        MaxOutput                  = 2048
-        TrainingCutoff             = '07-01-2023'
-        PayloadLimit               = ''
-        InputTokenCost             = 0.00075
-        OutputTokenCost            = 0.001
-    }
-    [PSCustomObject]@{
-        ProviderName               = 'Meta'
-        ModelName                  = 'Llama 2 Chat 70B'
-        ModelId                    = 'meta.llama2-70b-chat-v1'
-        Description                = 'Our fine-tuned LLMs, called Llama-2-Chat, are optimized for dialogue use cases. Llama-2-Chat models outperform open-source chat models on most benchmarks we tested, and in our human evaluations for helpfulness and safety, are on par with some popular closed-source models like ChatGPT and PaLM.'
-        Strength                   = 'Tuned models are intended for assistant-like chat'
-        Multilingual               = $false
-        Text                       = $true
-        Image                      = $false
-        Video                      = $false
-        Document                   = $true
-        Vision                     = $false
-        SystemPrompt               = $true
-        ToolUse                    = $false
-        ResponseStreamingSupported = $true
-        ChatHistorySupported       = $true
-        InferenceProfile           = $false
-        ContextWindow              = 4000
-        MaxOutput                  = 2048
-        TrainingCutoff             = '07-01-2023'
-        PayloadLimit               = ''
-        InputTokenCost             = 0.00195
-        OutputTokenCost            = 0.00256
-    }
     [PSCustomObject]@{
         ProviderName               = 'Meta'
         ModelName                  = 'Llama 3 8B Instruct'

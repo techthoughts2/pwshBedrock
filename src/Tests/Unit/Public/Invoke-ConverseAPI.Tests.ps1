@@ -219,7 +219,7 @@ InModuleScope 'pwshBedrock' {
                     $invokeConverseAPISplat = @{
                         Message     = 'Make it so.'
                         MediaPath   = 'C:\Users\user\Documents\image.jpg'
-                        ModelID     = 'meta.llama2-13b-chat-v1'
+                        ModelID     = 'meta.llama3-2-1b-instruct-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
                     }

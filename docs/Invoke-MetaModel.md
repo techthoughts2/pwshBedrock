@@ -50,14 +50,14 @@ input and output tokens and adds the estimate to the models tally information.
 
 ### EXAMPLE 1
 ```
-Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama2-13b-chat-v1' -Credential $awsCredential -Region 'us-west-2'
+Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-2-90b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends a text message to the on-demand Meta model in the specified AWS region and returns the response.
 
 ### EXAMPLE 2
 ```
-Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama2-13b-chat-v1' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
+Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-2-90b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
 Sends a text message to the on-demand Meta model in the specified AWS region and returns the full response object.
@@ -73,7 +73,7 @@ Sends a text message to the on-demand Meta model in the specified AWS region and
 ```
 $invokeMetaModelSplat = @{
     Message          = 'Explain zero-point energy.'
-    ModelID          = 'meta.llama2-13b-chat-v1'
+    ModelID          = 'meta.llama3-2-90b-instruct-v1:0'
     MaxTokens        = 2000
     SystemPrompt     = 'You are a deep thinking model with a galactic perspective'
     Credential       = $awsCredential

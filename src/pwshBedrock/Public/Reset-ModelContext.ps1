@@ -66,8 +66,6 @@ function Reset-ModelContext {
             # 'cohere.command-light-text-v14',
             'cohere.command-r-v1:0',
             'cohere.command-r-plus-v1:0',
-            'meta.llama2-13b-chat-v1',
-            'meta.llama2-70b-chat-v1',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
@@ -128,8 +126,6 @@ function Reset-ModelContext {
                     if ($model -eq 'amazon.titan-text-express-v1' -or
                         $model -eq 'amazon.titan-text-lite-v1' -or
                         $model -eq 'amazon.titan-tg1-large' -or
-                        $model -eq 'meta.llama2-13b-chat-v1' -or
-                        $model -eq 'meta.llama2-70b-chat-v1' -or
                         $model -eq 'meta.llama3-8b-instruct-v1:0' -or
                         $model -eq 'meta.llama3-70b-instruct-v1:0' -or
                         $model -eq 'meta.llama3-1-8b-instruct-v1:0' -or
@@ -169,8 +165,6 @@ function Reset-ModelContext {
                         if ($model -eq 'amazon.titan-text-express-v1' -or
                             $model -eq 'amazon.titan-text-lite-v1' -or
                             $model -eq 'amazon.titan-tg1-large' -or
-                            $model -eq 'meta.llama2-13b-chat-v1' -or
-                            $model -eq 'meta.llama2-70b-chat-v1' -or
                             $model -eq 'meta.llama3-8b-instruct-v1:0' -or
                             $model -eq 'meta.llama3-70b-instruct-v1:0' -or
                             $model -eq 'meta.llama3-1-8b-instruct-v1:0' -or

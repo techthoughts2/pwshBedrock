@@ -35,8 +35,6 @@ InModuleScope 'pwshBedrock' {
                 # 'cohere.command-light-text-v14', # *note: not supported by Converse API
                 'cohere.command-r-v1:0',
                 'cohere.command-r-plus-v1:0',
-                'meta.llama2-13b-chat-v1',
-                'meta.llama2-70b-chat-v1',
                 'meta.llama3-70b-instruct-v1:0',
                 'meta.llama3-8b-instruct-v1:0',
                 'meta.llama3-1-8b-instruct-v1:0',

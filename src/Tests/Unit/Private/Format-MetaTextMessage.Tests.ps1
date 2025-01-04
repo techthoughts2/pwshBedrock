@@ -30,7 +30,7 @@ InModuleScope 'pwshBedrock' {
             } #it
 
             It 'should throw if an unsupported role is provided' {
-                { Format-MetaTextMessage -Role 'unsupported.role' -Message 'Live long and prosper!' -ModelID 'meta.llama2-13b-chat-v1' } | Should -Throw
+                { Format-MetaTextMessage -Role 'unsupported.role' -Message 'Live long and prosper!' -ModelID 'meta.llama3-2-90b-instruct-v1:0' } | Should -Throw
             } #it
 
         } #context_Error
