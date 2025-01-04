@@ -58,6 +58,11 @@ function Add-ModelCostEstimate {
             'ai21.jamba-instruct-v1:0',
             'ai21.jamba-1-5-mini-v1:0',
             'ai21.jamba-1-5-large-v1:0',
+            'amazon.nova-pro-v1:0',
+            'amazon.nova-lite-v1:0',
+            'amazon.nova-micro-v1:0',
+            'amazon.nova-canvas-v1:0',
+            'amazon.nova-reel-v1:0',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',
@@ -138,6 +143,18 @@ function Add-ModelCostEstimate {
                         $outputTokenCount = $Usage.results.tokenCount
                     }
                     'amazon.titan-tg1-large' {
+                        $inputTokenCount = $Usage.'inputTextTokenCount'
+                        $outputTokenCount = $Usage.results.tokenCount
+                    }
+                    'amazon.nova-pro-v1:0' {
+                        $inputTokenCount = $Usage.'inputTextTokenCount'
+                        $outputTokenCount = $Usage.results.tokenCount
+                    }
+                    'amazon.nova-lite-v1:0' {
+                        $inputTokenCount = $Usage.'inputTextTokenCount'
+                        $outputTokenCount = $Usage.results.tokenCount
+                    }
+                    'amazon.nova-micro-v1:0' {
                         $inputTokenCount = $Usage.'inputTextTokenCount'
                         $outputTokenCount = $Usage.results.tokenCount
                     }

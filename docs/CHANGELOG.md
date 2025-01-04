@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.40.0]
+
+- Module changes:
+    - Added two new properties to all model documentation objects:
+        - `Image` - designates if the model can generate images
+        - `Video` - designates if the model can generate video
+        - `Vision` - re-purposed to now designate if the model can see and describe uploaded content
+            - This required some logic re-work in several functions that were previously using `Vision` to designate image capability
+    - Amazon
+        - `Invoke-AmazonNovaTextModel` - added support for new Nova Text models: `amazon.nova-pro-v1:0`, `amazon.nova-lite-v1:0`, `amazon.nova-micro-v1:0`
+
 ## [0.33.0] - **BREAKING CHANGES**
 
 - Module changes:

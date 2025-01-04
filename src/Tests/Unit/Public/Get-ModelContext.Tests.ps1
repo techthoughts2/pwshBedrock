@@ -61,6 +61,18 @@ InModuleScope 'pwshBedrock' {
                     # }
                     # }
                     [PSCustomObject]@{
+                        ModelId = 'amazon.nova-pro-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'amazon.nova-lite-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'amazon.nova-micro-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
                         ModelId = 'amazon.titan-text-express-v1'
                         Context = 'test'
                     }

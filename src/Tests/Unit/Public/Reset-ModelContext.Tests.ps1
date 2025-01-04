@@ -12,6 +12,8 @@ InModuleScope 'pwshBedrock' {
     $allModelIDs = ($allModelInfo | Where-Object {
             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
             $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
+            $_.ModelId -ne 'amazon.nova-canvas-v1:0' -and
+            $_.ModelId -ne 'amazon.nova-reel-v1:0' -and
             $_.ModelId -ne 'cohere.command-text-v14' -and
             $_.ModelId -ne 'cohere.command-light-text-v14'
         }).ModelID
@@ -218,6 +220,48 @@ User: "Hi there!
                         Context = @'
 User: "Hi there!
 '@
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'amazon.nova-pro-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Opus context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'amazon.nova-lite-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Opus context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'amazon.nova-micro-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Opus context'
+                                    }
+                                )
+                            }
+                        )
                     }
                     [PSCustomObject]@{
                         ModelID = 'ai21.jamba-instruct-v1:0'

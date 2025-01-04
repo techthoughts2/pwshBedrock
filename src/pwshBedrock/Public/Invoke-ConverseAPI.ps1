@@ -262,6 +262,9 @@ function Invoke-ConverseAPI {
             'ai21.jamba-1-5-large-v1:0',
             # 'amazon.titan-image-generator-v1', # *note: not supported by Converse API
             # 'amazon.titan-image-generator-v2:0', # *note: not supported by Converse API
+            'amazon.nova-pro-v1:0',
+            'amazon.nova-lite-v1:0',
+            'amazon.nova-micro-v1:0',
             'amazon.titan-text-express-v1',
             'amazon.titan-text-lite-v1',
             'amazon.titan-text-premier-v1:0',

@@ -44,6 +44,11 @@ function Reset-ModelContext {
             'ai21.jamba-instruct-v1:0',
             'ai21.jamba-1-5-mini-v1:0',
             'ai21.jamba-1-5-large-v1:0',
+            'amazon.nova-pro-v1:0',
+            'amazon.nova-lite-v1:0',
+            'amazon.nova-micro-v1:0',
+            'amazon.nova-canvas-v1:0',
+            'amazon.nova-reel-v1:0',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',
@@ -153,6 +158,8 @@ function Reset-ModelContext {
                     $allModelIDs = ($allModelInfo | Where-Object {
                             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
                             $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
+                            $_.ModelId -ne 'amazon.nova-canvas-v1:0' -and
+                            $_.ModelId -ne 'amazon.nova-reel-v1:0' -and
                             $_.ModelId -ne 'cohere.command-text-v14' -and
                             $_.ModelId -ne 'cohere.command-light-text-v14'
                         }).ModelID
