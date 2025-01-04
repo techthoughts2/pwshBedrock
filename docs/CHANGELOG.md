@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.42.0]
+## [0.43.0]
 
 - Module changes:
     - Added two new properties to all model documentation objects:
@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
             - This required some logic re-work in several functions that were previously using `Vision` to designate image capability
     - Added inference profile ID support to all models IAW [Supported cross-region inference profiles](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html)
         - pwshBedrock will now properly format the inference profile ID for all models that support which enables the ability to make Bedrock calls to other regions
+    - `Reset-ModelContext` - fixed issue where certain models were missing from validation.
     - Amazon
         - `Invoke-AmazonNovaTextModel` - added support for new Nova Text models: `amazon.nova-pro-v1:0`, `amazon.nova-lite-v1:0`, `amazon.nova-micro-v1:0`
 
