@@ -64,10 +64,8 @@
     Sends a text message with a video media file to the on-demand Amazon Nova model in the specified AWS region and returns the response.
     .EXAMPLE
     $invokeAmazonNovaTextModelSplat = @{
-        # Message          = 'What do you see in this photo?'
-        # Message          = 'What do you see in this video?'
         Message          = 'Summarize the document in three sentences'
-        MediaPath        = 'C:\path\to\ocument.pdf'
+        MediaPath        = 'C:\path\to\document.pdf'
         ModelID          = 'amazon.nova-pro-v1:0'
         Credential       = $credential
         Region           = 'us-west-2'
