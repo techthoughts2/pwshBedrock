@@ -328,10 +328,6 @@ function Invoke-AmazonNovaTextModel {
         [string]$SessionToken
 
     )
-    <#
-    TODO: Invoke-BDRRModel: Invocation of model ID amazon.nova-pro-v1:0 with on-demand throughput isn’t supported. Retry your request with the ID or ARN of an inference profile that contains this model.
-    TODO: Support S3Location for video files
-    #>
 
     $modelInfo = $script:amazonModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
@@ -471,9 +467,11 @@ function Invoke-AmazonNovaTextModel {
     $jsonBody = $bodyObj | ConvertTo-Json -Depth 10
     [byte[]]$byteArray = [System.Text.Encoding]::UTF8.GetBytes($jsonBody)
 
+    $inferenceModelID = Format-InferenceProfileID -ModelID $ModelID -Region $Region
+
     $cmdletParams = @{
         ContentType = 'application/json'
-        ModelId     = $ModelID
+        ModelId     = $inferenceModelID
         Body        = $byteArray
     }
 

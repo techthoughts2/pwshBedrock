@@ -272,24 +272,24 @@ function Invoke-MetaModel {
 
     )
 
-    if ($ModelID -like 'meta.llama3-2-*') {
-        Write-Debug -Message '3.2 Model provided. This requires region inference.'
-        if ($Region -like 'us*') {
-            Write-Debug -Message 'Region is US. Adding us. to ModelID.'
-            $processedModelID = 'us.' + $ModelID
-        }
-        elseif ($Region -like 'eu*') {
-            Write-Debug -Message 'Region is EU. Adding eu. to ModelID.'
-            $processedModelID = 'eu.' + $ModelID
-        }
-        else {
-            Write-Warning -Message 'Only US and EU regions are supported for 3.2 models.'
-            throw 'Only US and EU regions are supported for 3.2 models.'
-        }
-    }
-    else {
-        $processedModelID = $ModelID
-    }
+    # if ($ModelID -like 'meta.llama3-2-*') {
+    #     Write-Debug -Message '3.2 Model provided. This requires region inference.'
+    #     if ($Region -like 'us*') {
+    #         Write-Debug -Message 'Region is US. Adding us. to ModelID.'
+    #         $processedModelID = 'us.' + $ModelID
+    #     }
+    #     elseif ($Region -like 'eu*') {
+    #         Write-Debug -Message 'Region is EU. Adding eu. to ModelID.'
+    #         $processedModelID = 'eu.' + $ModelID
+    #     }
+    #     else {
+    #         Write-Warning -Message 'Only US and EU regions are supported for 3.2 models.'
+    #         throw 'Only US and EU regions are supported for 3.2 models.'
+    #     }
+    # }
+    # else {
+    #     $processedModelID = $ModelID
+    # }
 
     $modelInfo = $script:metaModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
@@ -427,9 +427,11 @@ function Invoke-MetaModel {
     $jsonBody = $bodyObj | ConvertTo-Json -Depth 10
     [byte[]]$byteArray = [System.Text.Encoding]::UTF8.GetBytes($jsonBody)
 
+    $inferenceModelID = Format-InferenceProfileID -ModelID $ModelID -Region $Region
+
     $cmdletParams = @{
         ContentType = 'application/json'
-        ModelId     = $processedModelID
+        ModelId     = $inferenceModelID
         Body        = $byteArray
     }
 

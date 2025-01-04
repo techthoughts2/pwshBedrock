@@ -66,6 +66,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.Vision                     | Should -Not -BeNullOrEmpty
                 $eval.ResponseStreamingSupported | Should -Not -BeNullOrEmpty
                 $eval.ChatHistorySupported       | Should -Not -BeNullOrEmpty
+                $eval.InferenceProfile          | Should -Not -BeNullOrEmpty
             } #it
 
             It 'should return all model values if specified' {

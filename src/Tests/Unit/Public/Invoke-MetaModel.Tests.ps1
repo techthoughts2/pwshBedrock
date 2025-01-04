@@ -125,17 +125,17 @@ Who is the best captain in Star Trek?[/INST]
                 } | Should -Throw
             } #it
 
-            It 'should throw if a 3.2 model is provided in an unsupported region' {
-                {
-                    $invokeMetaModelSplat = @{
-                        Message     = 'Resistance is futile.'
-                        ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
-                        ProfileName = 'default'
-                        Region      = 'ap-northeast-1'
-                    }
-                    Invoke-MetaModel @invokeMetaModelSplat
-                } | Should -Throw
-            } #it
+            # It 'should throw if a 3.2 model is provided in an unsupported region' {
+            #     {
+            #         $invokeMetaModelSplat = @{
+            #             Message     = 'Resistance is futile.'
+            #             ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
+            #             ProfileName = 'default'
+            #             Region      = 'ap-northeast-1'
+            #         }
+            #         Invoke-MetaModel @invokeMetaModelSplat
+            #     } | Should -Throw
+            # } #it
 
             It 'should throw if a tool is provided for a model below 3.1' {
                 {

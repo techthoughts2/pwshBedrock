@@ -789,7 +789,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Invoke-BDRRModel {
                     $response
                     $Region         | Should -BeExactly 'us-west-2'
-                    $ModelID        | Should -BeExactly 'amazon.nova-pro-v1:0'
+                    $ModelID        | Should -BeExactly 'us.amazon.nova-pro-v1:0'
                     $AccessKey      | Should -BeExactly 'ak'
                     $SecretKey      | Should -BeExactly 'sk'
                     $ContentType    | Should -BeExactly 'application/json'
@@ -813,7 +813,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Invoke-BDRRModel {
                     $response
                     $Region             | Should -BeExactly 'us-west-2'
-                    $ModelID            | Should -BeExactly 'amazon.nova-pro-v1:0'
+                    $ModelID            | Should -BeExactly 'us.amazon.nova-pro-v1:0'
                     $Credential         | Should -Not -BeNullOrEmpty
                     $EndpointUrl        | Should -BeExactly 'string'
                     $NetworkCredential  | Should -Not -BeNullOrEmpty

@@ -598,8 +598,10 @@ function Invoke-ConverseAPI {
     -ClientConfig <AmazonBedrockRuntimeConfig>
     #>
 
+    $inferenceModelID = Format-InferenceProfileID -ModelID $ModelID -Region $Region
+
     $invokeBDRRConverseSplat = @{
-        ModelId = $ModelID
+        ModelId = $inferenceModelID
     }
     if ($formattedMessages) {
         $invokeBDRRConverseSplat.Add('Message', $formattedMessages)

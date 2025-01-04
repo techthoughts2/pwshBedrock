@@ -300,9 +300,11 @@ function Invoke-StabilityAIImageModel {
     $jsonBody = $bodyObj | ConvertTo-Json -Depth 10
     [byte[]]$byteArray = [System.Text.Encoding]::UTF8.GetBytes($jsonBody)
 
+    $inferenceModelID = Format-InferenceProfileID -ModelID $ModelID -Region $Region
+
     $cmdletParams = @{
         ContentType = 'application/json'
-        ModelId     = $ModelID
+        ModelId     = $inferenceModelID
         Body        = $byteArray
     }
 
