@@ -627,8 +627,8 @@ $script:anthropicModelInfo = @(
         MaxOutput                  = 4096
         TrainingCutoff             = '07-01-2024'
         PayloadLimit               = '20MB'
-        InputTokenCost             = 0.001
-        OutputTokenCost            = 0.005
+        InputTokenCost             = 0.0008
+        OutputTokenCost            = 0.004
     }
     [PSCustomObject]@{
         ProviderName               = 'Anthropic'
