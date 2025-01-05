@@ -278,6 +278,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'meta.llama3-3-70b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'mistral.mistral-7b-instruct-v0:2'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -487,6 +495,10 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'meta.llama3-2-90b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-3-70b-instruct-v1:0'
         Context = ''
     }
     [PSCustomObject]@{
@@ -1425,8 +1437,8 @@ $script:metaModelInfo = @(
         MaxOutput                  = 4096
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.00035
-        OutputTokenCost            = 0.00035
+        InputTokenCost             = 0.00016
+        OutputTokenCost            = 0.00016
     }
     [PSCustomObject]@{
         ProviderName               = 'Meta'
@@ -1449,8 +1461,32 @@ $script:metaModelInfo = @(
         MaxOutput                  = 4096
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.002
-        OutputTokenCost            = 0.002
+        InputTokenCost             = 0.00072
+        OutputTokenCost            = 0.00072
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.3 70B Instruct'
+        ModelId                    = 'meta.llama3-3-70b-instruct-v1:0'
+        Description                = 'Llama 3.3 70Bs comprehensive training results in robust understanding and generation capabilities across diverse tasks. This model supports high-performance conversational AI designed for content creation, enterprise applications, and research, offering advanced language understanding capabilities, including text summarization, classification, sentiment analysis, and code generation.'
+        Strength                   = 'enterprise applications, content creation, and advanced research initiatives. excels at general knowledge, long-form text generation, multilingual translation, coding, math, and advanced reasoning. It also introduces image reasoning capabilities, allowing for image understanding and visual reasoning tasks. This model is ideal for the following use cases: image captioning, image-text retrieval, visual grounding, visual question answering and visual reasoning, and document visual question answering.'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00072
+        OutputTokenCost            = 0.00072
     }
 ) #metaModelInfo
 

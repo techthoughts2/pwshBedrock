@@ -89,6 +89,7 @@ function Add-ModelCostEstimate {
             'meta.llama3-2-3b-instruct-v1:0',
             'meta.llama3-2-11b-instruct-v1:0',
             'meta.llama3-2-90b-instruct-v1:0',
+            'meta.llama3-3-70b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-large-2407-v1:0',
@@ -243,6 +244,10 @@ function Add-ModelCostEstimate {
                         $outputTokenCount = $Usage.generation_token_count
                     }
                     'meta.llama3-2-90b-instruct-v1:0' {
+                        $inputTokenCount = $Usage.prompt_token_count
+                        $outputTokenCount = $Usage.generation_token_count
+                    }
+                    'meta.llama3-3-70b-instruct-v1:0' {
                         $inputTokenCount = $Usage.prompt_token_count
                         $outputTokenCount = $Usage.generation_token_count
                     }

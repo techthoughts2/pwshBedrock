@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.51.0] - **BREAKING CHANGES**
+## [0.52.0] - **BREAKING CHANGES**
 
 - Module changes:
     - Added two new properties to all model documentation objects:
@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
             - `CfgScale` parameter maximum adjusted from 10 to 9.9
     - Meta
         - Removed `meta.llama2-13b-chat-v1` and `meta.llama2-70b-chat-v1` from all functions as Bedrock has EOL these two models. - ***Breaking Change***
+        - Updated `Invoke-MetaModel` to support new model: `meta.llama3-3-70b-instruct-v1:0`
     - stability.ai
         - Updated `Invoke-StabilityAIImageModel` to support new model: `stability.sd3-5-large-v1:0`
 

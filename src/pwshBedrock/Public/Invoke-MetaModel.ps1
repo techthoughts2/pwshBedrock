@@ -189,7 +189,8 @@ function Invoke-MetaModel {
             'meta.llama3-2-1b-instruct-v1:0',
             'meta.llama3-2-3b-instruct-v1:0',
             'meta.llama3-2-11b-instruct-v1:0',
-            'meta.llama3-2-90b-instruct-v1:0'
+            'meta.llama3-2-90b-instruct-v1:0',
+            'meta.llama3-3-70b-instruct-v1:0'
         )]
         [string]$ModelID,
 

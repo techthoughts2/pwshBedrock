@@ -502,6 +502,20 @@ User: "Hi there!
                         )
                     }
                     [PSCustomObject]@{
+                        ModelID = 'meta.llama3-3-70b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama3 2 90b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
                         ModelID = 'mistral.mistral-7b-instruct-v0:2'
                         Context = @(
                             [PSCustomObject]@{
