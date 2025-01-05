@@ -183,6 +183,8 @@
 .LINK
     https://www.pwshbedrock.dev/en/latest/Invoke-AmazonNovaTextModel/
 .LINK
+    https://pwshbedrock.readthedocs.io/en/latest/pwshBedrock-Advanced/
+.LINK
     https://docs.aws.amazon.com/nova/latest/userguide/complete-request-schema.html
 .LINK
     https://docs.aws.amazon.com/nova/latest/userguide/tool-use-results.html

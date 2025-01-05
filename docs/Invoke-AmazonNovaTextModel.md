@@ -576,6 +576,8 @@ Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 [https://www.pwshbedrock.dev/en/latest/Invoke-AmazonNovaTextModel/](https://www.pwshbedrock.dev/en/latest/Invoke-AmazonNovaTextModel/)
 
+[https://pwshbedrock.readthedocs.io/en/latest/pwshBedrock-Advanced/](https://pwshbedrock.readthedocs.io/en/latest/pwshBedrock-Advanced/)
+
 [https://docs.aws.amazon.com/nova/latest/userguide/complete-request-schema.html](https://docs.aws.amazon.com/nova/latest/userguide/complete-request-schema.html)
 
 [https://docs.aws.amazon.com/nova/latest/userguide/tool-use-results.html](https://docs.aws.amazon.com/nova/latest/userguide/tool-use-results.html)
