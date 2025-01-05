@@ -249,6 +249,13 @@ InModuleScope 'pwshBedrock' {
                             content = 'test'
                         }
                     }
+                    [PSCustomObject]@{
+                        ModelId = 'stability.sd3-5-large-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
                 )
             }
 

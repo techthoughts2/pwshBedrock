@@ -337,6 +337,11 @@ $Global:pwshBedRockSessionModelTally = @(
         ImageCount = 0
         ImageCost  = 0
     }
+    [PSCustomObject]@{
+        ModelId    = 'stability.sd3-5-large-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
 )
 
 #endregion
@@ -518,6 +523,10 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'stability.sd3-large-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'stability.sd3-5-large-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
 )
@@ -1671,6 +1680,33 @@ $script:stabilityAIModelInfo = @(
         Model                      = ''
         Description                = 'At 8 billion parameters, with superior quality and prompt adherence, this base model is the most powerful in the Stable Diffusion family. This model is ideal for professional use cases at 1 megapixel resolution.'
         Strength                   = 'strikes an ideal balance between generation speed and output quality, making it ideal for creating high-volume, high-quality digital assets like websites, newsletters, and marketing materials.'
+        Multilingual               = $false
+        Text                       = $false
+        Image                      = $true
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        InferenceProfile           = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '' #! Couldn't find in documentation
+        ImageCost                  = 0.08
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Stability AI'
+        ModelName                  = 'Stable Diffusion 3.5 Large'
+        ModelId                    = 'stability.sd3-5-large-v1:0'
+        Model                      = ''
+        Description                = 'the most powerful model in the Stable Diffusion family at 8.1 billion parameters, with superior quality and prompt adherence'
+        Strength                   = 'Story boarding, concept art creation, and rapid prototyping of visual effects. typography, intricate compositions, dynamic lighting, vibrant colors, and artistic cohesion.'
         Multilingual               = $false
         Text                       = $false
         Image                      = $true

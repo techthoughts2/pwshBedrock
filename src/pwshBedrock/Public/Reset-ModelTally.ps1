@@ -87,7 +87,8 @@ function Reset-ModelTally {
             'stability.stable-diffusion-xl-v1',
             'stability.stable-image-ultra-v1:0',
             'stability.stable-image-core-v1:0',
-            'stability.sd3-large-v1:0'
+            'stability.sd3-large-v1:0',
+            'stability.sd3-5-large-v1:0'
         )]
         [string]$ModelID,
 

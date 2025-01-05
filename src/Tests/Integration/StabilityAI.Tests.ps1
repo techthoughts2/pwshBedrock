@@ -162,7 +162,7 @@ InModuleScope 'pwshBedrock' {
                 $eval | Should -Not -BeNullOrEmpty
             } #it
 
-            It 'should return an image when using image-to-image for <_.ModelId>' -Foreach ($script:stabilityAIModelInfo | Where-Object { $_.ModelID -eq 'stability.sd3-large-v1:0' }) {
+            It 'should return an image when using image-to-image for <_.ModelId>' -Foreach ($script:stabilityAIModelInfo | Where-Object { $_.ModelID -like '*sd3*' }) {
                 $ModelID = $_.ModelID
                 $invokeStabilityAIImageModelSplat = @{
                     ImagesSavePath   = $outFile

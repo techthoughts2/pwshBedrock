@@ -627,6 +627,20 @@ User: "Hi there!
                             }
                         )
                     }
+                    [PSCustomObject]@{
+                        ModelID = 'stability.sd3-5-large-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'SD3 large v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
                 )
             } #beforeEach
 

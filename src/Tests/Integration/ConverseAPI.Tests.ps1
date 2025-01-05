@@ -53,6 +53,7 @@ InModuleScope 'pwshBedrock' {
                 # 'stability.stable-image-ultra-v1:0', # *note: not supported by Converse API
                 # 'stability.stable-image-core-v1:0' # *note: not supported by Converse API
                 # 'stability.sd3-large-v1:0' # *note: not supported by Converse API
+                # 'stability.sd3-5-large-v1:0' # *note: not supported by Converse API
             )
         }
         BeforeAll {
