@@ -223,6 +223,8 @@
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/titan-image-models.html
 .LINK
+    https://docs.aws.amazon.com/nova/latest/userguide/image-gen-req-resp-structure.html
+.LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-titan-image.html
 #>
 function Invoke-AmazonImageModel {
@@ -470,7 +472,7 @@ function Invoke-AmazonImageModel {
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'Specifies how strongly the generated image should adhere to the prompt.')]
-        [ValidateRange(1.1, 10.0)]
+        [ValidateRange(1.1, 9.9)]
         [float]$CfgScale,
 
         #_______________________________________________________
@@ -478,6 +480,7 @@ function Invoke-AmazonImageModel {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
+            'amazon.nova-canvas-v1:0',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-image-generator-v1'
         )]
@@ -714,8 +717,8 @@ function Invoke-AmazonImageModel {
             }
         } #variation
         'Condition' {
-            if ($ModelID -ne 'amazon.titan-image-generator-v2:0') {
-                throw 'Conditioning can only be used with the v2 model.'
+            if ($ModelID -ne 'amazon.titan-image-generator-v2:0' -and $ModelID -ne 'amazon.nova-canvas-v1:0') {
+                throw 'Conditioning can only be used with the Titan v2 or Nova model.'
             }
 
             Write-Debug -Message 'Validating primary CONDITIONING image.'
@@ -755,8 +758,8 @@ function Invoke-AmazonImageModel {
             }
         } #condition
         'ColorGuided' {
-            if ($ModelID -ne 'amazon.titan-image-generator-v2:0') {
-                throw 'ColorGuided can only be used with the v2 model.'
+            if ($ModelID -ne 'amazon.titan-image-generator-v2:0' -and $ModelID -ne 'amazon.nova-canvas-v1:0') {
+                throw 'ColorGuided can only be used with the Titan v2 or Nova model.'
             }
 
             Write-Debug -Message 'Validating primary COLORGUIDED image.'
@@ -800,8 +803,8 @@ function Invoke-AmazonImageModel {
         } #colorGuided
         'BackgroundRemoval' {
 
-            if ($ModelID -ne 'amazon.titan-image-generator-v2:0') {
-                throw 'BackgroundRemoval can only be used with the v2 model.'
+            if ($ModelID -ne 'amazon.titan-image-generator-v2:0' -and $ModelID -ne 'amazon.nova-canvas-v1:0') {
+                throw 'BackgroundRemoval can only be used with the Titan v2 or Nova model.'
             }
 
             Write-Debug -Message 'Validating primary BACKGROUND REMOVAL image.'
@@ -971,7 +974,7 @@ function Invoke-AmazonImageModel {
                 Write-Error $_
                 throw
             }
-            $imageFileName = '{0}-{1}.png' -f $ModelID, (Get-Date -Format 'yyyyMMdd-HHmmss')
+            $imageFileName = '{0}-{1}.png' -f ($ModelID -replace ':',''), (Get-Date -Format 'yyyyMMdd-HHmmss')
             $imageFilePath = [System.IO.Path]::Combine($ImagesSavePath, $imageFileName)
             Write-Verbose -Message ('Saving image to {0}.' -f $imageFilePath)
             try {

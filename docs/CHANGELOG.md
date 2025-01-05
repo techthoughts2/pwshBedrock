@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.48.0] - **BREAKING CHANGES**
+## [0.50.0] - **BREAKING CHANGES**
 
 - Module changes:
     - Added two new properties to all model documentation objects:
@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `Reset-ModelContext` - fixed issue where certain models were missing from validation.
     - Amazon
         - `Invoke-AmazonNovaTextModel` - added support for new Nova Text models: `amazon.nova-pro-v1:0`, `amazon.nova-lite-v1:0`, `amazon.nova-micro-v1:0`
+        - `Invoke-AmazonImageModel`
+            - added support for new Nova image model: `amazon.nova-canvas-v1:0`
+            - fixed bug where files would not always save to drive
+            - `CfgScale` parameter maximum adjusted from 10 to 9.9
     - Meta
         - Removed `meta.llama2-13b-chat-v1` and `meta.llama2-70b-chat-v1` from all functions as Bedrock has EOL these two models. - ***Breaking Change***
 

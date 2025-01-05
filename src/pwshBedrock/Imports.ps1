@@ -843,7 +843,7 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $true
-        InferenceProfile           = $true
+        InferenceProfile           = $false
         ContextWindow              = ''
         MaxOutput                  = ''
         TrainingCutoff             = ''
@@ -869,7 +869,7 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $true
-        InferenceProfile           = $true
+        InferenceProfile           = $false
         ContextWindow              = ''
         MaxOutput                  = ''
         TrainingCutoff             = ''

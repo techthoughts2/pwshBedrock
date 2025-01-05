@@ -883,4 +883,6 @@ Image generation and variation seem to work well.
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/titan-image-models.html](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-image-models.html)
 
+[https://docs.aws.amazon.com/nova/latest/userguide/image-gen-req-resp-structure.html](https://docs.aws.amazon.com/nova/latest/userguide/image-gen-req-resp-structure.html)
+
 [https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-titan-image.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-titan-image.html)
