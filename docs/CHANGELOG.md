@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - Updated `Invoke-MetaModel` to support new model: `meta.llama3-3-70b-instruct-v1:0`
     - stability.ai
         - Updated `Invoke-StabilityAIImageModel` to support new model: `stability.sd3-5-large-v1:0`
+- Build changes:
+    - Updated bootstrap file to latest versions of modules
 
 ## [0.33.0] - **BREAKING CHANGES**
 
