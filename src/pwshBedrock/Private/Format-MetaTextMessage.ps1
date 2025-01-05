@@ -122,8 +122,6 @@ function Format-MetaTextMessage {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
-            'meta.llama2-13b-chat-v1',
-            'meta.llama2-70b-chat-v1',
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
@@ -132,7 +130,8 @@ function Format-MetaTextMessage {
             'meta.llama3-2-1b-instruct-v1:0',
             'meta.llama3-2-3b-instruct-v1:0',
             'meta.llama3-2-11b-instruct-v1:0',
-            'meta.llama3-2-90b-instruct-v1:0'
+            'meta.llama3-2-90b-instruct-v1:0',
+            'meta.llama3-3-70b-instruct-v1:0'
         )]
         [string]$ModelID,
 
@@ -153,14 +152,6 @@ function Format-MetaTextMessage {
 
     Write-Verbose -Message 'Formatting Meta Message'
 
-    # https://huggingface.co/blog/llama2#how-to-prompt-llama-2
-    $standardLlama2Prompt = @'
-<s>[INST] <<SYS>>
-You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
-
-If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
-<</SYS>>
-'@
     # https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-3/
     $standardLlama3Prompt = @'
 <|begin_of_text|><|start_header_id|>system<|end_header_id|>
@@ -244,49 +235,32 @@ $toolResultsJson<|eot_id|><|start_header_id|>assistant<|end_header_id|>
         $str = $contextEval
     }
 
-    if ($ModelID -like '*llama2*') {
-        Write-Debug 'Processing llama2 model'
-        $sysPromptRegex = '(?<=<<SYS>>\r?\n)([\s\S]*?)(?=\r?\n<</SYS>>)'
-        if ($firstMessage -eq $true) {
-            $str = $str + "$standardLlama2Prompt`n`n" + $Message + '[/INST]'
-        }
-        else {
-            if ($Role -eq 'User') {
-                $str = $str + "`n<s>[INST]" + $Message + '[/INST]'
-            }
-            elseif ($Role -eq 'Model') {
-                $str = $str + $Message + '</s>'
-            }
-        }
-    } #if_llama2
-    elseif ($ModelID -like '*llama3*') {
-        Write-Debug 'Processing llama3 model'
-        $sysPromptRegex = '(?<=system<\|end_header_id\|>\r?\n)([\s\S]*?)(?=<\|eot_id\|>)'
+    Write-Debug 'Processing llama3 model'
+    $sysPromptRegex = '(?<=system<\|end_header_id\|>\r?\n)([\s\S]*?)(?=<\|eot_id\|>)'
 
-        if ($ImagePrompt) {
-            $str = "$standardVisionPrompt`n`n" + '<|image|>' + $ImagePrompt + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
+    if ($ImagePrompt) {
+        $str = "$standardVisionPrompt`n`n" + '<|image|>' + $ImagePrompt + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
+    }
+    elseif ($Tools) {
+        $str = $toolLlama31Prompt + "`n`n" + $Message + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
+    }
+    elseif ($ToolsResults) {
+        $str = $toolResultsLlama31Prompt
+    }
+    elseif ($Role -eq 'ipython') {
+        $str = $str + "`n`n" + $Message + '<|eom_id|><|start_header_id|>ipython<|end_header_id|>'
+    }
+    elseif ($firstMessage -eq $true) {
+        $str = $str + "$standardLlama3Prompt`n`n" + $Message + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
+    }
+    else {
+        if ($Role -eq 'User') {
+            $str = $str + "`n`n" + $Message + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
         }
-        elseif ($Tools) {
-            $str = $toolLlama31Prompt + "`n`n" + $Message + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
+        elseif ($Role -eq 'Model') {
+            $str = $str + "`n`n" + $Message + '<|eot_id|><|start_header_id|>user<|end_header_id|>'
         }
-        elseif ($ToolsResults) {
-            $str = $toolResultsLlama31Prompt
-        }
-        elseif ($Role -eq 'ipython') {
-            $str = $str + "`n`n" + $Message + '<|eom_id|><|start_header_id|>ipython<|end_header_id|>'
-        }
-        elseif ($firstMessage -eq $true) {
-            $str = $str + "$standardLlama3Prompt`n`n" + $Message + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
-        }
-        else {
-            if ($Role -eq 'User') {
-                $str = $str + "`n`n" + $Message + '<|eot_id|><|start_header_id|>assistant<|end_header_id|>'
-            }
-            elseif ($Role -eq 'Model') {
-                $str = $str + "`n`n" + $Message + '<|eot_id|><|start_header_id|>user<|end_header_id|>'
-            }
-        }
-    } #elseif_llama3
+    }
 
     if ($SystemPrompt) {
         Write-Debug -Message 'System prompt provided'

@@ -158,11 +158,11 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_> model' -ForEach $script:anthropicModelInfo.ModelId {
-                $modelName = $_
-                Add-ModelCostEstimate -Usage $anthropicUsage -ModelID $modelName
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach $script:anthropicModelInfo {
+                $modelId = $_.ModelId
+                Add-ModelCostEstimate -Usage $anthropicUsage -ModelID $modelId
                 # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelName }
-                $eval = Get-ModelTally -ModelID $modelName
+                $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0
                 $eval.InputTokenCount | Should -BeGreaterThan 0
                 $eval.OutputTokenCount | Should -BeGreaterThan 0
@@ -170,7 +170,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $false }) {
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach ($script:amazonModelInfo | Where-Object { $_.Image -eq $false -and $_.Video -eq $false }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $amazonUsage -ModelID $modelId
                 # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
@@ -182,7 +182,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:amazonModelInfo | Where-Object { $_.Vision -eq $true }) {
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true }) {
                 $modelId = $_.ModelId
                 Mock -CommandName Get-ModelCostEstimate -MockWith {
                     [PSCustomObject]@{
@@ -197,7 +197,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.ImageCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach $script:ai21ModelInfo {
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach $script:ai21ModelInfo {
                 $modelId = 'ai21.jamba-instruct-v1:0'
                 Add-ModelCostEstimate -Usage $ai21LabsJambaUsage -ModelID $modelId
                 $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
@@ -208,7 +208,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:cohereModelInfo | Where-Object { $_.ModelId -eq 'cohere.command-text-v14' -or $_.ModelId -eq 'cohere.command-light-text-v14' }) {
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach ($script:cohereModelInfo | Where-Object { $_.ModelId -eq 'cohere.command-text-v14' -or $_.ModelId -eq 'cohere.command-light-text-v14' }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $cohereCommandUsage -ModelID $modelId
                 # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
@@ -220,7 +220,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:cohereModelInfo | Where-Object { $_.ModelId -eq 'cohere.command-r-v1:0' -or $_.ModelId -eq 'cohere.command-r-plus-v1:0' }) {
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach ($script:cohereModelInfo | Where-Object { $_.ModelId -eq 'cohere.command-r-v1:0' -or $_.ModelId -eq 'cohere.command-r-plus-v1:0' }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $cohereCommandRUsage -Message 'Hi there'  -ModelID $modelId
                 # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
@@ -232,7 +232,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach ($script:metaModelInfo) {
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach ($script:metaModelInfo) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $metaUsage -ModelID $modelId
                 # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
@@ -244,7 +244,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach $script:mistralAIModelInfo {
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach $script:mistralAIModelInfo {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $mistralAIUsage -ModelID $modelId -Message 'Hi there'
                 # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
@@ -280,7 +280,7 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
-            It 'should update the tally for <_.ModelId> model' -ForEach $script:stabilityAIModelInfo {
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach $script:stabilityAIModelInfo {
                 $modelId = $_.ModelId
                 Mock -CommandName Get-ModelCostEstimate -MockWith {
                     [PSCustomObject]@{

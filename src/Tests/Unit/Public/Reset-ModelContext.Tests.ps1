@@ -12,6 +12,8 @@ InModuleScope 'pwshBedrock' {
     $allModelIDs = ($allModelInfo | Where-Object {
             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
             $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
+            $_.ModelId -ne 'amazon.nova-canvas-v1:0' -and
+            $_.ModelId -ne 'amazon.nova-reel-v1:0' -and
             $_.ModelId -ne 'cohere.command-text-v14' -and
             $_.ModelId -ne 'cohere.command-light-text-v14'
         }).ModelID
@@ -220,6 +222,48 @@ User: "Hi there!
 '@
                     }
                     [PSCustomObject]@{
+                        ModelID = 'amazon.nova-pro-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Opus context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'amazon.nova-lite-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Opus context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'amazon.nova-micro-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Opus context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
                         ModelID = 'ai21.jamba-instruct-v1:0'
                         Context = @(
                             [PSCustomObject]@{
@@ -326,34 +370,6 @@ User: "Hi there!
                                     [PSCustomObject]@{
                                         type = 'text'
                                         text = 'Command r plus v1 context'
-                                    }
-                                )
-                            }
-                        )
-                    }
-                    [PSCustomObject]@{
-                        ModelID = 'meta.llama2-13b-chat-v1'
-                        Context = @(
-                            [PSCustomObject]@{
-                                role    = 'user'
-                                content = @(
-                                    [PSCustomObject]@{
-                                        type = 'text'
-                                        text = 'Llama2 13b chat context'
-                                    }
-                                )
-                            }
-                        )
-                    }
-                    [PSCustomObject]@{
-                        ModelID = 'meta.llama2-70b-chat-v1'
-                        Context = @(
-                            [PSCustomObject]@{
-                                role    = 'user'
-                                content = @(
-                                    [PSCustomObject]@{
-                                        type = 'text'
-                                        text = 'Llama2 70b chat context'
                                     }
                                 )
                             }
@@ -486,6 +502,20 @@ User: "Hi there!
                         )
                     }
                     [PSCustomObject]@{
+                        ModelID = 'meta.llama3-3-70b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama3 2 90b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
                         ModelID = 'mistral.mistral-7b-instruct-v0:2'
                         Context = @(
                             [PSCustomObject]@{
@@ -599,6 +629,20 @@ User: "Hi there!
                     }
                     [PSCustomObject]@{
                         ModelID = 'stability.sd3-large-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'SD3 large v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'stability.sd3-5-large-v1:0'
                         Context = @(
                             [PSCustomObject]@{
                                 role    = 'user'

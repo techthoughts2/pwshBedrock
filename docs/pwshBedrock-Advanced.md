@@ -25,6 +25,7 @@ At a high level, here's how it works:
 - Anthropic Claude 3 models
 - Mistral AI Mistral Large and Mistral Small
 - Cohere Command R and Command R+
+- Amazon Nova
 
 **Example Workflow:**
 
@@ -281,6 +282,109 @@ $invokeAnthropicModelSplat = @{
     ReturnFullObject = $true
 }
 $finalResponse = Invoke-AnthropicModel @invokeAnthropicModelSplat
+$finalResponse
+#------------------------------------------------------------------------------------------------
+```
+
+#### Amazon Nova Model Tool Example
+
+```powershell
+#------------------------------------------------------------------------------------------------
+# declare the tool configuration
+$toolConfig = @(
+    [PSCustomObject]@{
+        toolSpec = [PSCustomObject]@{
+            name        = 'restaurant'
+            description = 'This tool will look up restaurant information in a provided geographic area.'
+            inputSchema = [PSCustomObject]@{
+                type       = 'object'
+                properties = [PSCustomObject]@{
+                    location = [PSCustomObject]@{
+                        type        = 'string'
+                        description = 'The geographic location or locale. This could be a city, state, country, or full address.'
+                    }
+                    cuisine  = [PSCustomObject]@{
+                        type        = 'string'
+                        description = 'The type of cuisine to look up. This could be a specific type of food or a general category like "Italian" or "Mexican". If the user does not specify a cuisine, do not include this parameter in the response.'
+                    }
+                    budget   = [PSCustomObject]@{
+                        type        = 'string'
+                        description = 'The budget range for the restaurant. This has to be returned as a number from 1 to 5. The user could use words like "cheap", "moderate", or "expensive". They could provide "high end", or refer to a dollar amount like $$ or $$$$.'
+                    }
+                    rating   = [PSCustomObject]@{
+                        type        = 'string'
+                        description = 'The minimum rating for the restaurant. This has to be returned as a number from 1 to 5. The user may specify phrases like "good" or "excellent", or "highly rated"'
+                    }
+                }
+                required   = @( 'location' )
+            }
+        }
+    }
+)
+#------------------------------------------------------------------------------------------------
+# make a call to the Amazon Nova model to get a restaurant recommendation and pass in the tool configuration
+$invokeAmazonNovaModelSplat = @{
+    Message          = 'Can you recommend a good restaurant in New Braunfels, TX?'
+    ModelID          = 'amazon.nova-pro-v1:0'
+    SystemPrompt     = 'You are a savvy foodie who loves giving restaurant recommendations.'
+    ReturnFullObject = $true
+    Tools            = $toolConfig
+    Credential       = $awsCredential
+    Region           = 'us-east-1'
+}
+$response = Invoke-AmazonNovaTextModel @invokeAmazonNovaModelSplat
+#------------------------------------------------------------------------------------------------
+# use the ToolsResponse from the Amazon Nova model to look up restaurant information using the tool
+Import-Module -Name pwshPlaces
+$invokeGMapGeoCodeSplat = @{
+    GoogleAPIKey = $GoogleAPIKey
+    Address      = $response.output.message.content.toolUse.input.location
+}
+$localInfo = Invoke-GMapGeoCode @invokeGMapGeoCodeSplat
+
+$searchGMapNearbyPlaceSplat = @{
+    GoogleAPIKey = $GoogleAPIKey
+    Latitude     = $localInfo.Latitude
+    Longitude    = $localInfo.Longitude
+    Radius       = 5000
+    Type         = "restaurant"
+
+}
+if ($arguments.cuisine) {
+    $searchGMapNearbyPlaceSplat.Add('Keyword', $arguments.cuisine)
+}
+
+$restaurantQuery = Search-GMapNearbyPlace @searchGMapNearbyPlaceSplat
+
+$results = $restaurantQuery | Select-Object -Property name, rating, price_level, Open
+$topResult = $results | Sort-Object -Property rating -Descending | Select-Object -First 1
+#------------------------------------------------------------------------------------------------
+# format the tool response and send it back to the Amazon Nova model
+$toolConfigResults = @(
+    [PSCustomObject]@{
+        toolUseId = $response.output.message.content.toolUse.toolUseId
+        content   = $topResult
+        Status    = 'success'
+    }
+)
+<#
+# alternatively provide a failure response
+$toolConfigResults = @(
+    [PSCustomObject]@{
+        toolUseId = $response.output.message.content.toolUse.toolUseId
+        content   = ''
+        Status    = 'error'
+    }
+#>
+$invokeAmazonNovaModelSplat = @{
+    ToolsResults     = $toolConfigResults
+    Tools            = $toolConfig
+    ModelID          = 'amazon.nova-pro-v1:0'
+    Credential       = $awsCredential
+    Region           = 'us-east-1'
+    ReturnFullObject = $true
+}
+$finalResponse = Invoke-AmazonNovaTextModel @invokeAmazonNovaModelSplat
 $finalResponse
 #------------------------------------------------------------------------------------------------
 ```

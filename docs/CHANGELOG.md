@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.52.0] - **BREAKING CHANGES**
+
+- Module changes:
+    - Added two new properties to all model documentation objects:
+        - `Image` - designates if the model can generate images
+        - `Video` - designates if the model can generate video
+        - `Vision` - re-purposed to now designate if the model can see and describe uploaded content
+            - This required some logic re-work in several functions that were previously using `Vision` to designate image capability
+    - Added inference profile ID support to all models IAW [Supported cross-region inference profiles](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html)
+        - pwshBedrock will now properly format the inference profile ID for all models that support which enables the ability to make Bedrock calls to other regions
+    - `Reset-ModelContext` - fixed issue where certain models were missing from validation.
+    - Amazon
+        - `Invoke-AmazonNovaTextModel` - added support for new Nova Text models: `amazon.nova-pro-v1:0`, `amazon.nova-lite-v1:0`, `amazon.nova-micro-v1:0`
+        - `Invoke-AmazonImageModel`
+            - added support for new Nova image model: `amazon.nova-canvas-v1:0`
+            - fixed bug where files would not always save to drive
+            - `CfgScale` parameter maximum adjusted from 10 to 9.9
+    - Meta
+        - Removed `meta.llama2-13b-chat-v1` and `meta.llama2-70b-chat-v1` from all functions as Bedrock has EOL these two models. - ***Breaking Change***
+        - Updated `Invoke-MetaModel` to support new model: `meta.llama3-3-70b-instruct-v1:0`
+    - stability.ai
+        - Updated `Invoke-StabilityAIImageModel` to support new model: `stability.sd3-5-large-v1:0`
+    - Updated pricing for all models
+- Build changes:
+    - Updated bootstrap file to latest versions of modules
+
 ## [0.33.0] - **BREAKING CHANGES**
 
 - Module changes:

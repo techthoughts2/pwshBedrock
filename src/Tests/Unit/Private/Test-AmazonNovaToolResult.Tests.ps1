@@ -9,7 +9,7 @@ BeforeDiscovery {
 }
 
 InModuleScope 'pwshBedrock' {
-    Describe 'Test-AnthropicToolResult Private Function Tests' -Tag Unit {
+    Describe 'Test-AmazonNovaToolResult Private Function Tests' -Tag Unit {
         BeforeAll {
             $WarningPreference = 'SilentlyContinue'
             $ErrorActionPreference = 'SilentlyContinue'
@@ -23,34 +23,43 @@ InModuleScope 'pwshBedrock' {
 
             BeforeEach {
                 $standardTools = [PSCustomObject]@{
-                    tool_use_id = 'string'
-                    content     = 'string'
+                    toolUseId = 'string'
+                    content   = 'string'
+                    Status    = 'success'
                 }
                 $standardToolsMulti = @(
                     [PSCustomObject]@{
-                        tool_use_id = 'string1'
-                        content     = 'string'
+                        toolUseId = 'string1'
+                        content   = 'string'
+                        Status    = 'success'
                     },
                     [PSCustomObject]@{
-                        tool_use_id = 'string2'
-                        content     = 'string'
+                        toolUseId = 'string2'
+                        content   = 'string'
+                        Status    = 'success'
                     }
                 )
                 $multiWithDuplicateIds = @(
                     [PSCustomObject]@{
-                        tool_use_id = 'string'
-                        content     = 'string'
+                        toolUseId = 'string'
+                        content   = 'string'
+                        Status    = 'success'
                     },
                     [PSCustomObject]@{
-                        tool_use_id = 'string'
-                        content     = 'string'
+                        toolUseId = 'string'
+                        content   = 'string'
+                        Status    = 'success'
                     }
                 )
                 $incorrectStandardTools1 = [PSCustomObject]@{
                     content = 'string'
                 }
                 $incorrectStandardTools2 = [PSCustomObject]@{
-                    tool_use_id = 'string'
+                    toolUseId = 'string'
+                }
+                $incorrectStandardTools3 = [PSCustomObject]@{
+                    toolUseId = 'string'
+                    content   = 'string'
                 }
                 $malformedTools = @(
                     [PSCustomObject]@{ role = 'zzzz'; message = 'Hello, how are you?' },
@@ -62,41 +71,46 @@ InModuleScope 'pwshBedrock' {
             } #beforeEach
 
             It 'Should return true for a standard tool object' {
-                $result = Test-AnthropicToolResult -ToolResults $standardTools
+                $result = Test-AmazonNovaToolResult -ToolResults $standardTools
                 $result | Should -Be $true
             } #it
 
             It 'Should return true for multiple standard tool objects' {
-                $result = Test-AnthropicToolResult -ToolResults $standardToolsMulti
+                $result = Test-AmazonNovaToolResult -ToolResults $standardToolsMulti
                 $result | Should -Be $true
             } #it
 
             It 'Should return false if there are duplicate tool_call_ids' {
-                $result = Test-AnthropicToolResult -ToolResults $multiWithDuplicateIds
+                $result = Test-AmazonNovaToolResult -ToolResults $multiWithDuplicateIds
                 $result | Should -Be $false
             } #it
 
-            It 'Should return false is missing tool_use_id property' {
-                $result = Test-AnthropicToolResult -ToolResults $incorrectStandardTools1
+            It 'Should return false is missing toolUseId property' {
+                $result = Test-AmazonNovaToolResult -ToolResults $incorrectStandardTools1
                 $result | Should -Be $false
             } #it
 
             It 'Should return false is missing content property' {
-                $result = Test-AnthropicToolResult -ToolResults $incorrectStandardTools2
+                $result = Test-AmazonNovaToolResult -ToolResults $incorrectStandardTools2
+                $result | Should -Be $false
+            } #it
+
+            It 'Should return false is missing Status property' {
+                $result = Test-AmazonNovaToolResult -ToolResults $incorrectStandardTools3
                 $result | Should -Be $false
             } #it
 
             It 'Should return false for malformed tools' {
-                $result = Test-AnthropicToolResult -ToolResults $malformedTools
+                $result = Test-AmazonNovaToolResult -ToolResults $malformedTools
                 $result | Should -Be $false
             } #it
 
             It 'Should return false for malformed tools' {
-                $result = Test-AnthropicToolResult -ToolResults $malformedTools2
+                $result = Test-AmazonNovaToolResult -ToolResults $malformedTools2
                 $result | Should -Be $false
             } #it
 
         } #context_Success
 
-    } #describe_Test-AnthropicToolResult
+    } #describe_Test-AmazonNovaToolResult
 } #inModule

@@ -78,7 +78,7 @@ InModuleScope 'pwshBedrock' {
             } #beforeEach
 
             It 'Should return true for a standard tool object' {
-                $result = Test-MistralAIChatToolResult -ToolResults $standardTools -debug
+                $result = Test-MistralAIChatToolResult -ToolResults $standardTools
                 $result | Should -Be $true
             } #it
 

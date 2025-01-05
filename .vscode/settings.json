@@ -19,6 +19,7 @@
     "powershell.codeFormatting.preset": "Stroustrup",
     "cSpell.words": [
         "Allman",
+        "apac",
         "BDRR",
         "Braunfels",
         "Catesta",
@@ -45,6 +46,7 @@
         "notlike",
         "OTBS",
         "outpainting",
+        "pwsh",
         "shouldprocess",
         "Starfleet",
         "starships",

@@ -33,7 +33,7 @@ pwshBedrock abstracts this complexity by supporting parameters for each model ba
 - PowerShell 5.1 or later
 - AWS account with access to Amazon Bedrock
     - AWS credentials with appropriate `bedrock:InvokeModel` permission
-    - You must [manage and add model acesss](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) through one-time request model access action. *Note: this must be done for each model you plan to interact with.*
+    - You must [manage and add model access](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) through one-time request model access action. *Note: this must be done for each model you plan to interact with.*
 
 ### Installation
 
@@ -66,12 +66,12 @@ Invoke-AI21LabsJambaModel -Message 'Explain zero-point energy.' -ModelID 'ai21.j
 #------------------------------------------------------------------------------------------------
 ```
 
-##### Amazon Titan Image Generator G2 model
+##### Amazon Image Generator
 
 ```powershell
 #------------------------------------------------------------------------------------------------
 # Generates an image and saves the image to the C:\temp folder.
-Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.titan-image-generator-v2:0' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'amazon.nova-canvas-v1:0' -Credential $awsCredential -Region 'us-east-1'
 #------------------------------------------------------------------------------------------------
 ```
 
@@ -81,6 +81,15 @@ Invoke-AmazonImageModel -ImagesSavePath 'C:\temp' -ImagePrompt 'Create a starshi
 #------------------------------------------------------------------------------------------------
 # Sends a text message to the on-demand Amazon Titan model in the specified AWS region and returns the response.
 Invoke-AmazonTextModel -Message 'Explain zero-point energy.' -ModelID amazon.titan-text-lite-v1 -Credential $awsCredential -Region 'us-west-2'
+#------------------------------------------------------------------------------------------------
+```
+
+##### Amazon Nova Text models
+
+```powershell
+#------------------------------------------------------------------------------------------------
+# Sends a text message to the on-demand Amazon Nova model in the specified AWS region and returns the response.
+Invoke-AmazonNovaTextModel -Message 'Explain zero-point energy.' -ModelID 'amazon.nova-pro-v1:0' -Credential $awsCredential -Region 'us-east-1'
 #------------------------------------------------------------------------------------------------
 ```
 
@@ -121,7 +130,7 @@ Invoke-CohereCommandRModel -Message 'Explain zero-point energy.' -ModelID 'coher
 # Sends a text message to the on-demand Meta model in the specified AWS region and returns the response.
 Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-8b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
-# Sending a media file to a Meta model and retriveing the response
+# Sending a media file to a Meta model and retrieving the response
 Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 ```

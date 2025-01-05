@@ -61,6 +61,18 @@ InModuleScope 'pwshBedrock' {
                     # }
                     # }
                     [PSCustomObject]@{
+                        ModelId = 'amazon.nova-pro-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'amazon.nova-lite-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'amazon.nova-micro-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
                         ModelId = 'amazon.titan-text-express-v1'
                         Context = 'test'
                     }
@@ -154,14 +166,6 @@ InModuleScope 'pwshBedrock' {
                         }
                     }
                     [PSCustomObject]@{
-                        ModelId = 'meta.llama2-13b-chat-v1'
-                        Context = 'test'
-                    }
-                    [PSCustomObject]@{
-                        ModelId = 'meta.llama2-70b-chat-v1'
-                        Context = 'test'
-                    }
-                    [PSCustomObject]@{
                         ModelId = 'meta.llama3-70b-instruct-v1:0'
                         Context = 'test'
                     }
@@ -195,6 +199,10 @@ InModuleScope 'pwshBedrock' {
                     }
                     [PSCustomObject]@{
                         ModelId = 'meta.llama3-2-90b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama3-3-70b-instruct-v1:0'
                         Context = 'test'
                     }
                     [PSCustomObject]@{
@@ -240,6 +248,13 @@ InModuleScope 'pwshBedrock' {
                     }
                     [PSCustomObject]@{
                         ModelId = 'stability.sd3-large-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'stability.sd3-5-large-v1:0'
                         Context = [PSCustomObject]@{
                             role    = 'user'
                             content = 'test'

@@ -184,7 +184,8 @@ function Invoke-StabilityAIImageModel {
         [ValidateSet(
             'stability.stable-image-core-v1:0',
             'stability.stable-image-ultra-v1:0',
-            'stability.sd3-large-v1:0'
+            'stability.sd3-large-v1:0',
+            'stability.sd3-5-large-v1:0'
         )]
         [string]$ModelID = 'stability.stable-image-core-v1:0',
 
@@ -244,11 +245,11 @@ function Invoke-StabilityAIImageModel {
 
     #region image-to-image parameters
 
-    if ($InitImagePath -and $ModelID -ne 'stability.sd3-large-v1:0') {
-        Write-Warning -Message 'Only stability.sd3-large-v1:0 supports image-to-image requests.'
+    if ($InitImagePath -and $ModelID -notlike '*sd3*') {
+        Write-Warning -Message 'Only stability sd3 models support image-to-image requests.'
         throw ('Model {0} does not support image-to-image requests.' -f $ModelID)
     }
-    elseif ($InitImagePath -and $ModelID -eq 'stability.sd3-large-v1:0') {
+    elseif ($InitImagePath -and $ModelID -like '*sd3*') {
         $bodyObj.Add('mode', 'image-to-image')
 
         Write-Debug -Message 'Validating InitImage'
@@ -300,9 +301,11 @@ function Invoke-StabilityAIImageModel {
     $jsonBody = $bodyObj | ConvertTo-Json -Depth 10
     [byte[]]$byteArray = [System.Text.Encoding]::UTF8.GetBytes($jsonBody)
 
+    $inferenceModelID = Format-InferenceProfileID -ModelID $ModelID -Region $Region
+
     $cmdletParams = @{
         ContentType = 'application/json'
-        ModelId     = $ModelID
+        ModelId     = $inferenceModelID
         Body        = $byteArray
     }
 

@@ -58,6 +58,11 @@ function Add-ModelCostEstimate {
             'ai21.jamba-instruct-v1:0',
             'ai21.jamba-1-5-mini-v1:0',
             'ai21.jamba-1-5-large-v1:0',
+            'amazon.nova-pro-v1:0',
+            'amazon.nova-lite-v1:0',
+            'amazon.nova-micro-v1:0',
+            'amazon.nova-canvas-v1:0',
+            'amazon.nova-reel-v1:0',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',
@@ -75,8 +80,6 @@ function Add-ModelCostEstimate {
             'cohere.command-light-text-v14',
             'cohere.command-r-v1:0',
             'cohere.command-r-plus-v1:0',
-            'meta.llama2-13b-chat-v1',
-            'meta.llama2-70b-chat-v1',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
@@ -86,6 +89,7 @@ function Add-ModelCostEstimate {
             'meta.llama3-2-3b-instruct-v1:0',
             'meta.llama3-2-11b-instruct-v1:0',
             'meta.llama3-2-90b-instruct-v1:0',
+            'meta.llama3-3-70b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-large-2407-v1:0',
@@ -94,7 +98,8 @@ function Add-ModelCostEstimate {
             'stability.stable-diffusion-xl-v1',
             'stability.stable-image-ultra-v1:0',
             'stability.stable-image-core-v1:0',
-            'stability.sd3-large-v1:0'
+            'stability.sd3-large-v1:0',
+            'stability.sd3-5-large-v1:0'
         )]
         [string]$ModelID,
 
@@ -138,6 +143,18 @@ function Add-ModelCostEstimate {
                         $outputTokenCount = $Usage.results.tokenCount
                     }
                     'amazon.titan-tg1-large' {
+                        $inputTokenCount = $Usage.'inputTextTokenCount'
+                        $outputTokenCount = $Usage.results.tokenCount
+                    }
+                    'amazon.nova-pro-v1:0' {
+                        $inputTokenCount = $Usage.'inputTextTokenCount'
+                        $outputTokenCount = $Usage.results.tokenCount
+                    }
+                    'amazon.nova-lite-v1:0' {
+                        $inputTokenCount = $Usage.'inputTextTokenCount'
+                        $outputTokenCount = $Usage.results.tokenCount
+                    }
+                    'amazon.nova-micro-v1:0' {
                         $inputTokenCount = $Usage.'inputTextTokenCount'
                         $outputTokenCount = $Usage.results.tokenCount
                     }
@@ -194,14 +211,6 @@ function Add-ModelCostEstimate {
                         $inputTokenCount = Get-TokenCountEstimate -Text $Message
                         $outputTokenCount = Get-TokenCountEstimate -Text $Usage.text
                     }
-                    'meta.llama2-13b-chat-v1' {
-                        $inputTokenCount = $Usage.prompt_token_count
-                        $outputTokenCount = $Usage.generation_token_count
-                    }
-                    'meta.llama2-70b-chat-v1' {
-                        $inputTokenCount = $Usage.prompt_token_count
-                        $outputTokenCount = $Usage.generation_token_count
-                    }
                     'meta.llama3-70b-instruct-v1:0' {
                         $inputTokenCount = $Usage.prompt_token_count
                         $outputTokenCount = $Usage.generation_token_count
@@ -235,6 +244,10 @@ function Add-ModelCostEstimate {
                         $outputTokenCount = $Usage.generation_token_count
                     }
                     'meta.llama3-2-90b-instruct-v1:0' {
+                        $inputTokenCount = $Usage.prompt_token_count
+                        $outputTokenCount = $Usage.generation_token_count
+                    }
+                    'meta.llama3-3-70b-instruct-v1:0' {
                         $inputTokenCount = $Usage.prompt_token_count
                         $outputTokenCount = $Usage.generation_token_count
                     }

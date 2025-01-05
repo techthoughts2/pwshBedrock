@@ -9,8 +9,8 @@ BeforeDiscovery {
 }
 
 InModuleScope 'pwshBedrock' {
-    $amazonModels = (Get-ModelInfo -Provider Amazon).ModelID
-    $amazonModels = $amazonModels | Where-Object { $_ -ne 'amazon.titan-image-generator-v1' -and $_ -ne 'amazon.titan-image-generator-v2:0' }
+    $amazonModels = Get-ModelInfo -Provider Amazon
+    $amazonModels = ($amazonModels | Where-Object { $_.Image -eq $false -and $_.Video -eq $false -and $_.ModelName -notlike '*nova*' }).ModelID
     Describe 'Format-AmazonTextMessage Private Function Tests' -Tag Unit {
         BeforeAll {
             $WarningPreference = 'SilentlyContinue'

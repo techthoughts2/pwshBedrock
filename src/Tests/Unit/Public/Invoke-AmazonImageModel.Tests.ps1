@@ -734,7 +734,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Start-Sleep -MockWith { }
             } #beforeEach
 
-            It 'should run all expected subcommands for TEXT_IMAGE' {
+            It 'should run all expected subcommands for TEXT_IMAGE for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true }) {
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath = 'C:\images\image.jpeg'
                     ImagePrompt    = 'Create a starship emerging from a nebula.'
@@ -743,8 +743,8 @@ InModuleScope 'pwshBedrock' {
                     NumberOfImages = 2
                     Width          = 1024
                     Height         = 1024
-                    CfgScale       = 10
-                    ModelID        = 'amazon.titan-image-generator-v1'
+                    CfgScale       = 9.9
+                    ModelID        = $_.ModelId
                     ProfileName    = 'default'
                     Region         = 'us-west-2'
                 }
@@ -758,13 +758,13 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
             } #it
 
-            It 'should run all expected subcommands for INPAINTING when Mask image is provided' {
+            It 'should run all expected subcommands for INPAINTING when Mask image is provided for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true }) {
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath       = 'C:\images'
                     InPaintImagePath     = 'C:\images\image.jpeg'
                     InPaintTextPrompt    = 'Make it darker'
                     InPaintMaskImagePath = 'C:\images\mask.jpeg'
-                    ModelID              = 'amazon.titan-image-generator-v1'
+                    ModelID              = $_.ModelId
                     ProfileName          = 'default'
                     Region               = 'us-west-2'
                 }
@@ -778,7 +778,7 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
             } #it
 
-            It 'should run all expected subcommands for INPAINTING when Mask prompt is provided' {
+            It 'should run all expected subcommands for INPAINTING when Mask prompt is provided for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true }) {
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath    = 'C:\images'
                     InPaintImagePath  = 'C:\images\image.jpeg'
@@ -788,8 +788,8 @@ InModuleScope 'pwshBedrock' {
                     NumberOfImages    = 2
                     Width             = 1024
                     Height            = 1024
-                    CfgScale          = 10
-                    ModelID           = 'amazon.titan-image-generator-v1'
+                    CfgScale          = 9.9
+                    ModelID           = $_.ModelId
                     ProfileName       = 'default'
                     Region            = 'us-west-2'
                 }
@@ -803,13 +803,13 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
             } #it
 
-            It 'should run all expected subcommands for OUTPAINTING when Mask image is provided' {
+            It 'should run all expected subcommands for OUTPAINTING when Mask image is provided for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true }) {
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath        = 'C:\images'
                     OutPaintImagePath     = 'C:\images\image.jpeg'
                     OutPaintTextPrompt    = 'Make it darker'
                     OutPaintMaskImagePath = 'C:\images\mask.jpeg'
-                    ModelID               = 'amazon.titan-image-generator-v1'
+                    ModelID               = $_.ModelId
                     ProfileName           = 'default'
                     Region                = 'us-west-2'
                 }
@@ -823,7 +823,7 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
             } #it
 
-            It 'should run all expected subcommands for OUTPAINTING when Mask prompt is provided' {
+            It 'should run all expected subcommands for OUTPAINTING when Mask prompt is provided for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true }) {
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath     = 'C:\images'
                     OutPaintImagePath  = 'C:\images\image.jpeg'
@@ -833,8 +833,8 @@ InModuleScope 'pwshBedrock' {
                     NumberOfImages     = 2
                     Width              = 1024
                     Height             = 1024
-                    CfgScale           = 10
-                    ModelID            = 'amazon.titan-image-generator-v1'
+                    CfgScale           = 9.9
+                    ModelID            = $_.ModelId
                     ProfileName        = 'default'
                     Region             = 'us-west-2'
                 }
@@ -848,14 +848,14 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
             } #it
 
-            It 'should run all expected subcommands for IMAGE_VARIATION' {
+            It 'should run all expected subcommands for IMAGE_VARIATION for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true }) {
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath      = 'C:\images'
                     VariationImagePath  = 'C:\images\image.jpeg'
                     VariationTextPrompt = 'Make it darker'
                     SimilarityStrength  = 0.5
                     NegativeText        = 'stars'
-                    ModelID             = 'amazon.titan-image-generator-v1'
+                    ModelID             = $_.ModelId
                     ProfileName         = 'default'
                     Region              = 'us-west-2'
                 }
@@ -869,7 +869,7 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
             } #it
 
-            It 'should run all expected subcommands for CONDITIONING' {
+            It 'should run all expected subcommands for CONDITIONING for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath      = 'C:\images'
                     ConditionImagePath  = 'C:\images\image.jpeg'
@@ -877,7 +877,7 @@ InModuleScope 'pwshBedrock' {
                     ControlMode         = 'CANNY_EDGE'
                     ControlStrength     = 0.5
                     NegativeText        = 'stars'
-                    ModelID             = 'amazon.titan-image-generator-v2:0'
+                    ModelID             = $_.ModelId
                     ProfileName         = 'default'
                     Region              = 'us-west-2'
                 }
@@ -891,14 +891,14 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
             } #it
 
-            It 'should run all expected subcommands for COLOR_GUIDED_GENERATION' {
+            It 'should run all expected subcommands for COLOR_GUIDED_GENERATION for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath        = 'C:\images'
                     ColorGuidedImagePath  = 'C:\images\image.jpeg'
                     ColorGuidedTextPrompt = 'Make it darker'
                     Colors                = @('#FF0000', '#00FF00', '#0000FF')
                     NegativeText          = 'stars'
-                    ModelID               = 'amazon.titan-image-generator-v2:0'
+                    ModelID               = $_.ModelId
                     ProfileName           = 'default'
                     Region                = 'us-west-2'
                 }
@@ -912,12 +912,12 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Save-BytesToFile -Exactly 2 -Scope It
             } #it
 
-            It 'should run all expected subcommands for BACKGROUND_REMOVAL' {
+            It 'should run all expected subcommands for BACKGROUND_REMOVAL for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath             = 'C:\images'
                     BackgroundRemovalImagePath = 'C:\images\image.jpeg'
                     NegativeText               = 'stars'
-                    ModelID                    = 'amazon.titan-image-generator-v2:0'
+                    ModelID                    = $_.ModelId
                     ProfileName                = 'default'
                     Region                     = 'us-west-2'
                 }

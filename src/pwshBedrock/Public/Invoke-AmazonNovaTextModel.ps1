@@ -1,100 +1,125 @@
 ﻿<#
 .SYNOPSIS
-    Sends message(s) or media files to an Anthropic model on the Amazon Bedrock platform and retrieves the response.
+    Sends message(s) to an Amazon Nova model on the Amazon Bedrock platform and retrieves the response.
 .DESCRIPTION
-    Sends a message to an Anthropic model on the Amazon Bedrock platform and returns the model's response.
-    The message can be either text or a media file. If a media file is specified, it is converted to base64 according to the model's requirements.
+    Sends a message to an Amazon Nova model on the Amazon Bedrock platform and returns the model's response.
+    You can send both text and media messages to the model. If a media file is specified, it is converted to base64 according to the model's requirements.
     By default, the conversation context history is persisted to maintain a continuous interaction with the model.
     You can disable this by using the NoContextPersist parameter. Additionally, the cmdlet estimates the cost of model usage
     based on the provided input and output tokens and adds the estimate to the models tally information.
-    This model supports Function Calling, which allows the Anthropic model to connect to external tools. This is only supported
-    for Anthropic 3 models. You can provide the Tools and ToolChoice parameters to specify the tools that the model may use and how.
+    This model supports Function Calling, which allows the Amazon Nova model to connect to external tools.
+    You can provide the Tools parameter to specify the tools that the model may use and how.
     If you are providing Tools to enable Function Calling, it is recommended that you use the ReturnFullObject parameter to capture the full response object.
-    See the pwshBedrock documentation for more information on Function Calling and the Anthropic model.
+    See the pwshBedrock documentation for more information on Function Calling and the Amazon Nova model.
 .EXAMPLE
-    Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-AmazonNovaTextModel -Message 'Explain zero-point energy.' -ModelID 'amazon.nova-pro-v1:0' -Credential $awsCredential -Region 'us-east-1'
 
-    Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the response.
+    Sends a text message to the on-demand Amazon Nova model in the specified AWS region and returns the response.
 .EXAMPLE
-    Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2' -ReturnFullObject
+    Invoke-AmazonNovaTextModel -Message 'Explain zero-point energy.' -ModelID 'amazon.nova-pro-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 
-    Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object.
+    Sends a text message to the on-demand Amazon Nova model in the specified AWS region and returns the full response object.
 .EXAMPLE
-    Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2' -NoContextPersist
+    Invoke-AmazonNovaTextModel -Message 'Explain zero-point energy.' -ModelID 'amazon.nova-pro-v1:0' -Credential $awsCredential -Region 'us-west-2' -NoContextPersist
 
-    Sends a text message to the on-demand Anthropic model in the specified AWS region without persisting the conversation context history. This is useful for one-off interactions.
+    Sends a text message to the on-demand Amazon Nova model in the specified AWS region without persisting the conversation context history. This is useful for one-off interactions.
 .EXAMPLE
-    $invokeAnthropicModelSplat = @{
-        Message    = 'What can you tell me about this picture? Is it referencing something?'
-        ModelID    = 'anthropic.claude-3-sonnet-20240229-v1:0'
-        MediaPath  = 'C:\images\tanagra.jpg'
-        AccessKey  = 'xxxxxxxxxxxxxxxxxxxx'
-        SecretKey  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-        Region     = 'us-west-2'
-    }
-    Invoke-AnthropicModel @invokeAnthropicModelSplat
-
-    Sends a text message with a media file to the on-demand Anthropic model in the specified AWS region and returns the response.
-.EXAMPLE
-    $invokeAnthropicModelSplat = @{
-        Message          = 'Give a brief synopsis to your class of students of what this picture represented a hundreds years ago.'
-        ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
-        MediaPath        = 'C:\images\tanagra.jpg'
-        Temperature      = 1
-        SystemPrompt     = 'You are a historian from the future who has studied the provided photo for many years.'
-        Credential       = $credential
-        Region           = 'us-west-2'
-    }
-    Invoke-AnthropicModel @invokeAnthropicModelSplat
-
-    Sends a text message with a media file to the on-demand Anthropic model in the specified AWS region and returns the response. A system prompt is provided to give additional context to the model on how to respond. Temperature is set to 1 for creative responses.
-.EXAMPLE
-    $invokeAnthropicModelSplat = @{
+    $invokeAmazonNovaTextModelSplat = @{
         Message          = 'Can you name all of the Star Fleet captains featured in the various shows over the years?'
-        ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
-        SystemPrompt     = 'You are an expert on all things Star Trek, having studied the show for decades. You often win Star Trek Trivia contests and enjoy sharing your vast knowledge of Star Trek with others.'
-        Temperature      = 1
-        StopSequences    = 'Picard'
-        Credential       = $credential
-        Region           = 'us-west-2'
-        ReturnFullObject = $true
-    }
-    $objReturn = Invoke-AnthropicModel @invokeAnthropicModelSplat
-
-    Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object. A system prompt is provided to give additional context to the model on how to respond. Temperature is set to 1 for creative responses. Stop sequences are provided to stop the model from generating more text when it encounters the word 'Picard'.
-.EXAMPLE
-    Invoke-AnthropicModel -CustomConversation $customConversation -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2'
-
-    Sends a custom conversation to the on-demand Anthropic model in the specified AWS region and returns the response. The custom conversation must adhere to the Anthropic model conversation format. Reference the pwshBedrock documentation for more information on the custom conversation format.
-.EXAMPLE
-    $invokeAnthropicModelSplat = @{
-        Message          = 'Can you name all of the Star Fleet captains featured in the various shows over the years?'
-        ModelID          = 'anthropic.claude-3-5-sonnet-20240620-v1:0'
+        ModelID          = 'amazon.nova-pro-v1:0'
         SystemPrompt     = 'You are an expert on all things Star Trek, having studied the show for decades. You often win Star Trek Trivia contests and enjoy sharing your vast knowledge of Star Trek with others.'
         Tools            = $starTrekTriviaFunctionTool
-        ToolChoice       = 'auto'
         Credential       = $credential
         Region           = 'us-west-2'
         ReturnFullObject = $true
     }
-    $objReturn = Invoke-AnthropicModel @invokeAnthropicModelSplat
+    $objReturn = Invoke-AmazonNovaTextModel @invokeAmazonNovaTextModelSplat
 
-    Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object. A system prompt is provided to give additional context to the model on how to respond. A tool is provided to the model to use if needed. The tool choice is set to auto, allowing the model to decide if it should use the tool. The tool is a function that provides Star Trek trivia information.
+    Sends a text message to the on-demand Amazon Nova model in the specified AWS region with a system prompt and returns the response. A system prompt is provided to give additional context to the model on how to respond. A tool is provided to the model to use if needed. The tool choice is set to auto, allowing the model to decide if it should use the tool. The tool is a function that provides Star Trek trivia information.
 .EXAMPLE
-    $invokeAnthropicModelSplat = @{
-        ToolsResults = $standardToolResult
-        ModelID      = 'anthropic.claude-3-5-sonnet-20240620-v1:0'
-        Credential   = $credential
-        Region       = 'us-west-2'
+    $invokeAmazonNovaTextModelSplat = @{
+        Message          = 'What do you see in this photo?'
+        MediaPath        = 'C:\path\to\image.jpg'
+        ModelID          = 'amazon.nova-pro-v1:0'
+        Credential       = $credential
+        Region           = 'us-west-2'
+        ReturnFullObject = $true
     }
-    Invoke-AnthropicModel @invokeAnthropicModelSplat
+    $response = Invoke-AmazonNovaTextModel @invokeAmazonNovaTextModelSplat
+    $response.output.message.content.text
 
-    Sends the results of a tool invocation to the on-demand Anthropic model in the specified AWS region and returns the response. The tool results must adhere to the Anthropic model tool result format. Reference the pwshBedrock documentation for more information on the tool result format.
+    Sends a text message with a image media file to the on-demand Amazon Nova model in the specified AWS region and returns the response.
+    .EXAMPLE
+    $invokeAmazonNovaTextModelSplat = @{
+        Message          = 'What do you see in this video?'
+        MediaPath        = 'C:\path\to\video.mp4'
+        ModelID          = 'amazon.nova-pro-v1:0'
+        Credential       = $credential
+        Region           = 'us-west-2'
+        ReturnFullObject = $true
+    }
+    $response = Invoke-AmazonNovaTextModel @invokeAmazonNovaTextModelSplat
+    $response.output.message.content.text
+
+    Sends a text message with a video media file to the on-demand Amazon Nova model in the specified AWS region and returns the response.
+    .EXAMPLE
+    $invokeAmazonNovaTextModelSplat = @{
+        Message          = 'Summarize the document in three sentences'
+        MediaPath        = 'C:\path\to\document.pdf'
+        ModelID          = 'amazon.nova-pro-v1:0'
+        Credential       = $credential
+        Region           = 'us-west-2'
+        ReturnFullObject = $true
+    }
+    $response = Invoke-AmazonNovaTextModel @invokeAmazonNovaTextModelSplat
+    $response.output.message.content.text
+
+    Sends a text message with a document media file to the on-demand Amazon Nova model in the specified AWS region and returns the response.
+.EXAMPLE
+    $customMessage = @(
+        [PSCustomObject]@{
+            role    = 'user'
+            content = @(
+                [PSCustomObject]@{
+                    text = 'Explain zero-point energy.'
+                }
+            )
+        }
+        [PSCustomObject]@{
+            role    = 'assistant'
+            content = @(
+                [PSCustomObject]@{
+                    text = 'It is when someone in basketball is having a really bad game.'
+                }
+            )
+        }
+        [PSCustomObject]@{
+            role    = 'user'
+            content = @(
+                [PSCustomObject]@{
+                    text = 'No, as it relates to physics.'
+                }
+            )
+        }
+    )
+    $invokeAmazonNovaTextModelSplat = @{
+        CustomConversation = $customMessage
+        ModelID            = 'amazon.nova-pro-v1:0'
+        Credential         = $credential
+        Region             = 'us-east-1'
+    }
+    Invoke-AmazonNovaTextModel @invokeAmazonNovaTextModelSplat
+
+    Sends a custom conversation to the on-demand Amazon Nova model in the specified AWS region and returns the response.
 .PARAMETER Message
     The message to be sent to the model.
 .PARAMETER MediaPath
     File path to local media file.
-    Up to 20 media files can be sent in a single request. The media files must adhere to the model's media requirements.
+    The media files must adhere to the model's media requirements.
+.PARAMETER S3Location
+    The S3 location of the media file.
+    This parameter is only supported if providing a video file to the model.
+    The video file must adhere to the model's media requirements.
 .PARAMETER CustomConversation
     An array of custom conversation objects.
 .PARAMETER ModelID
@@ -105,36 +130,22 @@
     Do not persist the conversation context history. If this parameter is specified, you will not be able to have a continuous conversation with the model.
 .PARAMETER MaxTokens
     The maximum number of tokens to generate before stopping.
-    Defaults to 4096. Ranges from 1 to 4096.
-    Note that Anthropic Claude models might stop generating tokens before reaching the value of max_tokens.
 .PARAMETER SystemPrompt
     The system prompt for the request.
-    System prompt is a way of providing context and instructions to Anthropic Claude, such as specifying a particular goal or role.
-.PARAMETER StopSequences
-    Custom text sequences that cause the model to stop generating. Anthropic Claude models normally stop when they have naturally completed their turn, in this case the value of the stop_reason response field is end_turn. If you want the model to stop generating when it encounters custom strings of text, you can use the stop_sequences parameter. If the model encounters one of the custom text strings, the value of the stop_reason response field is stop_sequence and the value of stop_sequence contains the matched stop sequence.
 .PARAMETER Temperature
     The amount of randomness injected into the response.
     Defaults to 1.0. Ranges from 0.0 to 1.0.
-    Use temperature closer to 0.0 for analytical / multiple choice, and closer to 1.0 for creative and generative tasks.
+    Use a lower value to decrease randomness in responses.
 .PARAMETER TopP
-    Use nucleus sampling.
-    In nucleus sampling, Anthropic Claude computes the cumulative distribution over all the options for each subsequent token in decreasing probability order and cuts it off once it reaches a particular probability specified by top_p. You should alter either temperature or top_p, but not both.
-    Recommended for advanced use cases only. You usually only need to use temperature.
+    Use a lower value to ignore less probable options and decrease the diversity of responses.
 .PARAMETER TopK
     Only sample from the top K options for each subsequent token.
     Use top_k to remove long tail low probability responses.
     Recommended for advanced use cases only. You usually only need to use temperature.
+.PARAMETER StopSequences
+    Custom text sequences that cause the model to stop generating.
 .PARAMETER Tools
     Definitions of tools that the model may use.
-.PARAMETER ToolChoice
-    In some cases, you may want Claude to use a specific tool to answer the user’s question, even if Claude thinks it can provide an answer without using a tool.
-    auto - allows Claude to decide whether to call any provided tools or not. This is the default value.
-    any - tells Claude that it must use one of the provided tools, but doesn’t force a particular tool.
-    tool -allows us to force Claude to always use a particular tool.
-        if you specify tool, you must also provide the ToolName of the tool you want Claude to use.
-.PARAMETER ToolName
-    Optional parameter - The name of the tool that Claude should use to answer the user’s question.
-    This parameter is only required if you set the ToolChoice parameter to tool.
 .PARAMETER ToolsResults
     A list of results from invoking tools recommended by the model in the previous chat turn.
 .PARAMETER AccessKey
@@ -170,32 +181,30 @@
 .COMPONENT
     pwshBedrock
 .LINK
-    https://www.pwshbedrock.dev/en/latest/Invoke-AnthropicModel/
+    https://www.pwshbedrock.dev/en/latest/Invoke-AmazonNovaTextModel/
 .LINK
-    https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/
+    https://pwshbedrock.readthedocs.io/en/latest/pwshBedrock-Advanced/
 .LINK
-    https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html
+    https://docs.aws.amazon.com/nova/latest/userguide/complete-request-schema.html
 .LINK
-    https://docs.anthropic.com/en/docs/models-overview
+    https://docs.aws.amazon.com/nova/latest/userguide/tool-use-results.html
 .LINK
-    https://docs.anthropic.com/en/api/messages
+    https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html
 .LINK
-    https://docs.anthropic.com/en/api/messages-examples
+    https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html
 .LINK
-    https://docs.anthropic.com/en/docs/system-prompts
+    https://docs.aws.amazon.com/nova/latest/userguide/modalities-image.html
 .LINK
-    https://docs.anthropic.com/en/docs/vision
+    https://docs.aws.amazon.com/nova/latest/userguide/modalities-document.html
 .LINK
-    https://docs.anthropic.com/en/docs/build-with-claude/tool-use
+    https://docs.aws.amazon.com/nova/latest/userguide/modalities-video.html
 #>
-function Invoke-AnthropicModel {
-    [CmdletBinding(
-        DefaultParameterSetName = 'Standard'
-    )]
+function Invoke-AmazonNovaTextModel {
+    [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUsePSCredentialType', '',
         Justification = 'Suppressed to support AWS credential parameter.')]
     param (
-        [Parameter(Mandatory = $false,
+        [Parameter(Mandatory = $true,
             HelpMessage = 'The message to be sent to the model.',
             ParameterSetName = 'Standard')]
         [ValidateNotNull()]
@@ -209,6 +218,14 @@ function Invoke-AnthropicModel {
         [ValidateNotNullOrEmpty()]
         [string[]]$MediaPath,
 
+        # TODO: Implement S3Location for video files
+        # [Parameter(Mandatory = $false,
+        #     HelpMessage = 'The S3 location of the media file.',
+        #     ParameterSetName = 'Standard')]
+        # [ValidateNotNull()]
+        # [ValidateNotNullOrEmpty()]
+        # [string]$S3Location,
+
         [Parameter(Mandatory = $true,
             HelpMessage = 'An array of custom conversation objects.',
             ParameterSetName = 'PreCraftedMessages')]
@@ -218,13 +235,9 @@ function Invoke-AnthropicModel {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
-            'anthropic.claude-v2:1',
-            'anthropic.claude-3-haiku-20240307-v1:0',
-            'anthropic.claude-3-5-haiku-20241022-v1:0',
-            'anthropic.claude-3-sonnet-20240229-v1:0',
-            'anthropic.claude-3-5-sonnet-20241022-v2:0',
-            'anthropic.claude-3-5-sonnet-20240620-v1:0',
-            'anthropic.claude-3-opus-20240229-v1:0'
+            'amazon.nova-pro-v1:0',
+            'amazon.nova-lite-v1:0',
+            'amazon.nova-micro-v1:0'
         )]
         [string]$ModelID,
 
@@ -240,19 +253,13 @@ function Invoke-AnthropicModel {
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'The maximum number of tokens to generate before stopping.')]
-        [ValidateRange(1, 4096)]
-        [int]$MaxTokens = 4096,
+        [ValidateRange(1, 5000)]
+        [int]$MaxTokens = 5000,
 
-        # https://docs.anthropic.com/en/docs/system-prompts
         [Parameter(Mandatory = $false,
             HelpMessage = 'The system prompt for the request.')]
         [ValidateNotNullOrEmpty()]
         [string]$SystemPrompt,
-
-        [Parameter(Mandatory = $false,
-            HelpMessage = 'Custom text sequences that cause the model to stop generating.')]
-        [ValidateNotNullOrEmpty()]
-        [string[]]$StopSequences,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'The amount of randomness injected into the response.')]
@@ -260,27 +267,23 @@ function Invoke-AnthropicModel {
         [float]$Temperature,
 
         [Parameter(Mandatory = $false,
-            HelpMessage = 'Use nucleus sampling. Not for normal use.')]
+            HelpMessage = 'Use a lower value to ignore less probable options and decrease the diversity of responses.')]
         [ValidateRange(0.0, 1.0)]
         [float]$TopP,
 
         [Parameter(Mandatory = $false,
-            HelpMessage = 'Only sample from the top K options for each subsequent token. Not for normal use.')]
-        [ValidateRange(0, 500)]
+            HelpMessage = 'Only sample from the top K options for each subsequent token.')]
+        [ValidateRange(0, 1.0)]
         [int]$TopK,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'Custom text sequences that cause the model to stop generating.')]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$StopSequences,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'Definitions of tools that the model may use.')]
         [PSCustomObject[]]$Tools,
-
-        [Parameter(Mandatory = $false,
-            HelpMessage = 'Specifies how functions are called.')]
-        [ValidateSet('auto', 'any', 'tool')]
-        [string]$ToolChoice,
-
-        [Parameter(Mandatory = $false,
-            HelpMessage = "The name of the tool that Claude should use to answer the user's question.")]
-        [string]$ToolName,
 
         [Parameter(Mandatory = $true,
             HelpMessage = 'A list of results from invoking tools recommended by the model in the previous chat turn.',
@@ -328,21 +331,14 @@ function Invoke-AnthropicModel {
 
     )
 
-    $modelInfo = $script:anthropicModelInfo | Where-Object { $_.ModelId -eq $ModelID }
+    $modelInfo = $script:amazonModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
 
-    if ($ToolChoice -eq 'tool' -and [string]::IsNullOrWhiteSpace($ToolName)) {
-        throw 'ToolName must be specified when ToolChoice is set to tool.'
-    }
-    # tool options are not supported by the anthropic 2 model
-    if ($ModelID -eq 'anthropic.claude-v2:1' ) {
-        if ($Tools -or $ToolChoice -or $ToolName) {
-            throw 'Tool options are not supported by the anthropic 2 model.'
-        }
+    if ($MediaPath -and $S3Location) {
+        throw 'Both MediaPath and S3Location cannot be provided. Please provide only one.'
     }
 
-    Write-Debug -Message ('Parameter Set: {0}' -f $PSCmdlet.ParameterSetName)
     switch ($PSCmdlet.ParameterSetName) {
         'Standard' {
             if ($MediaPath) {
@@ -352,49 +348,45 @@ function Invoke-AnthropicModel {
                     throw 'Vision is not supported for this model.'
                 }
 
-                if ($MediaPath.Count -gt 20) {
-                    throw ('You provided {0} media files. You can only provide up to 20 media files.' -f $MediaPath.Count)
-                }
-
                 foreach ($media in $MediaPath) {
-                    if (-not (Test-AnthropicMedia -MediaPath $media)) {
+                    if (-not (Test-AmazonNovaMedia -MediaPath $media)) {
                         throw ('Media test for {0} failed.' -f $media)
                     }
                 }
 
-                $formatAnthropicMessageSplat = @{
+                $formatAmazonNovaMessageSplat = @{
                     Role             = 'user'
                     Message          = $Message
                     ModelID          = $ModelID
                     MediaPath        = $MediaPath
                     NoContextPersist = $NoContextPersist
                 }
-                $formattedMessages = Format-AnthropicMessage @formatAnthropicMessageSplat
+                $formattedMessages = Format-AmazonNovaMessage @formatAmazonNovaMessageSplat
             }
             elseif ($Message) {
                 Write-Verbose -Message 'Standard message provided.'
-                $formatAnthropicMessageSplat = @{
+                $formatAmazonNovaMessageSplat = @{
                     Role             = 'user'
                     Message          = $Message
                     ModelID          = $ModelID
                     NoContextPersist = $NoContextPersist
                 }
-                $formattedMessages = Format-AnthropicMessage @formatAnthropicMessageSplat
+                $formattedMessages = Format-AmazonNovaMessage @formatAmazonNovaMessageSplat
             }
             else {
                 throw 'You must provide either a message or media path.'
             }
-        }
+        } #Standard
         'PreCraftedMessages' {
             Write-Verbose -Message 'Custom conversation provided'
-            $conversationEval = Test-AnthropicCustomConversation -CustomConversation $CustomConversation
+            $conversationEval = Test-AmazonNovaCustomConversation -CustomConversation $CustomConversation
             if ($conversationEval -ne $true) {
                 throw 'Custom conversation validation failed.'
             }
             else {
                 $formattedMessages = $CustomConversation
             }
-        }
+        } #PreCraftedMessages
         'ToolsResultsSet' {
             Write-Verbose -Message 'Tools results provided'
 
@@ -402,60 +394,77 @@ function Invoke-AnthropicModel {
                 throw 'Tools must be provided when ToolsResults are provided.'
             }
 
-            # ToolsResults - must be formed properly
-            $toolsResultsEval = Test-AnthropicToolResult -ToolResults $ToolsResults
+            $toolsResultsEval = Test-AmazonNovaToolResult -ToolResults $ToolsResults
             if ($toolsResultsEval -ne $true) {
                 throw 'Tools results validation failed.'
             }
-            $formatAnthropicMessageSplat = @{
-                Role             = 'user'
-                ToolsResults     = $ToolsResults
-                ModelID          = $ModelID
-                NoContextPersist = $NoContextPersist
+            else {
+                foreach ($toolResult in $ToolsResults) {
+                    $formatAmazonNovaMessageSplat = @{
+                        Role             = 'user'
+                        ToolsResults     = $ToolsResults
+                        ModelID          = $ModelID
+                        NoContextPersist = $NoContextPersist
+                    }
+                    $formattedMessages = Format-AmazonNovaMessage @formatAmazonNovaMessageSplat
+                }
             }
-            $formattedMessages += Format-AnthropicMessage @formatAnthropicMessageSplat
-        }
-    }
+        } #ToolsResultsSet
+    } #switch
 
     #region cmdletParams
 
+    Write-Debug -Message 'Forming body object.'
+
     $bodyObj = @{
-        'anthropic_version' = 'bedrock-2023-05-31'
-        'max_tokens'        = $MaxTokens
-        messages            = @(
+        messages = @(
             $formattedMessages
         )
     }
+
     if ($SystemPrompt) {
-        $bodyObj.Add('system', $SystemPrompt)
+        $systemPromptObj = @(
+            [PSCustomObject]@{
+                text = $SystemPrompt
+            }
+        )
+        $bodyObj.Add('system', $systemPromptObj)
     }
-    if ($StopSequences) {
-        $bodyObj.Add('stop_sequences', $StopSequences)
+    if ($MaxTokens -or $Temperature -or $TopP -or $TopK -or $StopSequences) {
+        $bodyObj.Add('inferenceConfig', @{})
+    }
+    if ($MaxTokens) {
+        $bodyObj.inferenceConfig.Add('max_new_tokens', $MaxTokens)
     }
     if ($Temperature) {
-        $bodyObj.Add('temperature', $Temperature)
+        $bodyObj.inferenceConfig.Add('temperature', $Temperature)
     }
     if ($TopP) {
-        $bodyObj.Add('top_p', $TopP)
+        $bodyObj.inferenceConfig.Add('top_p', $TopP)
     }
     if ($TopK) {
-        $bodyObj.Add('top_k', $TopK)
+        $bodyObj.inferenceConfig.Add('top_k', $TopK)
+    }
+    if ($StopSequences) {
+        $bodyObj.inferenceConfig.Add('stopSequences', $StopSequences)
     }
     if ($Tools) {
-        $toolsEval = Test-AnthropicTool -Tools $Tools
+        Write-Debug -Message 'Tools provided.'
+
+        $toolsEval = Test-AmazonNovaTool -Tools $Tools
         if ($toolsEval -ne $true) {
             throw 'Tools validation failed.'
         }
-        $bodyObj.Add('tools', $Tools)
-    }
-    if ($ToolChoice) {
-        $toolChoiceObj = @{
-            type = $ToolChoice
+        $formattedToolsConfig = Format-AmazonNovaToolConfig -ToolsConfig $Tools
+        $toolsObj = [PSCustomObject]@{
+            tools      = @(
+                $formattedToolsConfig
+            )
+            toolChoice = @{
+                auto = @{}
+            }
         }
-        if ($ToolName) {
-            $toolChoiceObj.Add('name', $ToolName)
-        }
-        $bodyObj.Add('tool_choice', $toolChoiceObj)
+        $bodyObj.Add('toolConfig', $toolsObj)
     }
     $jsonBody = $bodyObj | ConvertTo-Json -Depth 10
     [byte[]]$byteArray = [System.Text.Encoding]::UTF8.GetBytes($jsonBody)
@@ -546,7 +555,7 @@ function Invoke-AnthropicModel {
         throw 'No response from model API.'
     }
 
-    Write-Verbose -Message'Processing response.'
+    Write-Verbose -Message 'Processing response.'
     try {
         $jsonBody = ConvertFrom-MemoryStreamToString -MemoryStream $rawResponse.body -ErrorAction Stop
     }
@@ -577,20 +586,20 @@ function Invoke-AnthropicModel {
 
     Write-Verbose -Message 'Adding response to model context history.'
 
-    if ($response.stop_reason -eq 'tool_use') {
+    if ($response.stopReason -eq 'tool_use') {
         Write-Debug -Message 'Tool use detected.'
-        $formatAnthropicMessageSplat = @{
+        $formatAmazonNovaMessageSplat = @{
             Role             = 'assistant'
-            ToolCall         = $response.content
+            ToolCall         = $response.output.message.content.toolUse
             ModelID          = $ModelID
             NoContextPersist = $NoContextPersist
         }
-        Format-AnthropicMessage @formatAnthropicMessageSplat | Out-Null
+        Format-AmazonNovaMessage @formatAmazonNovaMessageSplat | Out-Null
     }
     else {
-        Write-Debug -Message ('Stop Reason: {0}' -f $response.stop_reason)
+        Write-Debug -Message ('Stop Reason: {0}' -f $response.stopReason)
 
-        if ([string]::IsNullOrWhiteSpace($response.content.text)) {
+        if ([string]::IsNullOrWhiteSpace($response.output.message.content.text)) {
             if ($MaxTokens -lt 150) {
                 Write-Warning -Message 'In some cases, the model may return an empty response when the max tokens is set to a low value.'
                 Write-Warning -Message ('MaxTokens on this call was set to {0}.' -f $MaxTokens)
@@ -599,14 +608,14 @@ function Invoke-AnthropicModel {
             throw ('No response text was returned from model API: {0}' -f $ModelID)
         }
 
-        $content = $response.content.text
-        $formatAnthropicMessageSplat = @{
+        $content = $response.output.message.content.text
+        $formatAmazonNovaMessageSplat = @{
             Role             = 'assistant'
             Message          = $content
             ModelID          = $ModelID
             NoContextPersist = $NoContextPersist
         }
-        Format-AnthropicMessage @formatAnthropicMessageSplat | Out-Null
+        Format-AmazonNovaMessage @formatAmazonNovaMessageSplat | Out-Null
     }
 
     if ($ReturnFullObject) {
@@ -616,4 +625,4 @@ function Invoke-AnthropicModel {
         return $content
     }
 
-} #Invoke-AnthropicModel
+} #Invoke-AmazonNovaTextModel

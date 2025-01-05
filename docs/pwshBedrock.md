@@ -2,7 +2,7 @@
 Module Name: pwshBedrock
 Module Guid: b4f9e4dc-0229-44ef-99a1-08be4c5e81f2
 Download Help Link: NA
-Help Version: 0.33.0
+Help Version: 0.52.0
 Locale: en-US
 ---
 
@@ -31,6 +31,9 @@ Sends message(s) to the AI21 Labs Jamba model on the Amazon Bedrock platform and
 
 ### [Invoke-AmazonImageModel](Invoke-AmazonImageModel.md)
 Sends message(s) to an Amazon Titan image model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local directory.
+
+### [Invoke-AmazonNovaTextModel](Invoke-AmazonNovaTextModel.md)
+Sends message(s) to an Amazon Nova model on the Amazon Bedrock platform and retrieves the response.
 
 ### [Invoke-AmazonTextModel](Invoke-AmazonTextModel.md)
 Sends message(s) to an Amazon Titan model on the Amazon Bedrock platform and retrieves the response.

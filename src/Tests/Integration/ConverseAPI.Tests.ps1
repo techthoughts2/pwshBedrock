@@ -20,6 +20,9 @@ InModuleScope 'pwshBedrock' {
                 'amazon.titan-text-express-v1',
                 'amazon.titan-text-lite-v1',
                 'amazon.titan-text-premier-v1:0',
+                'amazon.nova-pro-v1:0',
+                'amazon.nova-lite-v1:0',
+                'amazon.nova-micro-v1:0',
                 'amazon.titan-tg1-large',
                 'anthropic.claude-v2:1',
                 'anthropic.claude-3-haiku-20240307-v1:0',
@@ -32,8 +35,6 @@ InModuleScope 'pwshBedrock' {
                 # 'cohere.command-light-text-v14', # *note: not supported by Converse API
                 'cohere.command-r-v1:0',
                 'cohere.command-r-plus-v1:0',
-                'meta.llama2-13b-chat-v1',
-                'meta.llama2-70b-chat-v1',
                 'meta.llama3-70b-instruct-v1:0',
                 'meta.llama3-8b-instruct-v1:0',
                 'meta.llama3-1-8b-instruct-v1:0',
@@ -43,6 +44,7 @@ InModuleScope 'pwshBedrock' {
                 'meta.llama3-2-3b-instruct-v1:0',
                 'meta.llama3-2-11b-instruct-v1:0',
                 'meta.llama3-2-90b-instruct-v1:0',
+                'meta.llama3-3-70b-instruct-v1:0',
                 'mistral.mistral-7b-instruct-v0:2',
                 'mistral.mistral-large-2402-v1:0',
                 'mistral.mistral-large-2407-v1:0',
@@ -52,6 +54,7 @@ InModuleScope 'pwshBedrock' {
                 # 'stability.stable-image-ultra-v1:0', # *note: not supported by Converse API
                 # 'stability.stable-image-core-v1:0' # *note: not supported by Converse API
                 # 'stability.sd3-large-v1:0' # *note: not supported by Converse API
+                # 'stability.sd3-5-large-v1:0' # *note: not supported by Converse API
             )
         }
         BeforeAll {

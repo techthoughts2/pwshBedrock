@@ -22,7 +22,7 @@ InModuleScope 'pwshBedrock' {
             BeforeEach {
                 $Global:pwshBedrockModelContext = @(
                     [PSCustomObject]@{
-                        ModelId = 'meta.llama2-13b-chat-v1'
+                        ModelId = 'meta.llama3-2-90b-instruct-v1:0'
                         Context = 'test'
                     }
                 )
@@ -125,23 +125,23 @@ Who is the best captain in Star Trek?[/INST]
                 } | Should -Throw
             } #it
 
-            It 'should throw if a 3.2 model is provided in an unsupported region' {
-                {
-                    $invokeMetaModelSplat = @{
-                        Message     = 'Resistance is futile.'
-                        ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
-                        ProfileName = 'default'
-                        Region      = 'ap-northeast-1'
-                    }
-                    Invoke-MetaModel @invokeMetaModelSplat
-                } | Should -Throw
-            } #it
+            # It 'should throw if a 3.2 model is provided in an unsupported region' {
+            #     {
+            #         $invokeMetaModelSplat = @{
+            #             Message     = 'Resistance is futile.'
+            #             ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
+            #             ProfileName = 'default'
+            #             Region      = 'ap-northeast-1'
+            #         }
+            #         Invoke-MetaModel @invokeMetaModelSplat
+            #     } | Should -Throw
+            # } #it
 
             It 'should throw if a tool is provided for a model below 3.1' {
                 {
                     $invokeMetaModelSplat = @{
                         Message     = 'Lookup current trek trivia information using the Star Trek trivia tool.'
-                        ModelID     = 'meta.llama2-13b-chat-v1'
+                        ModelID     = 'meta.llama3-8b-instruct-v1:0'
                         Tools       = $standardTools
                         ProfileName = 'default'
                         Region      = 'us-west-2'
@@ -154,7 +154,7 @@ Who is the best captain in Star Trek?[/INST]
                 {
                     $invokeMetaModelSplat = @{
                         ToolsResults = $toolResults
-                        ModelID      = 'meta.llama2-13b-chat-v1'
+                        ModelID      = 'meta.llama3-8b-instruct-v1:0'
                         ProfileName  = 'default'
                         Region       = 'us-west-2'
                     }
@@ -207,7 +207,7 @@ Who is the best captain in Star Trek?[/INST]
                     $invokeMetaModelSplat = @{
                         ImagePrompt = 'Describe this image in two sentences.'
                         MediaPath   = 'image'
-                        ModelID     = 'meta.llama2-13b-chat-v1'
+                        ModelID     = 'meta.llama3-8b-instruct-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
                     }
@@ -248,7 +248,7 @@ Who is the best captain in Star Trek?[/INST]
                 {
                     $invokeMetaModelSplat = @{
                         Message     = 'It is possible to commit no mistakes and still lose. That is not weakness, that is life.'
-                        ModelID     = 'meta.llama2-13b-chat-v1'
+                        ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
                     }
@@ -271,7 +271,7 @@ Who is the best captain in Star Trek?[/INST]
                 {
                     $invokeMetaModelSplat = @{
                         Message   = 'The line must be drawn here! This far, no further!'
-                        ModelID   = 'meta.llama2-13b-chat-v1'
+                        ModelID   = 'meta.llama3-2-90b-instruct-v1:0'
                         AccessKey = 'ak'
                         SecretKey = 'sk'
                         Region    = 'us-west-2'
@@ -284,7 +284,7 @@ Who is the best captain in Star Trek?[/INST]
             It 'should throw if there is an error running Invoke-BDRRModel' {
                 $Global:pwshBedrockModelContext = @(
                     [PSCustomObject]@{
-                        ModelId = 'meta.llama2-13b-chat-v1'
+                        ModelId = 'meta.llama3-2-90b-instruct-v1:0'
                         Context = $customMessage
                     }
                 )
@@ -292,7 +292,7 @@ Who is the best captain in Star Trek?[/INST]
                 {
                     $invokeMetaModelSplat = @{
                         Message   = "There is no greater enemy than one's own fears."
-                        ModelID   = 'meta.llama2-13b-chat-v1'
+                        ModelID   = 'meta.llama3-2-90b-instruct-v1:0'
                         AccessKey = 'ak'
                         SecretKey = 'sk'
                         Region    = 'us-west-2'
@@ -306,7 +306,7 @@ Who is the best captain in Star Trek?[/INST]
                 {
                     $invokeMetaModelSplat = @{
                         Message   = "When a man is convinced he will die tomorrow. He'll probably find a way to make that happen."
-                        ModelID   = 'meta.llama2-13b-chat-v1'
+                        ModelID   = 'meta.llama3-2-90b-instruct-v1:0'
                         AccessKey = 'ak'
                         SecretKey = 'sk'
                         Region    = 'us-west-2'
@@ -318,7 +318,7 @@ Who is the best captain in Star Trek?[/INST]
             It 'should throw if the memory stream can not be converted' {
                 $Global:pwshBedrockModelContext = @(
                     [PSCustomObject]@{
-                        ModelId = 'meta.llama2-13b-chat-v1'
+                        ModelId = 'meta.llama3-2-90b-instruct-v1:0'
                         Context = 'test'
                     }
                 )
@@ -326,7 +326,7 @@ Who is the best captain in Star Trek?[/INST]
                 {
                     $invokeMetaModelSplat = @{
                         Message   = 'Make it so.'
-                        ModelID   = 'meta.llama2-13b-chat-v1'
+                        ModelID   = 'meta.llama3-2-90b-instruct-v1:0'
                         AccessKey = 'ak'
                         SecretKey = 'sk'
                         Region    = 'us-west-2'
@@ -338,7 +338,7 @@ Who is the best captain in Star Trek?[/INST]
             It 'should remove last message context if the memory stream can not be converted' {
                 $Global:pwshBedrockModelContext = @(
                     [PSCustomObject]@{
-                        ModelId = 'meta.llama2-13b-chat-v1'
+                        ModelId = 'meta.llama3-2-90b-instruct-v1:0'
                         Context = $standardMessage
                     }
                 )
@@ -346,7 +346,7 @@ Who is the best captain in Star Trek?[/INST]
                 {
                     $invokeMetaModelSplat = @{
                         Message   = 'Make it so.'
-                        ModelID   = 'meta.llama2-13b-chat-v1'
+                        ModelID   = 'meta.llama3-2-90b-instruct-v1:0'
                         AccessKey = 'ak'
                         SecretKey = 'sk'
                         Region    = 'us-west-2'
@@ -370,7 +370,7 @@ Who is the best captain in Star Trek?[/INST]
                 {
                     $invokeMetaModelSplat = @{
                         Message   = 'The line must be drawn here! This far, no further!'
-                        ModelID   = 'meta.llama2-13b-chat-v1'
+                        ModelID   = 'meta.llama3-2-90b-instruct-v1:0'
                         MaxTokens = 100
                         AccessKey = 'ak'
                         SecretKey = 'sk'
@@ -388,7 +388,7 @@ Who is the best captain in Star Trek?[/INST]
             BeforeEach {
                 $Global:pwshBedrockModelContext = @(
                     [PSCustomObject]@{
-                        ModelId = 'meta.llama2-13b-chat-v1'
+                        ModelId = 'meta.llama3-2-90b-instruct-v1:0'
                         Context = 'test'
                     }
                 )
@@ -503,7 +503,7 @@ Who is the best captain in Star Trek?[/INST]
             It 'should return the full object if ReturnFullObject is provided' {
                 $invokeMetaModelSplat = @{
                     Message          = 'With the first link, the chain is forged. The first speech censured, the first thought forbidden, the first freedom denied, chains us all irrevocably.'
-                    ModelID          = 'meta.llama2-13b-chat-v1'
+                    ModelID          = 'meta.llama3-2-90b-instruct-v1:0'
                     ReturnFullObject = $true
                     AccessKey        = 'ak'
                     SecretKey        = 'sk'
@@ -519,7 +519,7 @@ Who is the best captain in Star Trek?[/INST]
             It 'should return a message when all parameters are provided' {
                 $invokeMetaModelSplat = @{
                     Message          = 'Shaka, when the walls fell.'
-                    ModelID          = 'meta.llama2-13b-chat-v1'
+                    ModelID          = 'meta.llama3-2-90b-instruct-v1:0'
                     NoContextPersist = $true
                     SystemPrompt     = 'You are a Star Trek trivia expert.'
                     MaxTokens        = 100
@@ -537,7 +537,7 @@ Who is the best captain in Star Trek?[/INST]
             It 'should run all expected subcommands' {
                 $invokeMetaModelSplat = @{
                     Message          = 'Bonjour, mon Capitaine!'
-                    ModelID          = 'meta.llama2-13b-chat-v1'
+                    ModelID          = 'meta.llama3-2-90b-instruct-v1:0'
                     NoContextPersist = $true
                     AccessKey        = 'ak'
                     SecretKey        = 'sk'
@@ -617,7 +617,7 @@ Who is the best captain in Star Trek?[/INST]
                 Mock -CommandName Invoke-BDRRModel {
                     $response
                     $Region         | Should -BeExactly 'us-west-2'
-                    $ModelID        | Should -BeExactly 'meta.llama2-13b-chat-v1'
+                    $ModelID        | Should -BeExactly 'us.meta.llama3-2-90b-instruct-v1:0'
                     $AccessKey      | Should -BeExactly 'ak'
                     $SecretKey      | Should -BeExactly 'sk'
                     $ContentType    | Should -BeExactly 'application/json'
@@ -625,7 +625,7 @@ Who is the best captain in Star Trek?[/INST]
                 } -Verifiable
                 $invokeMetaModelSplat = @{
                     Message   = 'Good tea, nice house.'
-                    ModelID   = 'meta.llama2-13b-chat-v1'
+                    ModelID   = 'meta.llama3-2-90b-instruct-v1:0'
                     AccessKey = 'ak'
                     SecretKey = 'sk'
                     Region    = 'us-west-2'
@@ -640,7 +640,7 @@ Who is the best captain in Star Trek?[/INST]
                 Mock -CommandName Invoke-BDRRModel {
                     $response
                     $Region             | Should -BeExactly 'us-west-2'
-                    $ModelID            | Should -BeExactly 'meta.llama2-13b-chat-v1'
+                    $ModelID            | Should -BeExactly 'us.meta.llama3-2-90b-instruct-v1:0'
                     $Credential         | Should -Not -BeNullOrEmpty
                     $EndpointUrl        | Should -BeExactly 'string'
                     $NetworkCredential  | Should -Not -BeNullOrEmpty
@@ -650,7 +650,7 @@ Who is the best captain in Star Trek?[/INST]
                 } -Verifiable
                 $invokeMetaModelSplat = @{
                     Message           = "My Dear Doctor, they're all true. 'Even the lies?' Especially the lies"
-                    ModelID           = 'meta.llama2-13b-chat-v1'
+                    ModelID           = 'meta.llama3-2-90b-instruct-v1:0'
                     Credential        = $awsCred
                     EndpointUrl       = 'string'
                     NetworkCredential = $networkCred
@@ -695,7 +695,7 @@ Who is the best captain in Star Trek?[/INST]
                 } -Verifiable
                 $invokeMetaModelSplat = @{
                     Message          = 'Fascinating.'
-                    ModelID          = 'meta.llama2-13b-chat-v1'
+                    ModelID          = 'meta.llama3-2-90b-instruct-v1:0'
                     NoContextPersist = $true
                     AccessKey        = 'ak'
                     SecretKey        = 'sk'

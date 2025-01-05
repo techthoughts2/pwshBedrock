@@ -50,7 +50,7 @@ InModuleScope 'pwshBedrock' {
                     ModelID          = $ModelID
                     MaxTokens        = 10
                     Credential       = $awsCredential
-                    Region           = 'us-west-2'
+                    Region           = 'us-east-1'
                     NoContextPersist = $true
                     Verbose          = $false
                 }
@@ -67,7 +67,7 @@ InModuleScope 'pwshBedrock' {
                     ModelID          = $ModelID
                     MaxTokens        = 10
                     Credential       = $awsCredential
-                    Region           = 'us-west-2'
+                    Region           = 'us-east-1'
                     NoContextPersist = $true
                     ReturnFullObject = $true
                     Verbose          = $false
@@ -100,7 +100,7 @@ User: Say the exact same thing you just said.
                     CustomConversation = $customConversation
                     ModelID            = $ModelID
                     Credential         = $awsCredential
-                    Region             = 'us-west-2'
+                    Region             = 'us-east-1'
                     Verbose            = $false
                 }
                 $eval = Invoke-AmazonTextModel @invokeAmazonTextModelSplat
@@ -144,7 +144,7 @@ User: Say the exact same thing you just said.
                     ModelID          = $ModelID
                     ReturnFullObject = $true
                     Credential       = $awsCredential
-                    Region           = 'us-west-2'
+                    Region           = 'us-east-1'
                     Verbose          = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -163,7 +163,7 @@ User: Say the exact same thing you just said.
             #         ModelID              = $ModelID
             #         ReturnFullObject     = $true
             #         Credential           = $awsCredential
-            #         Region               = 'us-west-2'
+            #         Region               = 'us-east-1'
             #         Verbose              = $false
             #     }
             #     $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -181,7 +181,7 @@ User: Say the exact same thing you just said.
             #         ModelID              = $ModelID
             #         ReturnFullObject     = $true
             #         Credential           = $awsCredential
-            #         Region               = 'us-west-2'
+            #         Region               = 'us-east-1'
             #         Verbose              = $false
             #     }
             #     $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -199,7 +199,7 @@ User: Say the exact same thing you just said.
             #         ModelID               = $ModelID
             #         ReturnFullObject      = $true
             #         Credential            = $awsCredential
-            #         Region                = 'us-west-2'
+            #         Region                = 'us-east-1'
             #         Verbose               = $false
             #     }
             #     $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -217,7 +217,7 @@ User: Say the exact same thing you just said.
             #         ModelID            = $ModelID
             #         ReturnFullObject   = $true
             #         Credential         = $awsCredential
-            #         Region             = 'us-west-2'
+            #         Region             = 'us-east-1'
             #         Verbose            = $false
             #     }
             #     $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -234,7 +234,7 @@ User: Say the exact same thing you just said.
                     ModelID             = $ModelID
                     ReturnFullObject    = $true
                     Credential          = $awsCredential
-                    Region              = 'us-west-2'
+                    Region              = 'us-east-1'
                     Verbose             = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -254,7 +254,7 @@ User: Say the exact same thing you just said.
                 Start-Sleep -Milliseconds 5500
             }
 
-            It 'should return an image when using TEXT_IMAGE generation for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+            It 'should return an image when using TEXT_IMAGE generation for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath   = $outFile
@@ -268,7 +268,7 @@ User: Say the exact same thing you just said.
                     ModelID          = $ModelID
                     ReturnFullObject = $true
                     Credential       = $awsCredential
-                    Region           = 'us-west-2'
+                    Region           = 'us-east-1'
                     Verbose          = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -276,7 +276,7 @@ User: Say the exact same thing you just said.
                 $eval.images.Count | Should -Be 1
             } #it
 
-            It 'should return an image when using INPAINTING with a mask image for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+            It 'should return an image when using INPAINTING with a mask image for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath       = $outFile
@@ -286,7 +286,7 @@ User: Say the exact same thing you just said.
                     ModelID              = $ModelID
                     ReturnFullObject     = $true
                     Credential           = $awsCredential
-                    Region               = 'us-west-2'
+                    Region               = 'us-east-1'
                     Verbose              = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -294,7 +294,7 @@ User: Say the exact same thing you just said.
                 $eval.images.Count | Should -Be 1
             } #it
 
-            It 'should return an image when using INPAINTING with a mask prompt for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+            It 'should return an image when using INPAINTING with a mask prompt for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath       = $outFile
@@ -304,7 +304,7 @@ User: Say the exact same thing you just said.
                     ModelID              = $ModelID
                     ReturnFullObject     = $true
                     Credential           = $awsCredential
-                    Region               = 'us-west-2'
+                    Region               = 'us-east-1'
                     Verbose              = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -312,7 +312,7 @@ User: Say the exact same thing you just said.
                 $eval.images.Count | Should -Be 1
             } #it
 
-            It 'should return an image when using OUTPAINTING with a mask image for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+            It 'should return an image when using OUTPAINTING with a mask image for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath        = $outFile
@@ -322,7 +322,7 @@ User: Say the exact same thing you just said.
                     ModelID               = $ModelID
                     ReturnFullObject      = $true
                     Credential            = $awsCredential
-                    Region                = 'us-west-2'
+                    Region                = 'us-east-1'
                     Verbose               = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -330,7 +330,7 @@ User: Say the exact same thing you just said.
                 $eval.images.Count | Should -Be 1
             } #it
 
-            It 'should return an image when using OUTPAINTING with a mask prompt for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+            It 'should return an image when using OUTPAINTING with a mask prompt for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath     = $outFile
@@ -340,7 +340,7 @@ User: Say the exact same thing you just said.
                     ModelID            = $ModelID
                     ReturnFullObject   = $true
                     Credential         = $awsCredential
-                    Region             = 'us-west-2'
+                    Region             = 'us-east-1'
                     Verbose            = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -348,7 +348,7 @@ User: Say the exact same thing you just said.
                 $eval.images.Count | Should -Be 1
             } #it
 
-            It 'should return an image when using IMAGE_VARIATION for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+            It 'should return an image when using IMAGE_VARIATION for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath      = $outFile
@@ -357,7 +357,7 @@ User: Say the exact same thing you just said.
                     ModelID             = $ModelID
                     ReturnFullObject    = $true
                     Credential          = $awsCredential
-                    Region              = 'us-west-2'
+                    Region              = 'us-east-1'
                     Verbose             = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -365,7 +365,7 @@ User: Say the exact same thing you just said.
                 $eval.images.Count | Should -Be 1
             } #it
 
-            It 'should return an image when using CONDITIONING for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+            It 'should return an image when using CONDITIONING for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath      = $outFile
@@ -374,7 +374,7 @@ User: Say the exact same thing you just said.
                     ModelID             = $ModelID
                     ReturnFullObject    = $true
                     Credential          = $awsCredential
-                    Region              = 'us-west-2'
+                    Region              = 'us-east-1'
                     Verbose             = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -382,7 +382,7 @@ User: Say the exact same thing you just said.
                 $eval.images.Count | Should -Be 1
             } #it
 
-            It 'should return an image when providing specified colors for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+            It 'should return an image when providing specified colors for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath        = $outFile
@@ -392,7 +392,7 @@ User: Say the exact same thing you just said.
                     ModelID               = $ModelID
                     ReturnFullObject      = $true
                     Credential            = $awsCredential
-                    Region                = 'us-west-2'
+                    Region                = 'us-east-1'
                     Verbose               = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat
@@ -400,7 +400,7 @@ User: Say the exact same thing you just said.
                 $eval.images.Count | Should -Be 1
             } #it
 
-            It 'should return an image when using background removal for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.ModelId -eq 'amazon.titan-image-generator-v2:0' }) {
+            It 'should return an image when using background removal for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Image -eq $true -and $_.ModelId -ne 'amazon.titan-image-generator-v1'}) {
                 $ModelID = $_.ModelID
                 $invokeAmazonImageSplat = @{
                     ImagesSavePath             = $outFile
@@ -408,7 +408,7 @@ User: Say the exact same thing you just said.
                     ModelID                    = $ModelID
                     ReturnFullObject           = $true
                     Credential                 = $awsCredential
-                    Region                     = 'us-west-2'
+                    Region                     = 'us-east-1'
                     Verbose                    = $false
                 }
                 $eval = Invoke-AmazonImageModel @invokeAmazonImageSplat

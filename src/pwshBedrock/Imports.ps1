@@ -84,6 +84,40 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'amazon.nova-pro-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'amazon.nova-lite-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'amazon.nova-micro-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId    = 'amazon.nova-canvas-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId    = 'amazon.nova-reel-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'anthropic.claude-v2:1'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -172,22 +206,6 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
-        ModelId          = 'meta.llama2-13b-chat-v1'
-        TotalCost        = 0
-        InputTokenCount  = 0
-        OutputTokenCount = 0
-        InputTokenCost   = 0
-        OutputTokenCost  = 0
-    }
-    [PSCustomObject]@{
-        ModelId          = 'meta.llama2-70b-chat-v1'
-        TotalCost        = 0
-        InputTokenCount  = 0
-        OutputTokenCount = 0
-        InputTokenCost   = 0
-        OutputTokenCost  = 0
-    }
-    [PSCustomObject]@{
         ModelId          = 'meta.llama3-70b-instruct-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -260,6 +278,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'meta.llama3-3-70b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'mistral.mistral-7b-instruct-v0:2'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -319,6 +345,11 @@ $Global:pwshBedRockSessionModelTally = @(
         ImageCount = 0
         ImageCost  = 0
     }
+    [PSCustomObject]@{
+        ModelId    = 'stability.sd3-5-large-v1:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
 )
 
 #endregion
@@ -367,6 +398,26 @@ $Global:pwshBedrockModelContext = @(
         Context = ''
     }
     [PSCustomObject]@{
+        ModelId = 'amazon.nova-pro-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'amazon.nova-lite-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'amazon.nova-micro-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    # [PSCustomObject]@{
+    #     ModelId = 'amazon.nova-canvas-v1:0'
+    #     Context = New-Object System.Collections.Generic.List[object]
+    # }
+    # [PSCustomObject]@{
+    #     ModelId = 'amazon.nova-reel-v1:0'
+    #     Context = New-Object System.Collections.Generic.List[object]
+    # }
+    [PSCustomObject]@{
         ModelId = 'anthropic.claude-v2:1'
         Context = New-Object System.Collections.Generic.List[object]
     }
@@ -411,14 +462,6 @@ $Global:pwshBedrockModelContext = @(
         Context = New-Object System.Collections.Generic.List[object]
     }
     [PSCustomObject]@{
-        ModelId = 'meta.llama2-13b-chat-v1'
-        Context = ''
-    }
-    [PSCustomObject]@{
-        ModelId = 'meta.llama2-70b-chat-v1'
-        Context = ''
-    }
-    [PSCustomObject]@{
         ModelId = 'meta.llama3-70b-instruct-v1:0'
         Context = ''
     }
@@ -452,6 +495,10 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'meta.llama3-2-90b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama3-3-70b-instruct-v1:0'
         Context = ''
     }
     [PSCustomObject]@{
@@ -490,6 +537,10 @@ $Global:pwshBedrockModelContext = @(
         ModelId = 'stability.sd3-large-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
+    [PSCustomObject]@{
+        ModelId = 'stability.sd3-5-large-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
 )
 
 #endregion
@@ -515,12 +566,15 @@ $script:anthropicModelInfo = @(
         Strength                   = 'Legacy model - performs less well than Claude 3 models'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '01-01-2023'
@@ -536,12 +590,15 @@ $script:anthropicModelInfo = @(
         Strength                   = 'Quick and accurate targeted performance'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $true
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '08-01-2023'
@@ -557,18 +614,21 @@ $script:anthropicModelInfo = @(
         Strength                   = 'Intelligence at blazing speeds'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
-        Vision                     = $false
+        Vision                     = $true
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '07-01-2024'
         PayloadLimit               = '20MB'
-        InputTokenCost             = 0.001
-        OutputTokenCost            = 0.005
+        InputTokenCost             = 0.0008
+        OutputTokenCost            = 0.004
     }
     [PSCustomObject]@{
         ProviderName               = 'Anthropic'
@@ -578,12 +638,15 @@ $script:anthropicModelInfo = @(
         Strength                   = 'Maximum utility at a lower price, dependable, balanced for scaled deployments'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $true
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '08-01-2023'
@@ -599,12 +662,15 @@ $script:anthropicModelInfo = @(
         Strength                   = 'Highest level of intelligence and capability'
         Multilingual               = $true
         Text                       = $true
-        Document                   = $false
+        Image                      = $false
+        Video                      = $false
+        Document                   = $true
         Vision                     = $true
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '04-01-2024'
@@ -620,12 +686,15 @@ $script:anthropicModelInfo = @(
         Strength                   = 'Highest level of intelligence and capability'
         Multilingual               = $true
         Text                       = $true
-        Document                   = $false
+        Image                      = $false
+        Video                      = $false
+        Document                   = $true
         Vision                     = $true
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '04-01-2024'
@@ -641,12 +710,15 @@ $script:anthropicModelInfo = @(
         Strength                   = 'Top-level performance, intelligence, fluency, and understanding'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $true
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '08-01-2023'
@@ -677,12 +749,15 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
         Strength                   = '32k context window, open-ended text generation, brainstorming, summarizations, code generation, table creation, data formatting, paraphrasing, chain of thought, rewrite, extraction, QnA, chat, Knowledge Base support, Agents support, Model Customization (preview)'
         Multilingual               = $false
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $false
         Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 32000
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -702,12 +777,15 @@ At launch, the model is optimized for English, with multilingual support for mor
         Strength                   = 'Retrieval augmented generation, open-ended text generation, brainstorming, summarizations, code generation, table creation, data formatting, paraphrasing, chain of thought, rewrite, extraction, QnA, and chat.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 8000
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -726,12 +804,15 @@ where customers want a smaller, more cost-effective model that is also highly cu
         Strength                   = 'Open-ended text generation, brainstorming, summarizations, code generation, table creation, data formatting, paraphrasing, chain of thought, rewrite, extraction, QnA, and chat.'
         Multilingual               = $false
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 4000
         MaxOutput                  = 4096
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -751,12 +832,15 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
         Strength                   = '32k context window, open-ended text generation, brainstorming, summarizations, code generation, table creation, data formatting, paraphrasing, chain of thought, rewrite, extraction, QnA, chat, Knowledge Base support, Agents support, Model Customization (preview)'
         Multilingual               = $false
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 32000
         MaxOutput                  = 3072
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -772,12 +856,15 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
         Strength                   = 'Text-to-image generation, image editing, and image variations.'
         Multilingual               = $false
         Text                       = $false
+        Image                      = $true
+        Video                      = $false
         Document                   = $false
-        Vision                     = $true
+        Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = ''
         MaxOutput                  = ''
         TrainingCutoff             = ''
@@ -795,12 +882,15 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
         Strength                   = 'Text-to-image generation, image editing, image variation, image conditioning using a reference image, subject consistency using fine tuning (preserve specific subjects in generated images), and automated background removal.'
         Multilingual               = $false
         Text                       = $false
+        Image                      = $true
+        Video                      = $false
         Document                   = $false
-        Vision                     = $true
+        Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = ''
         MaxOutput                  = ''
         TrainingCutoff             = ''
@@ -809,6 +899,137 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
         # InputTokenCost             = 0.01
         # OutputTokenCost            = 0.012
         # pricing structure is different for image models
+    }
+
+    # https://docs.aws.amazon.com/nova/latest/userguide/what-is-nova.html
+    # https://aws.amazon.com/blogs/aws/introducing-amazon-nova-frontier-intelligence-and-industry-leading-price-performance/
+
+    [PSCustomObject]@{
+        ProviderName               = 'Amazon'
+        ModelName                  = 'Amazon Nova Pro'
+        ModelId                    = 'amazon.nova-pro-v1:0'
+        Description                = 'highly capable multimodal model with the best combination of accuracy, speed, and cost for a wide range of tasks.'
+        Strength                   = 'strong capabilities in processing both visual and textual information and excels at analyzing financial documents. With an input context of 300K tokens, it can process code bases with over fifteen thousand lines of code.'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $true
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 300000
+        MaxOutput                  = 5000
+        TrainingCutoff             = ''
+        PayloadLimit               = '5MB'
+        # ImageCost                  = 0.012
+        InputTokenCost             = 0.0008
+        OutputTokenCost            = 0.0032
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Amazon'
+        ModelName                  = 'Amazon Nova Lite'
+        ModelId                    = 'amazon.nova-lite-v1:0'
+        Description                = 'very low cost multimodal model that is lightning fast for processing image, video, and text inputs.'
+        Strength                   = 'can handle real-time customer interactions, document analysis, and visual question-answering tasks with high accuracy.'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $true
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 300000
+        MaxOutput                  = 5000
+        TrainingCutoff             = ''
+        PayloadLimit               = '5MB'
+        # ImageCost                  = 0.012
+        InputTokenCost             = 0.00006
+        OutputTokenCost            = 0.00024
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Amazon'
+        ModelName                  = 'Amazon Nova Micro'
+        ModelId                    = 'amazon.nova-micro-v1:0'
+        Description                = 'text-only model that delivers the lowest latency responses at very low cost.'
+        Strength                   = 'text summarization, translation, content classification, interactive chat and brainstorming, and simple mathematical reasoning and coding.'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '5MB'
+        # ImageCost                  = 0.012
+        InputTokenCost             = 0.000035
+        OutputTokenCost            = 0.00014
+    }
+    # https://docs.aws.amazon.com/nova/latest/userguide/image-generation.html
+    [PSCustomObject]@{
+        ProviderName               = 'Amazon'
+        ModelName                  = 'Amazon Nova Canvas'
+        ModelId                    = 'amazon.nova-canvas-v1:0'
+        Description                = 'state-of-the-art image generation model that creates professional grade images from text and image inputs.'
+        Strength                   = 'advertising, marketing, and entertainment.'
+        Multilingual               = $false
+        Text                       = $false
+        Image                      = $true
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        InferenceProfile           = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = ''
+        ImageCost                  = 0.08
+        # InputTokenCost             = 0.000035
+        # OutputTokenCost            = 0.00014
+    }
+    # https://docs.aws.amazon.com/nova/latest/userguide/video-generation.html
+    [PSCustomObject]@{
+        ProviderName               = 'Amazon'
+        ModelName                  = 'Amazon Nova Reel'
+        ModelId                    = 'amazon.nova-reel-v1:0'
+        Description                = 'state-of-the-art video generation model that supports the generation of short videos from input text and images.'
+        Strength                   = 'camera motion controls using natural language inputs.'
+        Multilingual               = $false
+        Text                       = $false
+        Image                      = $false
+        Video                      = $true
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        InferenceProfile           = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = ''
+        ImageCost                  = 0.08
+        # InputTokenCost             = 0.000035
+        # OutputTokenCost            = 0.00014
     }
 ) #amazonModelInfo
 
@@ -838,12 +1059,15 @@ $script:ai21ModelInfo = @(
         Strength                   = '256K context window, instruction following, chat capabilities, enhanced command comprehension.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $false
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 256000
         MaxOutput                  = 4096
         TrainingCutoff             = '02-01-2024'
@@ -859,12 +1083,15 @@ $script:ai21ModelInfo = @(
         Strength                   = 'optimized for low-latency processing of long prompts, enabling fast analysis of lengthy documents and data. Text generation, Sentiment analysis, Paraphrasing, Summarization, Text recommendation, Grammatical error correction, Text segmentation.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $false
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 256000
         MaxOutput                  = 4096
         TrainingCutoff             = '03-05-2024'
@@ -880,12 +1107,15 @@ $script:ai21ModelInfo = @(
         Strength                   = 'excels at complex reasoning tasks across all prompt lengths, making it ideal for applications that require high quality outputs on both long and short inputs. Text generation, Sentiment analysis, Paraphrasing, Summarization, Text recommendation, Grammatical error correction, Text segmentation.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $false
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 256000
         MaxOutput                  = 4096
         TrainingCutoff             = '03-05-2024'
@@ -914,12 +1144,15 @@ $script:cohereModelInfo = @(
         Strength                   = 'chat, summarize'
         Multilingual               = $false
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $false
+        InferenceProfile           = $false
         ContextWindow              = 4000
         MaxOutput                  = 4000
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -935,12 +1168,15 @@ $script:cohereModelInfo = @(
         Strength                   = 'chat, summarize'
         Multilingual               = $false
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $false
         Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $false
+        InferenceProfile           = $false
         ContextWindow              = 4000
         MaxOutput                  = 4000
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -956,12 +1192,15 @@ $script:cohereModelInfo = @(
         Strength                   = 'chat, complex workflows like code generation, retrieval augmented generation (RAG), tool use, and agents.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 128000
         MaxOutput                  = 4000
         TrainingCutoff             = '04-01-2024'
@@ -977,12 +1216,15 @@ $script:cohereModelInfo = @(
         Strength                   = 'chat, best suited for complex RAG workflows and multi-step tool use.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 128000
         MaxOutput                  = 4000
         TrainingCutoff             = '04-01-2024'
@@ -1008,60 +1250,21 @@ $script:cohereModelInfo = @(
 $script:metaModelInfo = @(
     [PSCustomObject]@{
         ProviderName               = 'Meta'
-        ModelName                  = 'Llama 2 Chat 13B'
-        ModelId                    = 'meta.llama2-13b-chat-v1'
-        Description                = 'Our fine-tuned LLMs, called Llama-2-Chat, are optimized for dialogue use cases. Llama-2-Chat models outperform open-source chat models on most benchmarks we tested, and in our human evaluations for helpfulness and safety, are on par with some popular closed-source models like ChatGPT and PaLM.'
-        Strength                   = 'Tuned models are intended for assistant-like chat'
-        Multilingual               = $false
-        Text                       = $true
-        Document                   = $true
-        Vision                     = $false
-        SystemPrompt               = $true
-        ToolUse                    = $false
-        ResponseStreamingSupported = $true
-        ChatHistorySupported       = $true
-        ContextWindow              = 4000
-        MaxOutput                  = 2048
-        TrainingCutoff             = '07-01-2023'
-        PayloadLimit               = ''
-        InputTokenCost             = 0.00075
-        OutputTokenCost            = 0.001
-    }
-    [PSCustomObject]@{
-        ProviderName               = 'Meta'
-        ModelName                  = 'Llama 2 Chat 70B'
-        ModelId                    = 'meta.llama2-70b-chat-v1'
-        Description                = 'Our fine-tuned LLMs, called Llama-2-Chat, are optimized for dialogue use cases. Llama-2-Chat models outperform open-source chat models on most benchmarks we tested, and in our human evaluations for helpfulness and safety, are on par with some popular closed-source models like ChatGPT and PaLM.'
-        Strength                   = 'Tuned models are intended for assistant-like chat'
-        Multilingual               = $false
-        Text                       = $true
-        Document                   = $true
-        Vision                     = $false
-        SystemPrompt               = $true
-        ToolUse                    = $false
-        ResponseStreamingSupported = $true
-        ChatHistorySupported       = $true
-        ContextWindow              = 4000
-        MaxOutput                  = 2048
-        TrainingCutoff             = '07-01-2023'
-        PayloadLimit               = ''
-        InputTokenCost             = 0.00195
-        OutputTokenCost            = 0.00256
-    }
-    [PSCustomObject]@{
-        ProviderName               = 'Meta'
         ModelName                  = 'Llama 3 8B Instruct'
         ModelId                    = 'meta.llama3-8b-instruct-v1:0'
         Description                = 'The Llama 3 instruction tuned models are optimized for dialogue use cases and outperform many of the available open source chat models on common industry benchmarks.'
         Strength                   = 'Instruction tuned models are intended for assistant-like chat'
         Multilingual               = $false
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 8000
         MaxOutput                  = 2048
         TrainingCutoff             = '03-01-2023'
@@ -1077,12 +1280,15 @@ $script:metaModelInfo = @(
         Strength                   = 'Instruction tuned models are intended for assistant-like chat'
         Multilingual               = $false
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 8000
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
@@ -1098,12 +1304,15 @@ $script:metaModelInfo = @(
         Strength                   = 'best suited for limited computational power and resources. The model excels at text summarization, text classification, sentiment analysis, and language translation requiring low-latency inferencing.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 128000
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
@@ -1119,12 +1328,15 @@ $script:metaModelInfo = @(
         Strength                   = 'ideal for content creation, conversational AI, language understanding, R&D, and enterprise applications. The model excels at text summarization and accuracy, text classification, sentiment analysis and nuance reasoning, language modeling, dialogue systems, code generation, and following instructions.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 128000
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
@@ -1140,12 +1352,15 @@ $script:metaModelInfo = @(
         Strength                   = 'ideal for content creation, conversational AI, language understanding, R&D, and enterprise applications. The model excels at text summarization and accuracy, text classification, sentiment analysis and nuance reasoning, language modeling, dialogue systems, code generation, and following instructions.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false # technically documentation says true, but it's not supported in the API call
         ContextWindow              = 128000
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
@@ -1161,12 +1376,15 @@ $script:metaModelInfo = @(
         Strength                   = 'ideal for the following use cases: personal information management and multilingual knowledge retrieval.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 128000
         MaxOutput                  = 4096
         TrainingCutoff             = '12-01-2023'
@@ -1182,12 +1400,15 @@ $script:metaModelInfo = @(
         Strength                   = 'excels at text summarization, classification, and language translation tasks. This model is ideal for the following use cases: mobile AI-powered writing assistants and customer service applications.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 128000
         MaxOutput                  = 4096
         TrainingCutoff             = '12-01-2023'
@@ -1203,18 +1424,21 @@ $script:metaModelInfo = @(
         Strength                   = 'The model demonstrates strong performance in text summarization, sentiment analysis, code generation, and following instructions, with the added ability to reason about images. This model use cases are similar to the 90B version: image captioning, image-text-retrieval, visual grounding, visual question answering and visual reasoning, and document visual question answering.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $true
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 128000
         MaxOutput                  = 4096
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.00035
-        OutputTokenCost            = 0.00035
+        InputTokenCost             = 0.00016
+        OutputTokenCost            = 0.00016
     }
     [PSCustomObject]@{
         ProviderName               = 'Meta'
@@ -1224,18 +1448,45 @@ $script:metaModelInfo = @(
         Strength                   = 'excels at general knowledge, long-form text generation, multilingual translation, coding, math, and advanced reasoning. It also introduces image reasoning capabilities, allowing for image understanding and visual reasoning tasks. This model is ideal for the following use cases: image captioning, image-text retrieval, visual grounding, visual question answering and visual reasoning, and document visual question answering.'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $true
         SystemPrompt               = $true
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 128000
         MaxOutput                  = 4096
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.002
-        OutputTokenCost            = 0.002
+        InputTokenCost             = 0.00072
+        OutputTokenCost            = 0.00072
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 3.3 70B Instruct'
+        ModelId                    = 'meta.llama3-3-70b-instruct-v1:0'
+        Description                = 'Llama 3.3 70Bs comprehensive training results in robust understanding and generation capabilities across diverse tasks. This model supports high-performance conversational AI designed for content creation, enterprise applications, and research, offering advanced language understanding capabilities, including text summarization, classification, sentiment analysis, and code generation.'
+        Strength                   = 'enterprise applications, content creation, and advanced research initiatives. excels at general knowledge, long-form text generation, multilingual translation, coding, math, and advanced reasoning. It also introduces image reasoning capabilities, allowing for image understanding and visual reasoning tasks. This model is ideal for the following use cases: image captioning, image-text retrieval, visual grounding, visual question answering and visual reasoning, and document visual question answering.'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '12-01-2023'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00072
+        OutputTokenCost            = 0.00072
     }
 ) #metaModelInfo
 
@@ -1255,12 +1506,15 @@ $script:mistralAIModelInfo = @(
         Strength                   = 'interpret and act on detailed instruction'
         Multilingual               = $false
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 32000
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -1276,12 +1530,15 @@ $script:mistralAIModelInfo = @(
         Strength                   = 'Data extraction, Summarizing a Document, Writing emails, Writing a Job Description, or Writing Product Description'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 32000
         MaxOutput                  = 4096
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -1297,12 +1554,15 @@ $script:mistralAIModelInfo = @(
         Strength                   = 'Synthetic Text Generation, Code Generation, RAG, or Agents'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 32000
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -1318,12 +1578,15 @@ $script:mistralAIModelInfo = @(
         Strength                   = 'Classification, Customer Support, or Text Generation'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $false
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 32000
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -1339,12 +1602,15 @@ $script:mistralAIModelInfo = @(
         Strength                   = 'multilingual translation, text summarization, complex multilingual reasoning tasks, math and coding tasks including code generation'
         Multilingual               = $true
         Text                       = $true
+        Image                      = $false
+        Video                      = $false
         Document                   = $false
         Vision                     = $false
         SystemPrompt               = $true
         ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
+        InferenceProfile           = $false
         ContextWindow              = 128000
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
@@ -1368,12 +1634,15 @@ $script:stabilityAIModelInfo = @(
         Strength                   = 'Develop unlimited creative assets and ideate with images.'
         Multilingual               = $false
         Text                       = $false
+        Image                      = $true
+        Video                      = $false
         Document                   = $false
-        Vision                     = $true
+        Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $false
+        InferenceProfile           = $false
         ContextWindow              = ''
         MaxOutput                  = ''
         TrainingCutoff             = ''
@@ -1395,12 +1664,15 @@ $script:stabilityAIModelInfo = @(
         Strength                   = 'produces the highest quality, photo-realistic outputs, making it perfect for professional print media and large-format applications. This model excels at rendering exceptional detail and realism.'
         Multilingual               = $false
         Text                       = $false
+        Image                      = $true
+        Video                      = $false
         Document                   = $false
-        Vision                     = $true
+        Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $false
+        InferenceProfile           = $false
         ContextWindow              = ''
         MaxOutput                  = ''
         TrainingCutoff             = ''
@@ -1419,12 +1691,15 @@ $script:stabilityAIModelInfo = @(
         Strength                   = 'fast, affordable image generation. Ideal for ideation and conception.'
         Multilingual               = $false
         Text                       = $false
+        Image                      = $true
+        Video                      = $false
         Document                   = $false
-        Vision                     = $true
+        Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $false
+        InferenceProfile           = $false
         ContextWindow              = ''
         MaxOutput                  = ''
         TrainingCutoff             = ''
@@ -1443,12 +1718,42 @@ $script:stabilityAIModelInfo = @(
         Strength                   = 'strikes an ideal balance between generation speed and output quality, making it ideal for creating high-volume, high-quality digital assets like websites, newsletters, and marketing materials.'
         Multilingual               = $false
         Text                       = $false
+        Image                      = $true
+        Video                      = $false
         Document                   = $false
-        Vision                     = $true
+        Vision                     = $false
         SystemPrompt               = $false
         ToolUse                    = $false
         ResponseStreamingSupported = $false
         ChatHistorySupported       = $false
+        InferenceProfile           = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = '' #! Couldn't find in documentation
+        ImageCost                  = 0.08
+        # InputTokenCost             = 0.01
+        # OutputTokenCost            = 0.012
+        # pricing structure is different for image models
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Stability AI'
+        ModelName                  = 'Stable Diffusion 3.5 Large'
+        ModelId                    = 'stability.sd3-5-large-v1:0'
+        Model                      = ''
+        Description                = 'the most powerful model in the Stable Diffusion family at 8.1 billion parameters, with superior quality and prompt adherence'
+        Strength                   = 'Story boarding, concept art creation, and rapid prototyping of visual effects. typography, intricate compositions, dynamic lighting, vibrant colors, and artistic cohesion.'
+        Multilingual               = $false
+        Text                       = $false
+        Image                      = $true
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        InferenceProfile           = $false
         ContextWindow              = ''
         MaxOutput                  = ''
         TrainingCutoff             = ''
@@ -1459,7 +1764,6 @@ $script:stabilityAIModelInfo = @(
         # pricing structure is different for image models
     }
 ) #ai21ModelInfo
-
 
 #endregion
 

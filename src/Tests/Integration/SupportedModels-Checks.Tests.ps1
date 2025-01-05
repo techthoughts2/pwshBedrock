@@ -8,6 +8,11 @@ Describe 'Supported Models Checks' -Tag Integration {
             'ai21.jamba-instruct-v1:0'
             'ai21.jamba-1-5-mini-v1:0',
             'ai21.jamba-1-5-large-v1:0',
+            'amazon.nova-pro-v1:0',
+            'amazon.nova-lite-v1:0',
+            'amazon.nova-micro-v1:0',
+            'amazon.nova-canvas-v1:0',
+            'amazon.nova-reel-v1:0',
             'amazon.titan-image-generator-v1'
             'amazon.titan-image-generator-v2:0'
             'amazon.titan-text-express-v1'
@@ -27,8 +32,6 @@ Describe 'Supported Models Checks' -Tag Integration {
             'cohere.command-light-text-v14'
             'cohere.command-r-v1:0'
             'cohere.command-r-plus-v1:0'
-            'meta.llama2-13b-chat-v1'
-            'meta.llama2-70b-chat-v1'
             'meta.llama3-70b-instruct-v1:0'
             'meta.llama3-8b-instruct-v1:0'
             'meta.llama3-1-8b-instruct-v1:0'
@@ -38,6 +41,7 @@ Describe 'Supported Models Checks' -Tag Integration {
             'meta.llama3-2-3b-instruct-v1:0',
             'meta.llama3-2-11b-instruct-v1:0',
             'meta.llama3-2-90b-instruct-v1:0',
+            'meta.llama3-3-70b-instruct-v1:0',
             'mistral.mistral-7b-instruct-v0:2'
             'mistral.mistral-large-2402-v1:0'
             'mistral.mistral-large-2407-v1:0',
@@ -46,7 +50,8 @@ Describe 'Supported Models Checks' -Tag Integration {
             'stability.stable-diffusion-xl-v1',
             'stability.stable-image-ultra-v1:0',
             'stability.stable-image-core-v1:0'
-            'stability.sd3-large-v1:0'
+            'stability.sd3-large-v1:0',
+            'stability.sd3-5-large-v1:0'
         )
         $filesWithAllModelsReferences = @(
             'Add-ModelCostEstimate.ps1'
