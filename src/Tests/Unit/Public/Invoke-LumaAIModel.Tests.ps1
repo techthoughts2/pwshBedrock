@@ -35,6 +35,7 @@ InModuleScope 'pwshBedrock' {
                     }
                     return $jobStatus
                 }
+                Mock -CommandName Join-Path -MockWith { 'afilePath' }
                 Mock -CommandName Add-ModelCostEstimate -MockWith { }
                 Mock -CommandName Copy-S3Object -MockWith { }
                 Mock -CommandName Start-Sleep -MockWith { }
@@ -199,6 +200,7 @@ InModuleScope 'pwshBedrock' {
                     }
                     return $jobStatus
                 }
+                Mock -CommandName Join-Path -MockWith { 'afilePath' }
                 Mock -CommandName Copy-S3Object -MockWith { }
                 Mock -CommandName Add-ModelCostEstimate -MockWith { }
             } #beforeEach
