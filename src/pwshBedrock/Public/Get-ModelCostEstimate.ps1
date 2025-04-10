@@ -92,6 +92,7 @@ function Get-ModelCostEstimate {
             'cohere.command-light-text-v14',
             'cohere.command-r-v1:0',
             'cohere.command-r-plus-v1:0',
+            'luma.ray-v2:0',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
@@ -129,6 +130,18 @@ function Get-ModelCostEstimate {
     }
     elseif ($ModelID -like 'cohere*') {
         $modelInfo = $script:cohereModelInfo | Where-Object { $_.ModelID -eq $ModelID }
+    }
+    elseif ($ModelID -like 'luma*') {
+        $modelInfoRaw = $script:lumaModelInfo | Where-Object { $_.ModelID -eq $ModelID }
+        $modelInfo = [PSCustomObject]@{
+            ImageCost = 0
+        }
+        if ($Steps -gt 1) {
+            $modelInfo.ImageCost = $modelInfoRaw.ImageCost.SevenTwenty
+        }
+        else {
+            $modelInfo.ImageCost = $modelInfoRaw.ImageCost.FiveTwenty
+        }
     }
     elseif ($ModelID -like 'meta*') {
         $modelInfo = $script:metaModelInfo | Where-Object { $_.ModelID -eq $ModelID }

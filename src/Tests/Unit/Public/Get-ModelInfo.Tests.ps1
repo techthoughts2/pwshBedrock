@@ -13,6 +13,7 @@ InModuleScope 'pwshBedrock' {
     $modelInfo += $script:amazonModelInfo
     $modelInfo += $script:ai21ModelInfo
     $modelInfo += $script:cohereModelInfo
+    $modelInfo += $script:lumaModelInfo
     $modelInfo += $script:metaModelInfo
     $modelInfo += $script:mistralAIModelInfo
     $modelInfo += $script:stabilityAIModelInfo

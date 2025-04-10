@@ -12,7 +12,7 @@
     RootModule        = 'pwshBedrock.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.52.0'
+    ModuleVersion     = '0.55.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -53,12 +53,16 @@
     # Modules that must be imported into the global environment prior to importing this module
     RequiredModules   = @(
         @{
-            ModuleName    = 'AWS.Tools.Common'
-            ModuleVersion = '4.1.621'
+            ModuleName    = 'AWS.Tools.BedrockRuntime'
+            ModuleVersion = '4.1.795'
         },
         @{
-            ModuleName    = 'AWS.Tools.BedrockRuntime'
-            ModuleVersion = '4.1.621'
+            ModuleName    = 'AWS.Tools.Common'
+            ModuleVersion = '4.1.795'
+        },
+        @{
+            ModuleName    = 'AWS.Tools.S3'
+            ModuleVersion = '4.1.795'
         },
         @{
             ModuleName    = 'Convert'
@@ -96,6 +100,7 @@
         'Invoke-CohereCommandModel'
         'Invoke-CohereCommandRModel'
         'Invoke-ConverseAPI'
+        'Invoke-LumaAIModel'
         'Invoke-MetaModel'
         'Invoke-MistralAIChatModel'
         'Invoke-MistralAIModel'
@@ -188,6 +193,8 @@
                 'StabilityAI',
                 'TextGeneration',
                 'Titan'
+                'Video',
+                'VideoGeneration'
             )
 
             # A URL to the license for this module.
