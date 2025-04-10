@@ -103,8 +103,7 @@ function Invoke-LumaAIModel {
             HelpMessage = 'The MP4 file will be stored in the Amazon S3 bucket as configured in the response.')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
-        [ValidatePattern('^s3://[a-z0-9][-a-z0-9.]*[a-z0-9](/.*)?$',
-            ErrorMessage = 'S3Uri must be in the format: s3://your-bucket-name')]
+        [ValidatePattern('^s3://[a-z0-9][-a-z0-9.]*[a-z0-9](/.*)?$')]
         [string]$S3OutputURI,
 
         #_______________________________________________________
@@ -164,8 +163,7 @@ function Invoke-LumaAIModel {
             HelpMessage = 'If the bucket belongs to another AWS account, specify that accounts ID.')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
-        [ValidatePattern('^[0-9]{12}$',
-            ErrorMessage = 'AWS account IDs must be exactly 12 digits')]
+        [ValidatePattern('^[0-9]{12}$')]
         [string]$S3OutputBucketOwner,
 
         [Parameter(Mandatory = $false,
