@@ -100,7 +100,7 @@ function Reset-ModelContext {
         [switch]$Force
     )
 
-    Begin {
+    begin {
 
         if (-not $PSBoundParameters.ContainsKey('Verbose')) {
             $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
@@ -116,7 +116,7 @@ function Reset-ModelContext {
         Write-Verbose -Message ('ParameterSetName: {0}' -f $PSCmdlet.ParameterSetName)
     } #begin
 
-    Process {
+    process {
 
         Write-Verbose -Message 'Processing Reset-ModelContext'
 
@@ -203,7 +203,7 @@ function Reset-ModelContext {
             }
         }
     }
-    End {
+    end {
         Write-Verbose -Message 'Reset-ModelContext complete'
     }
 

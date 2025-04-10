@@ -583,7 +583,7 @@ function Invoke-CohereCommandRModel {
     Add-ModelCostEstimate -Usage $response -Message $Message -ModelID $ModelID
 
     # in this model, the full chat history is returned in the response
-    if ($NoContextPersist -eq $false -and -Not ([string]::IsNullOrWhiteSpace($response.text))) {
+    if ($NoContextPersist -eq $false -and -not ([string]::IsNullOrWhiteSpace($response.text))) {
         Write-Verbose -Message 'Adding response to model context history.'
         Reset-ModelContext -ModelID $ModelID
         $contextObj = $Global:pwshBedrockModelContext | Where-Object { $_.ModelID -eq $ModelID }

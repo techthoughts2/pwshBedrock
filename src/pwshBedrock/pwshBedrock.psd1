@@ -218,9 +218,9 @@
             # External dependent modules of this module
             # ExternalModuleDependencies = @()
 
-        } # End of PSData hashtable
+        } # end of PSData hashtable
 
-    } # End of PrivateData hashtable
+    } # end of PrivateData hashtable
 
     # HelpInfo URI of this module
     # HelpInfoURI = ''

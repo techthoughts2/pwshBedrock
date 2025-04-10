@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Manifest updates:
         - Require more recent version of `AWS.Tools.BedrockRuntime` to take advantage of new commands such as `Start-BDRRAsyncInvoke`
         - Require `AWS.Tools.S3` to support async video file generation download from S3.
+    - Minor syntax formatting corrections throughout to address new PSScriptAnalyzer rules
 - Build changes:
     - Updated bootstrap file to latest versions of modules
     - Updated all GitHub actions workflows from `actions/upload-artifact@v3` to `actions/upload-artifact@v4`

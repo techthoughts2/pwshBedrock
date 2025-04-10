@@ -104,7 +104,7 @@ function Reset-ModelTally {
         [switch]$Force
     )
 
-    Begin {
+    begin {
 
         if (-not $PSBoundParameters.ContainsKey('Verbose')) {
             $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
@@ -120,7 +120,7 @@ function Reset-ModelTally {
         Write-Verbose -Message ('ParameterSetName: {0}' -f $PSCmdlet.ParameterSetName)
     } #begin
 
-    Process {
+    process {
 
         Write-Verbose -Message 'Processing Reset-ModelTally'
 
@@ -161,7 +161,7 @@ function Reset-ModelTally {
             }
         }
     }
-    End {
+    end {
         Write-Verbose -Message 'Reset-ModelTally complete'
     }
 
