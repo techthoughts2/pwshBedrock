@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         - Require `AWS.Tools.S3` to support async video file generation download from S3.
 - Build changes:
     - Updated bootstrap file to latest versions of modules
+    - Updated all GitHub actions workflows from `actions/upload-artifact@v3` to `actions/upload-artifact@v4`
+    - `pwshBedrock.build.ps1` Improvements:
+        - `Invoke-Formatter` now runs at the end of `Build` step for final cleanup
+        - Added new Markdown processing functionality to address two Markdown linting issues:
+            - `MD022/blanks-around-headings`
+            - `MD040/fenced-code-language`
 
 ## [0.52.0] - **BREAKING CHANGES**
 

@@ -8,16 +8,18 @@ schema: 2.0.0
 # Save-ModelContext
 
 ## SYNOPSIS
+
 Saves the message context history for the specified model to a file.
 
 ## SYNTAX
 
-```
+```powershell
 Save-ModelContext [-ModelID] <String> [-FilePath] <String>
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 This function saves the message context history for the specified model to a file.
 The context history is used to maintain
 a continuous conversation with the model, allowing you to save the current state and reload it later.
@@ -26,7 +28,8 @@ This can be used in conjunction with Set-ModelContextFromFile to save and load c
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Save-ModelContext -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0' -FilePath 'C:\temp'
 ```
 
@@ -35,6 +38,7 @@ Saves the message context history for the specified model to a file.
 ## PARAMETERS
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -50,6 +54,7 @@ Accept wildcard characters: False
 ```
 
 ### -FilePath
+
 File path to save the context to.
 
 ```yaml
@@ -65,6 +70,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -73,7 +79,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### None
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 As you interact with models, message context history is stored in memory by pwshBedrock to maintain a continuous conversation.

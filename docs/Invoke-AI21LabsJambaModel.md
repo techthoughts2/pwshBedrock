@@ -8,11 +8,12 @@ schema: 2.0.0
 # Invoke-AI21LabsJambaModel
 
 ## SYNOPSIS
+
 Sends message(s) to the AI21 Labs Jamba model on the Amazon Bedrock platform and retrieves the response.
 
 ## SYNTAX
 
-```
+```powershell
 Invoke-AI21LabsJambaModel [-Message] <String> [[-SystemPrompt] <String>] [-ModelID] <String>
  [-ReturnFullObject] [-NoContextPersist] [[-MaxTokens] <Int32>] [[-Temperature] <Single>] [[-TopP] <Single>]
  [[-StopSequences] <String[]>] [[-ResponseNumber] <Int32>] [[-AccessKey] <String>]
@@ -22,6 +23,7 @@ Invoke-AI21LabsJambaModel [-Message] <String> [[-SystemPrompt] <String>] [-Model
 ```
 
 ## DESCRIPTION
+
 Sends a message to an AI21 Labs Jamba model on the Amazon Bedrock platform and returns the model's response.
 By default, the conversation context history is persisted to maintain a continuous interaction with the model.
 You can disable this by using the NoContextPersist parameter.
@@ -31,21 +33,24 @@ based on the provided input and output tokens and adds the estimate to the model
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Invoke-AI21LabsJambaModel -Message 'Explain zero-point energy.' -ModelID 'ai21.jamba-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends a chat message to the on-demand AI21 Labs Jamba model in the specified AWS region and returns the response.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Invoke-AI21LabsJambaModel -Message 'Explain zero-point energy.' -ModelID 'ai21.jamba-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
 Sends a chat message to the on-demand AI21 Labs Jamba model in the specified AWS region and returns the full response object.
 
 ### EXAMPLE 3
-```
+
+```powershell
 $invokeMistralAIChatModelSplat = @{
     SystemPrompt     = 'You are a Star Trek trivia expert.'
     Message          = 'What is the best episode of Star Trek?'
@@ -64,6 +69,7 @@ Sends a chat message to the on-demand AI21 Labs Jamba model in the specified AWS
 ## PARAMETERS
 
 ### -Message
+
 The message to be sent to the model.
 
 ```yaml
@@ -79,6 +85,7 @@ Accept wildcard characters: False
 ```
 
 ### -SystemPrompt
+
 Sets the behavior and context for the model in the conversation.
 
 ```yaml
@@ -94,6 +101,7 @@ Accept wildcard characters: False
 ```
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -109,6 +117,7 @@ Accept wildcard characters: False
 ```
 
 ### -ReturnFullObject
+
 Specify if you want the full object returned instead of just the message reply.
 
 ```yaml
@@ -124,6 +133,7 @@ Accept wildcard characters: False
 ```
 
 ### -NoContextPersist
+
 Do not persist the conversation context history.
 
 ```yaml
@@ -139,6 +149,7 @@ Accept wildcard characters: False
 ```
 
 ### -MaxTokens
+
 The maximum number of tokens to generate before stopping.
 
 ```yaml
@@ -154,6 +165,7 @@ Accept wildcard characters: False
 ```
 
 ### -Temperature
+
 How much variation to provide in each answer.
 Setting this value to 0 guarantees the same response to the same question every time.
 Setting a higher value encourages more variation.
@@ -171,6 +183,7 @@ Accept wildcard characters: False
 ```
 
 ### -TopP
+
 Use a lower value to ignore less probable options and decrease the diversity of responses.
 
 ```yaml
@@ -186,6 +199,7 @@ Accept wildcard characters: False
 ```
 
 ### -StopSequences
+
 Custom text sequences that cause the model to stop generating.
 
 ```yaml
@@ -201,6 +215,7 @@ Accept wildcard characters: False
 ```
 
 ### -ResponseNumber
+
 Number of responses that the model should generate.
 
 ```yaml
@@ -216,6 +231,7 @@ Accept wildcard characters: False
 ```
 
 ### -AccessKey
+
 The AWS access key for the user account.
 This can be a temporary access key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -232,6 +248,7 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
+
 An AWSCredentials object instance containing access and secret key information, and optionally a token for session-based credentials.
 
 ```yaml
@@ -247,6 +264,7 @@ Accept wildcard characters: False
 ```
 
 ### -EndpointUrl
+
 The endpoint to make the call against.
 Note: This parameter is primarily for internal AWS use and is not required/should not be specified for  normal usage.
 The cmdlets normally determine which endpoint to call based on the region specified to the -Region parameter or set as default in the shell (via Set-DefaultAWSRegion).
@@ -265,6 +283,7 @@ Accept wildcard characters: False
 ```
 
 ### -NetworkCredential
+
 Used with SAML-based authentication when ProfileName references a SAML role profile. 
 Contains the network credentials to be supplied during authentication with the  configured identity provider's endpoint.
 This parameter is not required if the user's default network identity can or should be used during authentication.
@@ -282,6 +301,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileLocation
+
 Used to specify the name and location of the ini-format credential file (shared with the AWS CLI and other AWS SDKs)
 If this optional parameter is omitted this cmdlet will search the encrypted credential file used by the AWS SDK for .NET and AWS Toolkit for Visual Studio first.
 If the profile is not found then the cmdlet will search in the ini-format credential file at the default location: (user's home directory)\.aws\credentials.
@@ -301,6 +321,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileName
+
 The user-defined name of an AWS credentials or SAML-based role profile containing credential information.
 The profile is expected to be found in the secure credential file shared with the AWS SDK for .NET and AWS Toolkit for Visual Studio.
 You can also specify the name of a profile stored in the .ini-format credential file used with  the AWS CLI and other AWS SDKs.
@@ -318,6 +339,7 @@ Accept wildcard characters: False
 ```
 
 ### -Region
+
 The system name of an AWS region or an AWSRegion instance.
 This governs the endpoint that will be used when calling service operations.
 Note that  the AWS resources referenced in a call are usually region-specific.
@@ -335,6 +357,7 @@ Accept wildcard characters: False
 ```
 
 ### -SecretKey
+
 The AWS secret key for the user account.
 This can be a temporary secret key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -351,6 +374,7 @@ Accept wildcard characters: False
 ```
 
 ### -SessionToken
+
 The session token if the access and secret keys are temporary session-based credentials.
 
 ```yaml
@@ -366,6 +390,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -374,9 +399,13 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.String
+
 ### or
+
 ### System.Management.Automation.PSCustomObject
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 If you request more than one response from the model:

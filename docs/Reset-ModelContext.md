@@ -8,37 +8,43 @@ schema: 2.0.0
 # Reset-ModelContext
 
 ## SYNOPSIS
+
 Resets the message context for specified model(s).
 
 ## SYNTAX
 
 ### Single
-```
+
+```powershell
 Reset-ModelContext -ModelID <String> [-Force] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ### All
-```
+
+```powershell
 Reset-ModelContext [-AllModels] [-Force] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Resets the message context for the specified model or all models, effectively "starting a new conversation".
 This is useful for clearing any persisted interaction histories that have been stored during interactions with the model(s).
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Reset-ModelContext -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
 ```
 
 Resets the message context for the specified model.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Reset-ModelContext -AllModels
 ```
 
@@ -47,6 +53,7 @@ Resets the message context for all models.
 ## PARAMETERS
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -62,6 +69,7 @@ Accept wildcard characters: False
 ```
 
 ### -AllModels
+
 Resets the message context for all models.
 
 ```yaml
@@ -77,6 +85,7 @@ Accept wildcard characters: False
 ```
 
 ### -Force
+
 Skip Confirmation
 
 ```yaml
@@ -92,6 +101,7 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
+
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
@@ -108,6 +118,7 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
+
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -123,6 +134,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -131,7 +143,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### None
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 Use this function to clear the message context when you want to start a fresh conversation without the influence of prior interactions.

@@ -79,5 +79,3 @@ Saves the message context history for the specified model to a file.
 
 ### [Set-ModelContextFromFile](Set-ModelContextFromFile.md)
 Loads and sets the message context for a model from a file.
-
-

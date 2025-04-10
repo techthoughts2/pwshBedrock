@@ -8,12 +8,14 @@ schema: 2.0.0
 # Invoke-ConverseAPI
 
 ## SYNOPSIS
+
 Sends messages, media, or documents to a model via the Converse API and returns the response.
 
 ## SYNTAX
 
 ### MessageSet (Default)
-```
+
+```powershell
 Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-MediaPath <String[]>] [-DocumentPath <String[]>]
  [-ReturnFullObject] [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>]
  [-Temperature <Single>] [-TopP <Single>] [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>]
@@ -25,7 +27,8 @@ Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-MediaPath <String[]>]
 ```
 
 ### ToolsResultsSet
-```
+
+```powershell
 Invoke-ConverseAPI -ModelID <String> [-ReturnFullObject] [-NoContextPersist] [-MaxTokens <Int32>]
  [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>] [-SystemPrompt <String>]
  [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>] -ToolsResults <PSObject[]>
@@ -37,6 +40,7 @@ Invoke-ConverseAPI -ModelID <String> [-ReturnFullObject] [-NoContextPersist] [-M
 ```
 
 ## DESCRIPTION
+
 Uses the Converse API to send messages, media, or documents to a model and returns the response.
 Converse provides a consistent interface that works with most models that support messages.
 This allows you to write code once and use it with different models.
@@ -49,21 +53,24 @@ Consult the Converse API documentation to determine what is supported by the mod
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Invoke-ConverseAPI -ModelID anthropic.claude-3-5-sonnet-20240620-v1:0 -Message 'Explain zero-point energy.' -Credential $awsCredential -Region us-east-1
 ```
 
 Sends a message to the on-demand specified model via the Converse API in the specified AWS region and returns the response.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Invoke-ConverseAPI -ModelID anthropic.claude-3-5-sonnet-20240620-v1:0 -Message 'Explain zero-point energy.' -Credential $awsCredential -Region us-east-1 -ReturnFullObject
 ```
 
 Sends a message to the on-demand specified model via the Converse API in the specified AWS region and returns the full response object.
 
 ### EXAMPLE 3
-```
+
+```powershell
 $additionalParams = [PSObject]@{
     top_k = 200
 }
@@ -74,7 +81,8 @@ Sends a message to the on-demand specified model via the Converse API.
 Additional parameters not natively supported by Converse API are passed in that are supported by the model.
 
 ### EXAMPLE 4
-```
+
+```powershell
 $invokeConverseAPISplat = @{
     Message      = 'Explain zero-point energy.'
     ModelID      = 'anthropic.claude-3-sonnet-20240229-v1:0'
@@ -89,7 +97,8 @@ Sends a message to the on-demand specified model via the Converse API.
 A system prompt is provided to set the context for the model.
 
 ### EXAMPLE 5
-```
+
+```powershell
 $invokeConverseAPISplat = @{
     Message          = 'Explain zero-point energy.'
     ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
@@ -109,7 +118,8 @@ Sends a message to the on-demand specified model via the Converse API.
 Additional parameters are provided to control the response generation.
 
 ### EXAMPLE 6
-```
+
+```powershell
 $invokeConverseAPISplat = @{
     Message          = 'Please describe the painting in the attached image.'
     MediaPath        = $pathToMediaFile
@@ -125,7 +135,8 @@ Sends a media vision message to the on-demand specified model via the Converse A
 The model will describe the image in the media file.
 
 ### EXAMPLE 7
-```
+
+```powershell
 $invokeConverseAPISplat = @{
     Message          = 'Provide a one sentence summary of the document.'
     DocumentPath     = $pathToDocumentFile
@@ -140,7 +151,8 @@ Sends a document message to the on-demand specified model via the Converse API.
 The model will provide a one sentence summary of the document.
 
 ### EXAMPLE 8
-```
+
+```powershell
 $tools = [PSCustomObject]@{
     Name        = 'restaurant'
     Description = 'This tool will look up restaurant information in a provided geographic area.'
@@ -174,7 +186,8 @@ Additional parameters are provided to require the use of the tool and to specify
 This will prompt the model to return a tool-based response.
 
 ### EXAMPLE 9
-```
+
+```powershell
 $tools = [PSCustomObject]@{
     Name        = 'restaurant'
     Description = 'This tool will look up restaurant information in a provided geographic area.'
@@ -217,6 +230,7 @@ A tool result is provided to the model to answer the user's question.
 ## PARAMETERS
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -232,6 +246,7 @@ Accept wildcard characters: False
 ```
 
 ### -Message
+
 The message to be sent to the model.
 
 ```yaml
@@ -247,6 +262,7 @@ Accept wildcard characters: False
 ```
 
 ### -MediaPath
+
 File path to local media file.
 Up to 20 media files can be sent in a single request.
 The media files must adhere to the model's media requirements.
@@ -264,6 +280,7 @@ Accept wildcard characters: False
 ```
 
 ### -DocumentPath
+
 File path to local document.
 You can include up to five documents.
 The document(s) must adhere to the model's document requirements.
@@ -281,6 +298,7 @@ Accept wildcard characters: False
 ```
 
 ### -ReturnFullObject
+
 Specify if you want the full object returned instead of just the message reply.
 
 ```yaml
@@ -296,6 +314,7 @@ Accept wildcard characters: False
 ```
 
 ### -NoContextPersist
+
 Do not persist the conversation context history.
 
 ```yaml
@@ -311,6 +330,7 @@ Accept wildcard characters: False
 ```
 
 ### -MaxTokens
+
 The maximum number of tokens to allow in the generated response.
 
 ```yaml
@@ -326,6 +346,7 @@ Accept wildcard characters: False
 ```
 
 ### -StopSequences
+
 A list of stop sequences.
 A stop sequence is a sequence of characters that causes the model to stop generating the response.
 
@@ -342,6 +363,7 @@ Accept wildcard characters: False
 ```
 
 ### -Temperature
+
 The likelihood of the model selecting higher-probability options while generating a response.
 
 ```yaml
@@ -357,6 +379,7 @@ Accept wildcard characters: False
 ```
 
 ### -TopP
+
 The percentage of most-likely candidates that the model considers for the next token.
 
 ```yaml
@@ -372,6 +395,7 @@ Accept wildcard characters: False
 ```
 
 ### -SystemPrompt
+
 Sets the behavior and context for the model in the conversation.
 This field is not supported by all models.
 
@@ -388,6 +412,7 @@ Accept wildcard characters: False
 ```
 
 ### -Tools
+
 Definitions of tools that the model may use.
 This field is not supported by all models.
 
@@ -404,6 +429,7 @@ Accept wildcard characters: False
 ```
 
 ### -ToolChoice
+
 In some cases, you may want to use a specific tool to answer the user's question, even if the model thinks it can provide an answer without using a tool.
 auto - allows model to decide whether to call any provided tools or not.
 This is the default value.
@@ -425,6 +451,7 @@ Accept wildcard characters: False
 ```
 
 ### -ToolName
+
 Optional parameter - The name of the tool that model should use to answer the user's question.
 This parameter is only required if you set the ToolChoice parameter to tool.
 This field is not supported by all models.
@@ -442,6 +469,7 @@ Accept wildcard characters: False
 ```
 
 ### -ToolsResults
+
 A list of results from invoking tools recommended by the model in the previous chat turn.
 
 ```yaml
@@ -457,6 +485,7 @@ Accept wildcard characters: False
 ```
 
 ### -GuardrailID
+
 The identifier for the guardrail.
 This is the id for the guardrail you have created in the Amazon Bedrock console.
 Note: Guardrails are specific to the region in which they are created.
@@ -475,6 +504,7 @@ Accept wildcard characters: False
 ```
 
 ### -GuardrailVersion
+
 The version of the guardrail.
 This is the version of the guardrail you have created in the Amazon Bedrock console.
 Acceptable values are a positive integer or the string 'DRAFT'.
@@ -493,6 +523,7 @@ Accept wildcard characters: False
 ```
 
 ### -GuardrailTrace
+
 The trace behavior for the guardrail.
 If you specify a GuardrailTrace, you must also specify the GuardrailID and GuardrailVersion parameters.
 
@@ -509,6 +540,7 @@ Accept wildcard characters: False
 ```
 
 ### -AdditionalModelRequestField
+
 Additional inference parameters that the model supports, beyond the base set of inference parameters that Converse supports.
 
 ```yaml
@@ -524,6 +556,7 @@ Accept wildcard characters: False
 ```
 
 ### -AdditionalModelResponseFieldPath
+
 Additional model parameters field paths to return in the response.
 
 ```yaml
@@ -539,6 +572,7 @@ Accept wildcard characters: False
 ```
 
 ### -AccessKey
+
 The AWS access key for the user account.
 This can be a temporary access key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -555,6 +589,7 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
+
 An AWSCredentials object instance containing access and secret key information, and optionally a token for session-based credentials.
 
 ```yaml
@@ -570,6 +605,7 @@ Accept wildcard characters: False
 ```
 
 ### -EndpointUrl
+
 The endpoint to make the call against.
 Note: This parameter is primarily for internal AWS use and is not required/should not be specified for  normal usage.
 The cmdlets normally determine which endpoint to call based on the region specified to the -Region parameter or set as default in the shell (via Set-DefaultAWSRegion).
@@ -588,6 +624,7 @@ Accept wildcard characters: False
 ```
 
 ### -NetworkCredential
+
 Used with SAML-based authentication when ProfileName references a SAML role profile. 
 Contains the network credentials to be supplied during authentication with the  configured identity provider's endpoint.
 This parameter is not required if the user's default network identity can or should be used during authentication.
@@ -605,6 +642,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileLocation
+
 Used to specify the name and location of the ini-format credential file (shared with the AWS CLI and other AWS SDKs)
 If this optional parameter is omitted this cmdlet will search the encrypted credential file used by the AWS SDK for .NET and AWS Toolkit for Visual Studio first.
 If the profile is not found then the cmdlet will search in the ini-format credential file at the default location: (user's home directory)\.aws\credentials.
@@ -624,6 +662,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileName
+
 The user-defined name of an AWS credentials or SAML-based role profile containing credential information.
 The profile is expected to be found in the secure credential file shared with the AWS SDK for .NET and AWS Toolkit for Visual Studio.
 You can also specify the name of a profile stored in the .ini-format credential file used with  the AWS CLI and other AWS SDKs.
@@ -641,6 +680,7 @@ Accept wildcard characters: False
 ```
 
 ### -Region
+
 The system name of an AWS region or an AWSRegion instance.
 This governs the endpoint that will be used when calling service operations.
 Note that  the AWS resources referenced in a call are usually region-specific.
@@ -658,6 +698,7 @@ Accept wildcard characters: False
 ```
 
 ### -SecretKey
+
 The AWS secret key for the user account.
 This can be a temporary secret key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -674,6 +715,7 @@ Accept wildcard characters: False
 ```
 
 ### -SessionToken
+
 The session token if the access and secret keys are temporary session-based credentials.
 
 ```yaml
@@ -689,6 +731,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -697,9 +740,13 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.String
+
 ### or
+
 ### Amazon.BedrockRuntime.Model.ConverseResponse
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 This was incredibly hard to make.

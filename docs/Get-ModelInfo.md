@@ -8,47 +8,55 @@ schema: 2.0.0
 # Get-ModelInfo
 
 ## SYNOPSIS
+
 Gets information for specified model(s).
 
 ## SYNTAX
 
 ### Single
-```
+
+```powershell
 Get-ModelInfo -ModelID <String> [<CommonParameters>]
 ```
 
 ### All
-```
+
+```powershell
 Get-ModelInfo [-AllModels] [<CommonParameters>]
 ```
 
 ### Provider
-```
+
+```powershell
 Get-ModelInfo -Provider <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Retrieves detailed information for a specific model, all models, or models from a specific provider.
 The information includes model capabilities, pricing, and other relevant details.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Get-ModelInfo -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
 ```
 
 Retrieves information for the model 'anthropic.claude-3-sonnet-20240229-v1:0'.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Get-ModelInfo -AllModels
 ```
 
 Retrieves information for all models.
 
 ### EXAMPLE 3
-```
+
+```powershell
 Get-ModelInfo -Provider 'Amazon'
 ```
 
@@ -57,6 +65,7 @@ Retrieves information for all models from the provider 'Amazon'.
 ## PARAMETERS
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -72,6 +81,7 @@ Accept wildcard characters: False
 ```
 
 ### -AllModels
+
 Gets information for all models.
 
 ```yaml
@@ -87,6 +97,7 @@ Accept wildcard characters: False
 ```
 
 ### -Provider
+
 Gets information for model(s) from a specific provider.
 
 ```yaml
@@ -102,6 +113,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -110,7 +122,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.Management.Automation.PSCustomObject
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 Pricing information provided by pwshBedrock is based on publicly available pricing information from

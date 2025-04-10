@@ -8,11 +8,12 @@ schema: 2.0.0
 # Invoke-LumaAIModel
 
 ## SYNOPSIS
+
 Sends message(s) to a Luma AI model on the Amazon Bedrock platform to generate a video.
 
 ## SYNTAX
 
-```
+```powershell
 Invoke-LumaAIModel [-VideoPrompt] <String> [[-S3OutputURI] <String>] [[-AspectRatio] <String>]
  [[-Loop] <Boolean>] [[-Duration] <String>] [[-Resolution] <String>] [[-ModelID] <String>] [-AttemptS3Download]
  [[-LocalSavePath] <String>] [[-S3OutputBucketOwner] <String>] [[-S3OutputKmsKeyId] <String>]
@@ -23,6 +24,7 @@ Invoke-LumaAIModel [-VideoPrompt] <String> [[-S3OutputURI] <String>] [[-AspectRa
 ```
 
 ## DESCRIPTION
+
 Sends an ansynchronous message to a Luma AI model on the Amazon Bedrock platform to generate a video.
 The response from this model is an invocation ARN, which can be used to check the status of the async job.
 The async job once completed will store the output video in the specified S3 bucket.
@@ -31,7 +33,8 @@ The cmdlet will also attempt to download the video from S3 if the -AttemptS3Down
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Invoke-LumaAIModel -VideoPrompt 'A cat playing with a ball' -S3OutputURI 's3://mybucket'
 ```
 
@@ -39,7 +42,8 @@ Generates a video asynchronously using the Luma AI model with the prompt 'A cat 
 Returns the invocation ARN.
 
 ### EXAMPLE 2
-```
+
+```powershell
 $invokeLumaAIModelSplat = @{
     VideoPrompt       = 'A cat playing with a ball'
     S3OutputURI       =  's3://mybucket'
@@ -57,6 +61,7 @@ Downloads the video to the specified local path.
 ## PARAMETERS
 
 ### -VideoPrompt
+
 A text prompt used to generate the output video.
 
 ```yaml
@@ -72,6 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -S3OutputURI
+
 The MP4 file will be stored in the Amazon S3 bucket as configured in the response.
 
 ```yaml
@@ -87,6 +93,7 @@ Accept wildcard characters: False
 ```
 
 ### -AspectRatio
+
 The aspect ratio of the output video.
 
 ```yaml
@@ -102,6 +109,7 @@ Accept wildcard characters: False
 ```
 
 ### -Loop
+
 Whether to loop the output video.
 
 ```yaml
@@ -117,6 +125,7 @@ Accept wildcard characters: False
 ```
 
 ### -Duration
+
 The duration of the output video.
 
 ```yaml
@@ -132,6 +141,7 @@ Accept wildcard characters: False
 ```
 
 ### -Resolution
+
 The resolution of the output video.
 
 ```yaml
@@ -147,6 +157,7 @@ Accept wildcard characters: False
 ```
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -162,6 +173,7 @@ Accept wildcard characters: False
 ```
 
 ### -AttemptS3Download
+
 Attempt to download the completed video from S3.
 
 ```yaml
@@ -177,6 +189,7 @@ Accept wildcard characters: False
 ```
 
 ### -LocalSavePath
+
 Local path to save the downloaded MP4 file.
 This parameter is required if the -AttemptS3Download switch is specified.
 
@@ -193,6 +206,7 @@ Accept wildcard characters: False
 ```
 
 ### -S3OutputBucketOwner
+
 If the bucket belongs to another AWS account, specify that accounts ID.
 
 ```yaml
@@ -208,6 +222,7 @@ Accept wildcard characters: False
 ```
 
 ### -S3OutputKmsKeyId
+
 A KMS encryption key ID.
 
 ```yaml
@@ -223,6 +238,7 @@ Accept wildcard characters: False
 ```
 
 ### -AccessKey
+
 The AWS access key for the user account.
 This can be a temporary access key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -239,6 +255,7 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
+
 An AWSCredentials object instance containing access and secret key information, and optionally a token for session-based credentials.
 
 ```yaml
@@ -254,6 +271,7 @@ Accept wildcard characters: False
 ```
 
 ### -EndpointUrl
+
 The endpoint to make the call against.
 Note: This parameter is primarily for internal AWS use and is not required/should not be specified for  normal usage.
 The cmdlets normally determine which endpoint to call based on the region specified to the -Region parameter or set as default in the shell (via Set-DefaultAWSRegion).
@@ -272,6 +290,7 @@ Accept wildcard characters: False
 ```
 
 ### -NetworkCredential
+
 Used with SAML-based authentication when ProfileName references a SAML role profile. 
 Contains the network credentials to be supplied during authentication with the  configured identity provider's endpoint.
 This parameter is not required if the user's default network identity can or should be used during authentication.
@@ -289,6 +308,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileLocation
+
 Used to specify the name and location of the ini-format credential file (shared with the AWS CLI and other AWS SDKs)
 If this optional parameter is omitted this cmdlet will search the encrypted credential file used by the AWS SDK for .NET and AWS Toolkit for Visual Studio first.
 If the profile is not found then the cmdlet will search in the ini-format credential file at the default location: (user's home directory)\.aws\credentials.
@@ -308,6 +328,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileName
+
 The user-defined name of an AWS credentials or SAML-based role profile containing credential information.
 The profile is expected to be found in the secure credential file shared with the AWS SDK for .NET and AWS Toolkit for Visual Studio.
 You can also specify the name of a profile stored in the .ini-format credential file used with  the AWS CLI and other AWS SDKs.
@@ -325,6 +346,7 @@ Accept wildcard characters: False
 ```
 
 ### -Region
+
 The system name of an AWS region or an AWSRegion instance.
 This governs the endpoint that will be used when calling service operations.
 Note that  the AWS resources referenced in a call are usually region-specific.
@@ -342,6 +364,7 @@ Accept wildcard characters: False
 ```
 
 ### -SecretKey
+
 The AWS secret key for the user account.
 This can be a temporary secret key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -358,6 +381,7 @@ Accept wildcard characters: False
 ```
 
 ### -SessionToken
+
 The session token if the access and secret keys are temporary session-based credentials.
 
 ```yaml
@@ -373,6 +397,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -381,7 +406,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.Management.Automation.PSCustomObject
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 By default, this function will only return the invocation ARN of the async job.

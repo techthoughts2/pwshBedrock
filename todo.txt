@@ -1,0 +1,40 @@
+https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html
+
+Apr 8
+https://aws.amazon.com/about-aws/whats-new/2025/04/amazon-bedrock-pixtral-large-25-02-mistral-ai/
+mistral.pixtral-large-2502-v1:0
+
+Apr 8
+amazon.nova-sonic-v1:0
+https://aws.amazon.com/about-aws/whats-new/2025/04/amazon-nova-sonic-speech-to-speech-conversations-bedrock/
+
+Apr 7
+https://aws.amazon.com/about-aws/whats-new/2025/04/amazon-nova-reel-1-1/
+amazon.nova-reel-v1:1
+
+March 10
+https://aws.amazon.com/about-aws/whats-new/2025/03/deepseek-r1-fully-managed-amazon-bedrock/
+deepseek.r1-v1:0
+
+Feb 24
+https://aws.amazon.com/about-aws/whats-new/2025/02/anthropics-claude-3-7-sonnet-amazon-bedrock/
+anthropic.claude-3-7-sonnet-20250219-v1:0
+
+Jan 23
+https://aws.amazon.com/about-aws/whats-new/2025/01/luma-ais-ray2-visual-ai-model-amazon-bedrock/
+luma.ray-v2:0
+
+
+
+
+https://aws.amazon.com/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=marketing-marchitecture%23artificial-intelligence&awsm.page-whats-new-content-all=5
+
+
+amazon.nova-reel-v1:0 - MISSING?
+
+
+get CAtesta recent intergration integrated
+
+price updates
+
+when adding a new model search for the $script:lumaModelInfo

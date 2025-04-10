@@ -8,29 +8,33 @@ schema: 2.0.0
 # Get-ModelContext
 
 ## SYNOPSIS
+
 Returns the message context history for the specified model.
 
 ## SYNTAX
 
-```
+```powershell
 Get-ModelContext [-ModelID] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 This function returns the message context history for the specified model.
 The context history is stored to maintain a continuous conversation with the model.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Get-ModelContext -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
 ```
 
 Returns the message context history for the specified model.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Get-ModelContext -ModelID 'Converse'
 ```
 
@@ -40,6 +44,7 @@ The Converse context history can represent whatever model you were interacting w
 ## PARAMETERS
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -55,6 +60,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -63,7 +69,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.Management.Automation.PSCustomObject
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 As you interact with models, message context history is stored in memory by pwshBedrock for maintaining a continuous conversation.

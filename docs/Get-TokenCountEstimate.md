@@ -8,29 +8,33 @@ schema: 2.0.0
 # Get-TokenCountEstimate
 
 ## SYNOPSIS
+
 Estimates the number of tokens in the provided text.
 
 ## SYNTAX
 
-```
+```powershell
 Get-TokenCountEstimate [-Text] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Estimates the number of tokens in the provided text based on an average token length of 4 characters.
 It provides a rough estimate of token count, which can be useful for understanding potential usage costs with language models.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Get-TokenCountEstimate -Text 'This is a test.'
 ```
 
 Estimates the number of tokens in the provided text.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Get-TokenCountEstimate -Text (Get-Content -Path 'C:\Temp\test.txt' -Raw)
 ```
 
@@ -39,6 +43,7 @@ Estimates the number of tokens in the text file.
 ## PARAMETERS
 
 ### -Text
+
 The text to estimate tokens for.
 
 ```yaml
@@ -54,6 +59,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -62,7 +68,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.Int32
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 This function provides an estimate of the number of tokens in a given text.
