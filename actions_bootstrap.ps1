@@ -37,6 +37,10 @@ $modulesToInstall = New-Object System.Collections.Generic.List[object]
             ModuleName    = 'AWS.Tools.BedrockRuntime'
             ModuleVersion = '4.1.795'
         }))
+        [void]$modulesToInstall.Add(([PSCustomObject]@{
+            ModuleName    = 'AWS.Tools.S3'
+            ModuleVersion = '4.1.795'
+        }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'Convert'
             ModuleVersion = '1.5.0'
