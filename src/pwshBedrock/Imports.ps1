@@ -206,6 +206,11 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId    = 'luma.ray-v2:0'
+        ImageCount = 0
+        ImageCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'meta.llama3-70b-instruct-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -501,6 +506,10 @@ $Global:pwshBedrockModelContext = @(
         ModelId = 'meta.llama3-3-70b-instruct-v1:0'
         Context = ''
     }
+    # [PSCustomObject]@{
+    #     ModelId = 'luma.ray-v2:0'
+    #     Context = ''
+    # }
     [PSCustomObject]@{
         ModelId = 'mistral.mistral-7b-instruct-v0:2'
         Context = ''
@@ -1233,6 +1242,44 @@ $script:cohereModelInfo = @(
         OutputTokenCost            = 0.0150
     }
 ) #cohereModelInfo
+
+#endregion
+
+#region Luma
+
+# https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-luma.html
+# https://docs.lumalabs.ai/docs/video-generation
+
+$script:lumaModelInfo = @(
+    [PSCustomObject]@{
+        ProviderName               = 'Luma AI'
+        ModelName                  = 'Luma Ray 2'
+        ModelId                    = 'luma.ray-v2:0'
+        Description                = 'large-scale video-generation model capable of creating realistic visuals with fluid, natural movement.'
+        Strength                   = 'ceate previsualizations, generate realistic backgrounds, and produce initial versions of special effects sequences.'
+        Multilingual               = $false
+        Text                       = $false
+        Image                      = $false
+        Video                      = $true
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $false
+        ToolUse                    = $false
+        ResponseStreamingSupported = $false
+        ChatHistorySupported       = $false
+        InferenceProfile           = $false
+        ContextWindow              = ''
+        MaxOutput                  = ''
+        TrainingCutoff             = ''
+        PayloadLimit               = ''
+        ImageCost                  = @{
+            FiveTwenty  = 0.75
+            SevenTwenty = 1.50
+        }
+        # InputTokenCost             = 0.000035
+        # OutputTokenCost            = 0.00014
+    }
+)
 
 #endregion
 

@@ -115,10 +115,10 @@ function Invoke-StabilityAIImageModel {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The local file path to save the generated images.')]
         [ValidateScript({
-                if (-Not ($_ | Test-Path -PathType Container)) {
+                if (-not ($_ | Test-Path -PathType Container)) {
                     throw 'The Path argument must be a folder. File paths are not allowed.'
                 }
-                if (-Not ($_ | Test-Path)) {
+                if (-not ($_ | Test-Path)) {
                     throw 'File or folder does not exist'
                 }
                 return $true

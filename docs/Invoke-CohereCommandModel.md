@@ -8,11 +8,12 @@ schema: 2.0.0
 # Invoke-CohereCommandModel
 
 ## SYNOPSIS
+
 Sends message(s) to the Cohere Command model on the Amazon Bedrock platform and retrieves the response.
 
 ## SYNTAX
 
-```
+```powershell
 Invoke-CohereCommandModel -Message <String> -ModelID <String> [-ReturnFullObject] [-Temperature <Single>]
  [-TopP <Single>] [-TopK <Int32>] [-MaxTokens <Int32>] [-StopSequences <String[]>]
  [-ReturnLikelihoods <String>] [-Generations <Int32>] [-Truncate <String>] [-AccessKey <String>]
@@ -22,6 +23,7 @@ Invoke-CohereCommandModel -Message <String> -ModelID <String> [-ReturnFullObject
 ```
 
 ## DESCRIPTION
+
 Sends a message to an Cohere Command model on the Amazon Bedrock platform and returns the model's response.
 The cmdlet estimates the cost of model usage based on the provided input and output tokens and adds the estimate to the models tally information.
 Conversation context is not supported by the model(s) payload.
@@ -30,21 +32,24 @@ See the NOTES section for more information.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Invoke-CohereCommandModel -Message 'Explain zero-point energy.' -ModelID 'cohere.command-text-v14' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends a text message to the on-demand Cohere Command model in the specified AWS region and returns the response.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Invoke-CohereCommandModel -Message 'Explain zero-point energy.' -ModelID 'cohere.command-text-v14' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
 Sends a text message to the on-demand Cohere Command model in the specified AWS region and returns the full response object.
 
 ### EXAMPLE 3
-```
+
+```powershell
 $invokeCohereCommandModelSplat = @{
     Message           = 'Explain zero-point energy.'
     ModelID           = 'cohere.command-light-text-v14'
@@ -68,6 +73,7 @@ Sends a text message to the on-demand Cohere Command model in the specified AWS 
 ## PARAMETERS
 
 ### -Message
+
 The message to be sent to the model.
 
 ```yaml
@@ -83,6 +89,7 @@ Accept wildcard characters: False
 ```
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -98,6 +105,7 @@ Accept wildcard characters: False
 ```
 
 ### -ReturnFullObject
+
 Specify if you want the full object returned instead of just the message reply.
 
 ```yaml
@@ -113,6 +121,7 @@ Accept wildcard characters: False
 ```
 
 ### -Temperature
+
 The amount of randomness injected into the response.
 Defaults to 0.9 Ranges from 0.0 to 5.0.
 Use a lower value to decrease randomness in responses.
@@ -130,6 +139,7 @@ Accept wildcard characters: False
 ```
 
 ### -TopP
+
 Use a lower value to ignore less probable options.
 Set to 0 or 1.0 to disable.
 If both p and k are enabled, p acts after k
@@ -147,6 +157,7 @@ Accept wildcard characters: False
 ```
 
 ### -TopK
+
 Specify the number of token choices the model uses to generate the next token.
 If both p and k are enabled, p acts after k.
 
@@ -163,6 +174,7 @@ Accept wildcard characters: False
 ```
 
 ### -MaxTokens
+
 The maximum number of tokens to generate before stopping.
 Defaults to 4096.
 Ranges from 1 to 4096.
@@ -181,6 +193,7 @@ Accept wildcard characters: False
 ```
 
 ### -StopSequences
+
 Custom text sequences that cause the model to stop generating.
 
 ```yaml
@@ -196,6 +209,7 @@ Accept wildcard characters: False
 ```
 
 ### -ReturnLikelihoods
+
 Specify how and if the token likelihoods are returned with the response.
 GENERATION - Only return likelihoods for generated tokens.
 ALL - Return likelihoods for all tokens.
@@ -214,6 +228,7 @@ Accept wildcard characters: False
 ```
 
 ### -Generations
+
 The maximum number of generations that the model should return.
 
 ```yaml
@@ -229,6 +244,7 @@ Accept wildcard characters: False
 ```
 
 ### -Truncate
+
 Specifies how the API handles inputs longer than the maximum token length.
 NONE - Returns an error when the input exceeds the maximum input token length.
 START - Discard the start of the input.
@@ -247,6 +263,7 @@ Accept wildcard characters: False
 ```
 
 ### -AccessKey
+
 The AWS access key for the user account.
 This can be a temporary access key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -263,6 +280,7 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
+
 An AWSCredentials object instance containing access and secret key information, and optionally a token for session-based credentials.
 
 ```yaml
@@ -278,6 +296,7 @@ Accept wildcard characters: False
 ```
 
 ### -EndpointUrl
+
 The endpoint to make the call against.
 Note: This parameter is primarily for internal AWS use and is not required/should not be specified for  normal usage.
 The cmdlets normally determine which endpoint to call based on the region specified to the -Region parameter or set as default in the shell (via Set-DefaultAWSRegion).
@@ -296,6 +315,7 @@ Accept wildcard characters: False
 ```
 
 ### -NetworkCredential
+
 Used with SAML-based authentication when ProfileName references a SAML role profile. 
 Contains the network credentials to be supplied during authentication with the  configured identity provider's endpoint.
 This parameter is not required if the user's default network identity can or should be used during authentication.
@@ -313,6 +333,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileLocation
+
 Used to specify the name and location of the ini-format credential file (shared with the AWS CLI and other AWS SDKs)
 If this optional parameter is omitted this cmdlet will search the encrypted credential file used by the AWS SDK for .NET and AWS Toolkit for Visual Studio first.
 If the profile is not found then the cmdlet will search in the ini-format credential file at the default location: (user's home directory)\.aws\credentials.
@@ -332,6 +353,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileName
+
 The user-defined name of an AWS credentials or SAML-based role profile containing credential information.
 The profile is expected to be found in the secure credential file shared with the AWS SDK for .NET and AWS Toolkit for Visual Studio.
 You can also specify the name of a profile stored in the .ini-format credential file used with  the AWS CLI and other AWS SDKs.
@@ -349,6 +371,7 @@ Accept wildcard characters: False
 ```
 
 ### -Region
+
 The system name of an AWS region or an AWSRegion instance.
 This governs the endpoint that will be used when calling service operations.
 Note that  the AWS resources referenced in a call are usually region-specific.
@@ -366,6 +389,7 @@ Accept wildcard characters: False
 ```
 
 ### -SecretKey
+
 The AWS secret key for the user account.
 This can be a temporary secret key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -382,6 +406,7 @@ Accept wildcard characters: False
 ```
 
 ### -SessionToken
+
 The session token if the access and secret keys are temporary session-based credentials.
 
 ```yaml
@@ -397,6 +422,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -405,9 +431,13 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.String
+
 ### or
+
 ### System.Management.Automation.PSCustomObject
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 Cohere Command model(s) through bedrock do not currently support persistent context.

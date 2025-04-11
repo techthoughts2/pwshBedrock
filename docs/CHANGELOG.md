@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.55.0]
+
+- Module changes:
+    - Luma
+        - Added new function `Invoke-LumaAIModel` to support video model: `luma.ray-v2:0`
+    - Manifest updates:
+        - Require more recent version of `AWS.Tools.BedrockRuntime` to take advantage of new commands such as `Start-BDRRAsyncInvoke`
+        - Require `AWS.Tools.S3` to support async video file generation download from S3.
+    - Minor syntax formatting corrections throughout to address new PSScriptAnalyzer rules
+- Build changes:
+    - Updated bootstrap file to latest versions of modules
+    - Updated all GitHub actions workflows from `actions/upload-artifact@v3` to `actions/upload-artifact@v4`
+    - `pwshBedrock.build.ps1` Improvements:
+        - `Invoke-Formatter` now runs at the end of `Build` step for final cleanup
+        - Added new Markdown processing functionality to address two Markdown linting issues:
+            - `MD022/blanks-around-headings`
+            - `MD040/fenced-code-language`
+
 ## [0.52.0] - **BREAKING CHANGES**
 
 - Module changes:

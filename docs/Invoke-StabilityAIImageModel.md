@@ -8,11 +8,12 @@ schema: 2.0.0
 # Invoke-StabilityAIImageModel
 
 ## SYNOPSIS
+
 Sends message(s) to an Stability AI Image Core model on the Amazon Bedrock platform and retrieves the response and saves the generated image(s) to a local folder.
 
 ## SYNTAX
 
-```
+```powershell
 Invoke-StabilityAIImageModel [-ImagesSavePath] <Object> [-ImagePrompt] <String> [[-InitImagePath] <String>]
  [[-ImageStrength] <Single>] [[-AspectRatio] <String>] [[-OutputFormat] <String>] [[-Seed] <Int32>]
  [[-NegativePrompt] <String>] [[-ModelID] <String>] [-ReturnFullObject] [[-AccessKey] <String>]
@@ -22,6 +23,7 @@ Invoke-StabilityAIImageModel [-ImagesSavePath] <Object> [-ImagePrompt] <String> 
 ```
 
 ## DESCRIPTION
+
 Sends a message to an Stability AI Image Core model on the Amazon Bedrock platform and returns the model's response.
 The response from this model is an image or images generated based on the input parameters.
 The generated image(s) are decoded from base64 and saved to a local folder.
@@ -31,14 +33,16 @@ This function supports the following Stability AI Image Core image use cases:
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Invoke-StabilityAIImageModel -ImagesSavePath 'C:\images' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-image-core-v1:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Generates an image and saves the image to the C:\images folder.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Invoke-StabilityAIImageModel -ImagesSavePath 'C:\images' -ImagePrompt 'Create a starship emerging from a nebula.' -ModelID 'stability.stable-image-ultra-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
@@ -46,7 +50,8 @@ Generates an image and saves the image to the C:\images folder.
 Returns the full object from the model.
 
 ### EXAMPLE 3
-```
+
+```powershell
 $invokeStabilityAIImageModelSplat = @{
     ImagesSavePath     = 'C:\images'
     ImagePrompt        = 'Create a starship emerging from a nebula.'
@@ -67,7 +72,8 @@ This image will have a 1:1 aspect ratio and be in JPEG format.
 The seed is set to 1234, and the model is told to avoid the concept of stars.
 
 ### EXAMPLE 4
-```
+
+```powershell
 $invokeStabilityAIImageModelSplat = @{
     ImagesSavePath = 'C:\images'
     ImagePrompt    = 'Create a starship emerging from a nebula.'
@@ -87,6 +93,7 @@ The provided init image is used as a starting point for the generation.
 ## PARAMETERS
 
 ### -ImagesSavePath
+
 The local file path to save the generated images.
 
 ```yaml
@@ -102,6 +109,7 @@ Accept wildcard characters: False
 ```
 
 ### -ImagePrompt
+
 A text prompt used to generate the image.
 
 ```yaml
@@ -117,6 +125,7 @@ Accept wildcard characters: False
 ```
 
 ### -InitImagePath
+
 File path to image to use as the starting point for the generation.
 
 ```yaml
@@ -132,6 +141,7 @@ Accept wildcard characters: False
 ```
 
 ### -ImageStrength
+
 Sometimes referred to as denoising, this parameter controls how much influence the image parameter has on the generated image.
 A value of 0 would yield an image that is identical to the input.
 A value of 1 would be as if you passed in no image at all.
@@ -149,6 +159,7 @@ Accept wildcard characters: False
 ```
 
 ### -AspectRatio
+
 Controls the aspect ratio of the generated image.
 Only valid for text-to-image requests.
 
@@ -165,6 +176,7 @@ Accept wildcard characters: False
 ```
 
 ### -OutputFormat
+
 Specifies the format of the output image.
 
 ```yaml
@@ -180,6 +192,7 @@ Accept wildcard characters: False
 ```
 
 ### -Seed
+
 The seed determines the initial noise setting.
 Use the same seed and the same settings as a previous run to allow inference to create a similar image.
 If you don't set this value, or the value is 0, it is set as a random number.
@@ -199,6 +212,7 @@ Accept wildcard characters: False
 ```
 
 ### -NegativePrompt
+
 Use a negative prompt to tell the model to avoid certain concepts.
 
 ```yaml
@@ -214,6 +228,7 @@ Accept wildcard characters: False
 ```
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -229,6 +244,7 @@ Accept wildcard characters: False
 ```
 
 ### -ReturnFullObject
+
 Specify if you want the full object returned from the model.
 This will include the raw base64 image data and other information.
 
@@ -245,6 +261,7 @@ Accept wildcard characters: False
 ```
 
 ### -AccessKey
+
 The AWS access key for the user account.
 This can be a temporary access key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -261,6 +278,7 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
+
 An AWSCredentials object instance containing access and secret key information, and optionally a token for session-based credentials.
 
 ```yaml
@@ -276,6 +294,7 @@ Accept wildcard characters: False
 ```
 
 ### -EndpointUrl
+
 The endpoint to make the call against.
 Note: This parameter is primarily for internal AWS use and is not required/should not be specified for  normal usage.
 The cmdlets normally determine which endpoint to call based on the region specified to the -Region parameter or set as default in the shell (via Set-DefaultAWSRegion).
@@ -294,6 +313,7 @@ Accept wildcard characters: False
 ```
 
 ### -NetworkCredential
+
 Used with SAML-based authentication when ProfileName references a SAML role profile. 
 Contains the network credentials to be supplied during authentication with the  configured identity provider's endpoint.
 This parameter is not required if the user's default network identity can or should be used during authentication.
@@ -311,6 +331,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileLocation
+
 Used to specify the name and location of the ini-format credential file (shared with the AWS CLI and other AWS SDKs)
 If this optional parameter is omitted this cmdlet will search the encrypted credential file used by the AWS SDK for .NET and AWS Toolkit for Visual Studio first.
 If the profile is not found then the cmdlet will search in the ini-format credential file at the default location: (user's home directory)\.aws\credentials.
@@ -330,6 +351,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileName
+
 The user-defined name of an AWS credentials or SAML-based role profile containing credential information.
 The profile is expected to be found in the secure credential file shared with the AWS SDK for .NET and AWS Toolkit for Visual Studio.
 You can also specify the name of a profile stored in the .ini-format credential file used with  the AWS CLI and other AWS SDKs.
@@ -347,6 +369,7 @@ Accept wildcard characters: False
 ```
 
 ### -Region
+
 The system name of an AWS region or an AWSRegion instance.
 This governs the endpoint that will be used when calling service operations.
 Note that  the AWS resources referenced in a call are usually region-specific.
@@ -364,6 +387,7 @@ Accept wildcard characters: False
 ```
 
 ### -SecretKey
+
 The AWS secret key for the user account.
 This can be a temporary secret key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -380,6 +404,7 @@ Accept wildcard characters: False
 ```
 
 ### -SessionToken
+
 The session token if the access and secret keys are temporary session-based credentials.
 
 ```yaml
@@ -395,6 +420,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -403,7 +429,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.Management.Automation.PSCustomObject
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 ## RELATED LINKS

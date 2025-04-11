@@ -8,26 +8,31 @@ schema: 2.0.0
 # Get-ModelTally
 
 ## SYNOPSIS
+
 Retrieves the tally for a specific model or all models.
 
 ## SYNTAX
 
 ### Single
-```
+
+```powershell
 Get-ModelTally -ModelID <String> [<CommonParameters>]
 ```
 
 ### All
-```
+
+```powershell
 Get-ModelTally [-AllModels] [<CommonParameters>]
 ```
 
 ### Total
-```
+
+```powershell
 Get-ModelTally [-JustTotalCost] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 This function retrieves the tally of a specific model or all models.
 The tally includes the estimated total cost, input token count,
 output token count, estimated input token cost, and estimated output token cost.
@@ -38,21 +43,24 @@ If you want to get the estimated total cost estimate for all models, use the -Ju
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Get-ModelTally -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
 ```
 
 Retrieves the tally for the model 'anthropic.claude-3-sonnet-20240229-v1:0'.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Get-ModelTally -AllModels
 ```
 
 Retrieves the tally for all models.
 
 ### EXAMPLE 3
-```
+
+```powershell
 Get-ModelTally -JustTotalCost
 ```
 
@@ -61,6 +69,7 @@ Retrieves the total cost estimate for all models.
 ## PARAMETERS
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -76,6 +85,7 @@ Accept wildcard characters: False
 ```
 
 ### -AllModels
+
 Gets the tally for all models.
 
 ```yaml
@@ -91,6 +101,7 @@ Accept wildcard characters: False
 ```
 
 ### -JustTotalCost
+
 Gets the total tallied cost for all models.
 
 ```yaml
@@ -106,6 +117,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -114,7 +126,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.Management.Automation.PSCustomObject
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 The model tally information provided by pwshBedrock is a best effort estimate of model use.

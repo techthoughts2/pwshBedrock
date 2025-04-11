@@ -232,6 +232,21 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputTokenCost | Should -BeGreaterThan 0
             } #it
 
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach $script:lumaModelInfo {
+                $modelId = $_.ModelId
+                Mock -CommandName Get-ModelCostEstimate -MockWith {
+                    [PSCustomObject]@{
+                        ImageCount = 1
+                        ImageCost  = 1
+                    }
+                } #endMock
+                Add-ModelCostEstimate -ImageCount 1 -ModelID $modelId
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
+                $eval.ImageCount | Should -BeGreaterThan 0
+                $eval.ImageCost | Should -BeGreaterThan 0
+            } #it
+
             It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach ($script:metaModelInfo) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $metaUsage -ModelID $modelId

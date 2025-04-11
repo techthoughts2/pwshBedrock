@@ -8,23 +8,27 @@ schema: 2.0.0
 # Get-ModelCostEstimate
 
 ## SYNOPSIS
+
 Estimates the cost of using a model.
 
 ## SYNTAX
 
 ### Token
-```
+
+```powershell
 Get-ModelCostEstimate [-InputTokenCount <Int32>] [-OutputTokenCount <Int32>] -ModelID <String>
  [<CommonParameters>]
 ```
 
 ### Image
-```
+
+```powershell
 Get-ModelCostEstimate -ImageCount <Int32> [-Steps <Int32>] -ModelID <String>
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 This function estimates the cost of using a model based on the provided input and output token counts.
 The cost estimate is calculated using token cost information from public AWS documentation for a single AWS region.
 Text models are estimated based on input and output token counts, while image models are estimated based on the number of images returned by the API.
@@ -32,7 +36,8 @@ Text models are estimated based on input and output token counts, while image mo
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Get-ModelCostEstimate -InputTokenCount 1000 -OutputTokenCount 1000 -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
 ```
 
@@ -41,6 +46,7 @@ Estimates the cost of using the model 'anthropic.claude-3-sonnet-20240229-v1:0' 
 ## PARAMETERS
 
 ### -InputTokenCount
+
 The number of input tokens.
 
 ```yaml
@@ -56,6 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -OutputTokenCount
+
 The number of output tokens.
 
 ```yaml
@@ -71,6 +78,7 @@ Accept wildcard characters: False
 ```
 
 ### -ImageCount
+
 Image count returned by the API.
 
 ```yaml
@@ -86,6 +94,7 @@ Accept wildcard characters: False
 ```
 
 ### -Steps
+
 Number of steps to run the image model for.
 
 ```yaml
@@ -101,6 +110,7 @@ Accept wildcard characters: False
 ```
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -116,6 +126,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -124,7 +135,9 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.Management.Automation.PSCustomObject
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 The cost estimate provided by this function is a best effort based on available public information.

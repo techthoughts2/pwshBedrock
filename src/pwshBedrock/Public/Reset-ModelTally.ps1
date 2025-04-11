@@ -70,6 +70,7 @@ function Reset-ModelTally {
             'cohere.command-light-text-v14',
             'cohere.command-r-v1:0',
             'cohere.command-r-plus-v1:0',
+            'luma.ray-v2:0',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
@@ -103,7 +104,7 @@ function Reset-ModelTally {
         [switch]$Force
     )
 
-    Begin {
+    begin {
 
         if (-not $PSBoundParameters.ContainsKey('Verbose')) {
             $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
@@ -119,7 +120,7 @@ function Reset-ModelTally {
         Write-Verbose -Message ('ParameterSetName: {0}' -f $PSCmdlet.ParameterSetName)
     } #begin
 
-    Process {
+    process {
 
         Write-Verbose -Message 'Processing Reset-ModelTally'
 
@@ -160,7 +161,7 @@ function Reset-ModelTally {
             }
         }
     }
-    End {
+    end {
         Write-Verbose -Message 'Reset-ModelTally complete'
     }
 

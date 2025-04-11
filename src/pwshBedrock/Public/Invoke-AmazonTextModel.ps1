@@ -220,7 +220,7 @@ function Invoke-AmazonTextModel {
                 ModelID          = $ModelID
                 NoContextPersist = $NoContextPersist
             }
-            if (-Not $PromptOnly) {
+            if (-not $PromptOnly) {
                 $formattedMessages = Format-AmazonTextMessage @formatAmazonTextMessageSplat
             }
             else {

@@ -31,10 +31,10 @@ function Set-ModelContextFromFile {
         SupportsShouldProcess = $true)]
     param (
         [ValidateScript({
-                if (-Not ($_ | Test-Path -PathType Leaf)) {
+                if (-not ($_ | Test-Path -PathType Leaf)) {
                     throw 'The Path argument must be a file. Folder paths are not allowed.'
                 }
-                if (-Not ($_ | Test-Path)) {
+                if (-not ($_ | Test-Path)) {
                     throw 'File or folder does not exist'
                 }
                 return $true
@@ -48,7 +48,7 @@ function Set-ModelContextFromFile {
         [switch]$Force
     )
 
-    Begin {
+    begin {
 
         if (-not $PSBoundParameters.ContainsKey('Verbose')) {
             $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
@@ -64,7 +64,7 @@ function Set-ModelContextFromFile {
         Write-Verbose -Message ('ParameterSetName: {0}' -f $PSCmdlet.ParameterSetName)
     } #begin
 
-    Process {
+    process {
 
         Write-Verbose -Message 'Processing Set-ModelContextFromFile'
 
@@ -107,7 +107,7 @@ function Set-ModelContextFromFile {
             $context.Context = $contextObj.Context
         }
     }
-    End {
+    end {
         Write-Verbose -Message 'Set-ModelContextFromFile complete'
     }
 

@@ -11,17 +11,17 @@ $modulesToInstall = New-Object System.Collections.Generic.List[object]
 # https://github.com/pester/Pester
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'Pester'
-            ModuleVersion = '5.6.1'
+            ModuleVersion = '5.7.1'
         }))
 # https://github.com/nightroman/Invoke-Build
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'InvokeBuild'
-            ModuleVersion = '5.12.1'
+            ModuleVersion = '5.12.2'
         }))
 # https://github.com/PowerShell/PSScriptAnalyzer
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'PSScriptAnalyzer'
-            ModuleVersion = '1.23.0'
+            ModuleVersion = '1.24.0'
         }))
 # https://github.com/PowerShell/platyPS
 # older version used due to: https://github.com/PowerShell/platyPS/issues/457
@@ -31,11 +31,15 @@ $modulesToInstall = New-Object System.Collections.Generic.List[object]
         }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'AWS.Tools.Common'
-            ModuleVersion = '4.1.729'
+            ModuleVersion = '4.1.795'
         }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'AWS.Tools.BedrockRuntime'
-            ModuleVersion = '4.1.729'
+            ModuleVersion = '4.1.795'
+        }))
+        [void]$modulesToInstall.Add(([PSCustomObject]@{
+            ModuleName    = 'AWS.Tools.S3'
+            ModuleVersion = '4.1.795'
         }))
 [void]$modulesToInstall.Add(([PSCustomObject]@{
             ModuleName    = 'Convert'

@@ -58,6 +58,7 @@ function Save-ModelContext {
             # 'cohere.command-light-text-v14',
             'cohere.command-r-v1:0',
             'cohere.command-r-plus-v1:0',
+            'luma.ray-v2:0',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',
@@ -82,10 +83,10 @@ function Save-ModelContext {
         [string]$ModelID,
 
         [ValidateScript({
-                if (-Not ($_ | Test-Path -PathType Container)) {
+                if (-not ($_ | Test-Path -PathType Container)) {
                     throw 'The Path argument must be a folder. File paths are not allowed.'
                 }
-                if (-Not ($_ | Test-Path)) {
+                if (-not ($_ | Test-Path)) {
                     throw 'File or folder does not exist'
                 }
                 return $true

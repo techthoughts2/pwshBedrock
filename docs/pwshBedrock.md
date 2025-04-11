@@ -2,7 +2,7 @@
 Module Name: pwshBedrock
 Module Guid: b4f9e4dc-0229-44ef-99a1-08be4c5e81f2
 Download Help Link: NA
-Help Version: 0.52.0
+Help Version: 0.55.0
 Locale: en-US
 ---
 
@@ -50,6 +50,9 @@ Sends message(s) to the Cohere Command R/R+ model on the Amazon Bedrock platform
 ### [Invoke-ConverseAPI](Invoke-ConverseAPI.md)
 Sends messages, media, or documents to a model via the Converse API and returns the response.
 
+### [Invoke-LumaAIModel](Invoke-LumaAIModel.md)
+Sends message(s) to a Luma AI model on the Amazon Bedrock platform to generate a video.
+
 ### [Invoke-MetaModel](Invoke-MetaModel.md)
 Sends message(s) to a Meta model on the Amazon Bedrock platform and retrieves the response.
 
@@ -76,5 +79,3 @@ Saves the message context history for the specified model to a file.
 
 ### [Set-ModelContextFromFile](Set-ModelContextFromFile.md)
 Loads and sets the message context for a model from a file.
-
-

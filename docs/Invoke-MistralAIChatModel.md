@@ -8,12 +8,14 @@ schema: 2.0.0
 # Invoke-MistralAIChatModel
 
 ## SYNOPSIS
+
 Sends message(s) to the Mistral AI chat model on the Amazon Bedrock platform and retrieves the response.
 
 ## SYNTAX
 
 ### CombinedSet
-```
+
+```powershell
 Invoke-MistralAIChatModel -Message <String> -SystemPrompt <String> -ModelID <String> [-ReturnFullObject]
  [-NoContextPersist] [-Tools <PSObject[]>] [-ToolChoice <String>] [-MaxTokens <Int32>] [-Temperature <Single>]
  [-TopP <Single>] [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
@@ -22,7 +24,8 @@ Invoke-MistralAIChatModel -Message <String> -SystemPrompt <String> -ModelID <Str
 ```
 
 ### MessageSet
-```
+
+```powershell
 Invoke-MistralAIChatModel -Message <String> -ModelID <String> [-ReturnFullObject] [-NoContextPersist]
  [-Tools <PSObject[]>] [-ToolChoice <String>] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>]
  [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
@@ -31,7 +34,8 @@ Invoke-MistralAIChatModel -Message <String> -ModelID <String> [-ReturnFullObject
 ```
 
 ### SystemPromptSet
-```
+
+```powershell
 Invoke-MistralAIChatModel -SystemPrompt <String> -ModelID <String> [-ReturnFullObject] [-NoContextPersist]
  [-Tools <PSObject[]>] [-ToolChoice <String>] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>]
  [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
@@ -40,7 +44,8 @@ Invoke-MistralAIChatModel -SystemPrompt <String> -ModelID <String> [-ReturnFullO
 ```
 
 ### ToolsResultsSet
-```
+
+```powershell
 Invoke-MistralAIChatModel -ToolsResults <PSObject[]> -ModelID <String> [-ReturnFullObject] [-NoContextPersist]
  [-Tools <PSObject[]>] [-ToolChoice <String>] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>]
  [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
@@ -49,6 +54,7 @@ Invoke-MistralAIChatModel -ToolsResults <PSObject[]> -ModelID <String> [-ReturnF
 ```
 
 ## DESCRIPTION
+
 Sends a message to an Mistral AI chat model on the Amazon Bedrock platform and returns the model's response.
 By default, the conversation context history is persisted to maintain a continuous interaction with the model.
 You can disable this by using the NoContextPersist parameter.
@@ -62,21 +68,24 @@ See the pwshBedrock documentation for more information on Function Calling and t
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
+```powershell
 Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2407-v1:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region and returns the response.
 
 ### EXAMPLE 2
-```
+
+```powershell
 Invoke-MistralAIChatModel -Message 'Explain zero-point energy.' -ModelID 'mistral.mistral-large-2407-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
 Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region and returns the full response object.
 
 ### EXAMPLE 3
-```
+
+```powershell
 $invokeMistralAIChatModelSplat = @{
     SystemPrompt     = 'You are a Star Trek trivia expert.'
     Message          = 'How much does Lt. Commander Data weigh?'
@@ -94,7 +103,8 @@ $result = Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
 Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region with a system prompt and tool function call.
 
 ### EXAMPLE 4
-```
+
+```powershell
 $invokeMistralAIChatModelSplat = @{
     ToolsResults     = $starTrekTriviaFunctionResults
     ModelID          = 'mistral.mistral-large-2407-v1:0'
@@ -110,6 +120,7 @@ Sends a chat message to the on-demand Mistral AI chat model in the specified AWS
 ## PARAMETERS
 
 ### -Message
+
 The message to be sent to the model.
 
 ```yaml
@@ -125,6 +136,7 @@ Accept wildcard characters: False
 ```
 
 ### -SystemPrompt
+
 Sets the behavior and context for the model in the conversation.
 
 ```yaml
@@ -140,6 +152,7 @@ Accept wildcard characters: False
 ```
 
 ### -ToolsResults
+
 A list of results from invoking tools recommended by the model in the previous chat turn.
 
 ```yaml
@@ -155,6 +168,7 @@ Accept wildcard characters: False
 ```
 
 ### -ModelID
+
 The unique identifier of the model.
 
 ```yaml
@@ -170,6 +184,7 @@ Accept wildcard characters: False
 ```
 
 ### -ReturnFullObject
+
 Specify if you want the full object returned instead of just the message reply.
 
 ```yaml
@@ -185,6 +200,7 @@ Accept wildcard characters: False
 ```
 
 ### -NoContextPersist
+
 Do not persist the conversation context history.
 
 ```yaml
@@ -200,6 +216,7 @@ Accept wildcard characters: False
 ```
 
 ### -Tools
+
 Definitions of tools that the model may use.
 
 ```yaml
@@ -215,6 +232,7 @@ Accept wildcard characters: False
 ```
 
 ### -ToolChoice
+
 Specifies how functions are called.
 If set to none the model won't call a function and will generate a message instead.
 If set to auto the model can choose to either generate a message or call a function.
@@ -233,6 +251,7 @@ Accept wildcard characters: False
 ```
 
 ### -MaxTokens
+
 The maximum number of tokens to generate before stopping.
 
 ```yaml
@@ -248,6 +267,7 @@ Accept wildcard characters: False
 ```
 
 ### -Temperature
+
 The amount of randomness injected into the response.
 
 ```yaml
@@ -263,6 +283,7 @@ Accept wildcard characters: False
 ```
 
 ### -TopP
+
 Use a lower value to ignore less probable options and decrease the diversity of responses.
 
 ```yaml
@@ -278,6 +299,7 @@ Accept wildcard characters: False
 ```
 
 ### -AccessKey
+
 The AWS access key for the user account.
 This can be a temporary access key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -294,6 +316,7 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
+
 An AWSCredentials object instance containing access and secret key information, and optionally a token for session-based credentials.
 
 ```yaml
@@ -309,6 +332,7 @@ Accept wildcard characters: False
 ```
 
 ### -EndpointUrl
+
 The endpoint to make the call against.
 Note: This parameter is primarily for internal AWS use and is not required/should not be specified for  normal usage.
 The cmdlets normally determine which endpoint to call based on the region specified to the -Region parameter or set as default in the shell (via Set-DefaultAWSRegion).
@@ -327,6 +351,7 @@ Accept wildcard characters: False
 ```
 
 ### -NetworkCredential
+
 Used with SAML-based authentication when ProfileName references a SAML role profile. 
 Contains the network credentials to be supplied during authentication with the  configured identity provider's endpoint.
 This parameter is not required if the user's default network identity can or should be used during authentication.
@@ -344,6 +369,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileLocation
+
 Used to specify the name and location of the ini-format credential file (shared with the AWS CLI and other AWS SDKs)
 If this optional parameter is omitted this cmdlet will search the encrypted credential file used by the AWS SDK for .NET and AWS Toolkit for Visual Studio first.
 If the profile is not found then the cmdlet will search in the ini-format credential file at the default location: (user's home directory)\.aws\credentials.
@@ -363,6 +389,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProfileName
+
 The user-defined name of an AWS credentials or SAML-based role profile containing credential information.
 The profile is expected to be found in the secure credential file shared with the AWS SDK for .NET and AWS Toolkit for Visual Studio.
 You can also specify the name of a profile stored in the .ini-format credential file used with  the AWS CLI and other AWS SDKs.
@@ -380,6 +407,7 @@ Accept wildcard characters: False
 ```
 
 ### -Region
+
 The system name of an AWS region or an AWSRegion instance.
 This governs the endpoint that will be used when calling service operations.
 Note that  the AWS resources referenced in a call are usually region-specific.
@@ -397,6 +425,7 @@ Accept wildcard characters: False
 ```
 
 ### -SecretKey
+
 The AWS secret key for the user account.
 This can be a temporary secret key if the corresponding session token is supplied to the -SessionToken parameter.
 
@@ -413,6 +442,7 @@ Accept wildcard characters: False
 ```
 
 ### -SessionToken
+
 The session token if the access and secret keys are temporary session-based credentials.
 
 ```yaml
@@ -428,6 +458,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -Verbose, -WarningAction, -WarningVariable, and -ProgressAction. 
 For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -436,9 +467,13 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## OUTPUTS
 
 ### System.String
+
 ### or
+
 ### System.Management.Automation.PSCustomObject
+
 ## NOTES
+
 Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 * For a full tools example, see the advanced documentation on the pwshBedrock website.

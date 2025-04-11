@@ -67,7 +67,7 @@ function Test-AnthropicCustomConversation {
                         $result = $false
                     }
                 }
-                Default {
+                default {
                     Write-Error -Message 'Custom conversation message must have a Type property.'
                     $result = $false
                 }

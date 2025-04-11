@@ -103,6 +103,18 @@ InModuleScope 'pwshBedrock' {
                 $eval.OutputCost | Should -BeExactly $ExpectedCost.OutputCost
             } #it
 
+            It 'should return the expected cost results for <_.ModelID>' -Foreach $script:lumaModelInfo {
+                $ImageCount = 1
+                $Steps = 2
+                $ModelID = $_.ModelID
+                [float]$imageCost = $_.ImageCost.SevenTwenty
+                $ExpectedCost = [PSCustomObject]@{
+                    ImageCost = $imageCost
+                }
+                $eval = Get-ModelCostEstimate -ImageCount $ImageCount -Steps $Steps -ModelID $ModelID
+                $eval.ImageCost | Should -BeExactly $ExpectedCost.ImageCost
+            } #it
+
             It 'should return the expected cost results for <_.ModelID>' -Foreach $script:metaModelInfo {
                 $InputTokenCount = 1000
                 $OutputTokenCount = 1000

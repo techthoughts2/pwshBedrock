@@ -777,7 +777,7 @@ function Invoke-ConverseAPI {
     # $toolUse = $false
     switch ($response.StopReason) {
         'end_turn' {
-            Write-Debug -Message 'End of turn detected.'
+            Write-Debug -Message 'end of turn detected.'
         }
         'tool_use' {
             Write-Debug -Message 'Tool calls detected.'
