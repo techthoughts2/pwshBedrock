@@ -9,7 +9,7 @@ schema: 2.0.0
 
 ## SYNOPSIS
 
-Sends message(s) to a Luma AI model on the Amazon Bedrock platform to generate a video.
+Sends messages to a Luma AI model on the Amazon Bedrock platform to generate a video.
 
 ## SYNTAX
 
@@ -35,7 +35,7 @@ The cmdlet will also attempt to download the video from S3 if the -AttemptS3Down
 ### EXAMPLE 1
 
 ```powershell
-Invoke-LumaAIModel -VideoPrompt 'A cat playing with a ball' -S3OutputURI 's3://mybucket'
+Invoke-LumaAIModel -VideoPrompt 'A cat playing with a ball' -S3OutputURI 's3://mybucket' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Generates a video asynchronously using the Luma AI model with the prompt 'A cat playing with a ball' and stores the output in the specified S3 bucket.

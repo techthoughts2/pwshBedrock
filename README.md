@@ -142,6 +142,18 @@ Invoke-CohereCommandRModel -Message 'Explain zero-point energy.' -ModelID 'coher
 #------------------------------------------------------------------------------------------------
 ```
 
+##### Luma AI Models
+
+```powershell
+#------------------------------------------------------------------------------------------------
+# Sends messages to a Luma AI model on the Amazon Bedrock platform to generate a video.
+Invoke-LumaAIModel -VideoPrompt 'A cat playing with a ball' -S3OutputURI 's3://mybucket' -ModelID 'luma.ray-v2:0' -Credential $awsCredential -Region 'us-west-2'
+#------------------------------------------------------------------------------------------------
+# Generates a video asynchronously using the Luma AI model and stores the output in the specified S3 bucket. Downloads the video to the specified local path.
+Invoke-LumaAIModel -VideoPrompt 'A cat playing with a ball' -S3OutputURI 's3://mybucket' -ModelID 'luma.ray-v2:0' -AttemptS3Download -LocalSavePath 'C:\temp\videos' -Credential $awsCredential -Region 'us-west-2'
+#------------------------------------------------------------------------------------------------
+```
+
 ##### Meta Llama models
 
 ```powershell

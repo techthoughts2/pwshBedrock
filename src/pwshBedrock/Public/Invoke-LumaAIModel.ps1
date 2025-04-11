@@ -1,13 +1,13 @@
 ﻿<#
 .SYNOPSIS
-    Sends message(s) to a Luma AI model on the Amazon Bedrock platform to generate a video.
+    Sends messages to a Luma AI model on the Amazon Bedrock platform to generate a video.
 .DESCRIPTION
     Sends an ansynchronous message to a Luma AI model on the Amazon Bedrock platform to generate a video.
     The response from this model is an invocation ARN, which can be used to check the status of the async job.
     The async job once completed will store the output video in the specified S3 bucket.
     The cmdlet will also attempt to download the video from S3 if the -AttemptS3Download switch is specified.
 .EXAMPLE
-    Invoke-LumaAIModel -VideoPrompt 'A cat playing with a ball' -S3OutputURI 's3://mybucket'
+    Invoke-LumaAIModel -VideoPrompt 'A cat playing with a ball' -S3OutputURI 's3://mybucket' -Credential $awsCredential -Region 'us-west-2'
 
     Generates a video asynchronously using the Luma AI model with the prompt 'A cat playing with a ball' and stores the output in the specified S3 bucket. Returns the invocation ARN.
 

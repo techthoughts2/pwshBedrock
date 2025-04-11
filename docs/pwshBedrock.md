@@ -51,7 +51,7 @@ Sends message(s) to the Cohere Command R/R+ model on the Amazon Bedrock platform
 Sends messages, media, or documents to a model via the Converse API and returns the response.
 
 ### [Invoke-LumaAIModel](Invoke-LumaAIModel.md)
-Sends message(s) to a Luma AI model on the Amazon Bedrock platform to generate a video.
+Sends messages to a Luma AI model on the Amazon Bedrock platform to generate a video.
 
 ### [Invoke-MetaModel](Invoke-MetaModel.md)
 Sends message(s) to a Meta model on the Amazon Bedrock platform and retrieves the response.
