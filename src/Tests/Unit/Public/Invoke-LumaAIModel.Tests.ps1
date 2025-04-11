@@ -489,7 +489,7 @@ InModuleScope 'pwshBedrock' {
 SAMPLE OUTPUT FROM ASYNC CHECK
 $a = Get-BDRRAsyncInvoke -InvocationArn $rawResponse -Region 'us-west-2' -Credential $Credential
 
-ClientRequestToken : 56acbfe4-2702-439b-b155-4a485bac8b30
+ClientRequestToken : xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx
 EndTime            : 1/1/0001 12:00:00 AM
 FailureMessage     :
 InvocationArn      : arn:aws:bedrock:us-west-2:xxxxxxxxxxxx:async-invoke/xxxxxxxxxxx
@@ -516,7 +516,7 @@ $a = Get-BDRRAsyncInvoke -InvocationArn $rawResponse -Region 'us-west-2' -Creden
 [432.14ms]
 [04-08-25 22:49] C:\Users\jwm> $a
 
-ClientRequestToken : 6fb38a8f-c029-44b6-b31a-d4f6267b08ea
+ClientRequestToken : xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxx
 EndTime            : 4/8/2025 10:40:19 PM
 FailureMessage     :
 InvocationArn      : arn:aws:bedrock:us-west-2:xxxxxxxxxxxx:async-invoke/tavx7wznzka0
