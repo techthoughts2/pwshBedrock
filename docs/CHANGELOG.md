@@ -5,9 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.55.0]
+## [0.60.0]
 
 - Module changes:
+    - Anthropic
+        - `Invoke-AnthropicModel` - added support for new model: `anthropic.claude-3-7-sonnet-20250219-v1:0`
     - Luma
         - Added new function `Invoke-LumaAIModel` to support video model: `luma.ray-v2:0`
     - Manifest updates:

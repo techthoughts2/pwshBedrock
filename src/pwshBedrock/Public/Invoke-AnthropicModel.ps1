@@ -176,6 +176,8 @@
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html
 .LINK
+    https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-37.html
+.LINK
     https://docs.anthropic.com/en/docs/models-overview
 .LINK
     https://docs.anthropic.com/en/api/messages
@@ -187,6 +189,8 @@
     https://docs.anthropic.com/en/docs/vision
 .LINK
     https://docs.anthropic.com/en/docs/build-with-claude/tool-use
+.LINK
+    https://docs.anthropic.com/en/docs/agents-and-tools/computer-use
 #>
 function Invoke-AnthropicModel {
     [CmdletBinding(
@@ -224,6 +228,7 @@ function Invoke-AnthropicModel {
             'anthropic.claude-3-sonnet-20240229-v1:0',
             'anthropic.claude-3-5-sonnet-20241022-v2:0',
             'anthropic.claude-3-5-sonnet-20240620-v1:0',
+            'anthropic.claude-3-7-sonnet-20250219-v1:0',
             'anthropic.claude-3-opus-20240229-v1:0'
         )]
         [string]$ModelID,
@@ -241,7 +246,7 @@ function Invoke-AnthropicModel {
         [Parameter(Mandatory = $false,
             HelpMessage = 'The maximum number of tokens to generate before stopping.')]
         [ValidateRange(1, 4096)]
-        [int]$MaxTokens = 4096,
+        [int]$MaxTokens = 4096, #todo: 3.7 supports a lot more
 
         # https://docs.anthropic.com/en/docs/system-prompts
         [Parameter(Mandatory = $false,

@@ -665,6 +665,8 @@ Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)
 
+[https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-37.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-37.html)
+
 [https://docs.anthropic.com/en/docs/models-overview](https://docs.anthropic.com/en/docs/models-overview)
 
 [https://docs.anthropic.com/en/api/messages](https://docs.anthropic.com/en/api/messages)
@@ -676,3 +678,5 @@ Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 [https://docs.anthropic.com/en/docs/vision](https://docs.anthropic.com/en/docs/vision)
 
 [https://docs.anthropic.com/en/docs/build-with-claude/tool-use](https://docs.anthropic.com/en/docs/build-with-claude/tool-use)
+
+[https://docs.anthropic.com/en/docs/agents-and-tools/computer-use](https://docs.anthropic.com/en/docs/agents-and-tools/computer-use)

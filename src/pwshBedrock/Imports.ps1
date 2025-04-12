@@ -174,6 +174,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'cohere.command-text-v14'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -450,6 +458,10 @@ $Global:pwshBedrockModelContext = @(
         ModelId = 'anthropic.claude-3-5-sonnet-20240620-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
+    [PSCustomObject]@{
+        ModelId = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
     # [PSCustomObject]@{
     #     ModelId = 'cohere.command-text-v14'
     #     Context = New-Object System.Collections.Generic.List[object]
@@ -564,6 +576,7 @@ $Global:pwshBedrockModelContext = @(
 #region anthropic
 
 # https://docs.anthropic.com/en/docs/models-overview#model-comparison
+# https://docs.anthropic.com/en/docs/about-claude/models/all-models#model-comparison-table
 # https://docs.anthropic.com/en/api/messages
 
 $script:anthropicModelInfo = @(
@@ -691,8 +704,8 @@ $script:anthropicModelInfo = @(
         ProviderName               = 'Anthropic'
         ModelName                  = 'Claude 3.5 Sonnet'
         ModelId                    = 'anthropic.claude-3-5-sonnet-20240620-v1:0'
-        Description                = 'Most intelligent model'
-        Strength                   = 'Highest level of intelligence and capability'
+        Description                = 'Previous most intelligent model'
+        Strength                   = 'High level of intelligence and capability'
         Multilingual               = $true
         Text                       = $true
         Image                      = $false
@@ -707,6 +720,30 @@ $script:anthropicModelInfo = @(
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '04-01-2024'
+        PayloadLimit               = '20MB'
+        InputTokenCost             = 0.003
+        OutputTokenCost            = 0.015
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Anthropic'
+        ModelName                  = 'Claude 3.7 Sonnet'
+        ModelId                    = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+        Description                = 'Most intelligent model'
+        Strength                   = 'Highest level of intelligence and capability with toggleable extended thinking'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $true
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 200000
+        MaxOutput                  = 64000
+        TrainingCutoff             = '11-01-2024'
         PayloadLimit               = '20MB'
         InputTokenCost             = 0.003
         OutputTokenCost            = 0.015
