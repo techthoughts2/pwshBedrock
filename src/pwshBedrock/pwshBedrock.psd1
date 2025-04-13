@@ -176,6 +176,8 @@
                 'Llama',
                 'Llama2',
                 'Llama3',
+                'Luma',
+                'LumaAI',
                 'MachineLearning',
                 'MachineLearningModels',
                 'Meta',
