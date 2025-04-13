@@ -185,6 +185,20 @@ InModuleScope 'pwshBedrock' {
                         )
                     },
                     [PSCustomObject]@{
+                        ModelID = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = '7 Sonnet context'
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    [PSCustomObject]@{
                         ModelID = 'anthropic.claude-3-opus-20240229-v1:0'
                         Context = @(
                             [PSCustomObject]@{

@@ -18,10 +18,11 @@ Sends message(s) or media files to an Anthropic model on the Amazon Bedrock plat
 ```powershell
 Invoke-AnthropicModel [-Message <String>] [-MediaPath <String[]>] -ModelID <String> [-ReturnFullObject]
  [-NoContextPersist] [-MaxTokens <Int32>] [-SystemPrompt <String>] [-StopSequences <String[]>]
- [-Temperature <Single>] [-TopP <Single>] [-TopK <Int32>] [-Tools <PSObject[]>] [-ToolChoice <String>]
- [-ToolName <String>] [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
- [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
- [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+ [-Temperature <Single>] [-TopP <Single>] [-TopK <Int32>] [-Thinking] [-ThinkingBudgetTokens <Int32>]
+ [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>] [-AccessKey <String>]
+ [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
+ [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
+ [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ### PreCraftedMessages
@@ -29,10 +30,11 @@ Invoke-AnthropicModel [-Message <String>] [-MediaPath <String[]>] -ModelID <Stri
 ```powershell
 Invoke-AnthropicModel -CustomConversation <PSObject[]> -ModelID <String> [-ReturnFullObject]
  [-NoContextPersist] [-MaxTokens <Int32>] [-SystemPrompt <String>] [-StopSequences <String[]>]
- [-Temperature <Single>] [-TopP <Single>] [-TopK <Int32>] [-Tools <PSObject[]>] [-ToolChoice <String>]
- [-ToolName <String>] [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
- [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
- [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+ [-Temperature <Single>] [-TopP <Single>] [-TopK <Int32>] [-Thinking] [-ThinkingBudgetTokens <Int32>]
+ [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>] [-AccessKey <String>]
+ [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
+ [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
+ [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ### ToolsResultsSet
@@ -40,8 +42,8 @@ Invoke-AnthropicModel -CustomConversation <PSObject[]> -ModelID <String> [-Retur
 ```powershell
 Invoke-AnthropicModel -ModelID <String> [-ReturnFullObject] [-NoContextPersist] [-MaxTokens <Int32>]
  [-SystemPrompt <String>] [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>] [-TopK <Int32>]
- [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>] -ToolsResults <PSObject[]>
- [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-Thinking] [-ThinkingBudgetTokens <Int32>] [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>]
+ -ToolsResults <PSObject[]> [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
  [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
  [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
@@ -148,6 +150,28 @@ Stop sequences are provided to stop the model from generating more text when it 
 ### EXAMPLE 7
 
 ```powershell
+$invokeAnthropicModelSplat = @{
+    Message              = 'Can you name all of the Star Fleet captains featured in the various shows over the years?'
+    ModelID              = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+    SystemPrompt         = 'You are an expert on all things Star Trek, having studied the show for decades. You often win Star Trek Trivia contests and enjoy sharing your vast knowledge of Star Trek with others.'
+    Thinking             = $true
+    ThinkingBudgetTokens = 2000
+    Credential           = $credential
+    Region               = 'us-west-2'
+    ReturnFullObject     = $true
+}
+$objReturn = Invoke-AnthropicModel @invokeAnthropicModelSplat
+```
+
+Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object.
+A system prompt is provided to give additional context to the model on how to respond.
+Thinking is enabled, allowing the model to show its reasoning process through thinking content blocks in the response.
+The maximum number of tokens that Claude may use for its internal reasoning process is set to 2000.
+This is a required parameter when using the Thinking switch.
+
+### EXAMPLE 8
+
+```powershell
 Invoke-AnthropicModel -CustomConversation $customConversation -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2'
 ```
 
@@ -155,7 +179,7 @@ Sends a custom conversation to the on-demand Anthropic model in the specified AW
 The custom conversation must adhere to the Anthropic model conversation format.
 Reference the pwshBedrock documentation for more information on the custom conversation format.
 
-### EXAMPLE 8
+### EXAMPLE 9
 
 ```powershell
 $invokeAnthropicModelSplat = @{
@@ -177,7 +201,7 @@ A tool is provided to the model to use if needed.
 The tool choice is set to auto, allowing the model to decide if it should use the tool.
 The tool is a function that provides Star Trek trivia information.
 
-### EXAMPLE 9
+### EXAMPLE 10
 
 ```powershell
 $invokeAnthropicModelSplat = @{
@@ -394,6 +418,45 @@ Only sample from the top K options for each subsequent token.
 Use top_k to remove long tail low probability responses.
 Recommended for advanced use cases only.
 You usually only need to use temperature.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Thinking
+
+Claude will show its reasoning process through thinking content blocks in the response.
+This switch is only available for Claude 3.7 model.
+Thinking is not compatible with temperature, top_p, or top_k modifications, as well as forced tool use.
+Thinking is only viewable in the full response object, and will not be included in the message history context or the message reply.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ThinkingBudgetTokens
+
+Maximum number of tokens that Claude may use for its internal reasoning process.
+Your thinking budgettokens must always be less than the max tokens you specify in your request.
+This is a required parameter when using the Thinking switch.
+This parameter is only available for Claude 3.7 model.
+This paramater has no effect if not using the Thinking switch.
 
 ```yaml
 Type: Int32
@@ -657,6 +720,10 @@ Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
 * For a full tools example, see the advanced documentation on the pwshBedrock website.
 
+Use of thinking can be useful for debugging and understanding the model's reasoning process.
+Thinking results are not included in the message history context or the message reply.
+Use the -ReturnFullObject parameter to get the full response object, which includes the thinking content blocks.
+
 ## RELATED LINKS
 
 [https://www.pwshbedrock.dev/en/latest/Invoke-AnthropicModel/](https://www.pwshbedrock.dev/en/latest/Invoke-AnthropicModel/)
@@ -664,6 +731,8 @@ Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 [https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/](https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/)
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)
+
+[https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-37.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-37.html)
 
 [https://docs.anthropic.com/en/docs/models-overview](https://docs.anthropic.com/en/docs/models-overview)
 
@@ -676,3 +745,5 @@ Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 [https://docs.anthropic.com/en/docs/vision](https://docs.anthropic.com/en/docs/vision)
 
 [https://docs.anthropic.com/en/docs/build-with-claude/tool-use](https://docs.anthropic.com/en/docs/build-with-claude/tool-use)
+
+[https://docs.anthropic.com/en/docs/agents-and-tools/computer-use](https://docs.anthropic.com/en/docs/agents-and-tools/computer-use)

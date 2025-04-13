@@ -63,6 +63,20 @@
 
     Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object. A system prompt is provided to give additional context to the model on how to respond. Temperature is set to 1 for creative responses. Stop sequences are provided to stop the model from generating more text when it encounters the word 'Picard'.
 .EXAMPLE
+    $invokeAnthropicModelSplat = @{
+        Message              = 'Can you name all of the Star Fleet captains featured in the various shows over the years?'
+        ModelID              = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+        SystemPrompt         = 'You are an expert on all things Star Trek, having studied the show for decades. You often win Star Trek Trivia contests and enjoy sharing your vast knowledge of Star Trek with others.'
+        Thinking             = $true
+        ThinkingBudgetTokens = 2000
+        Credential           = $credential
+        Region               = 'us-west-2'
+        ReturnFullObject     = $true
+    }
+    $objReturn = Invoke-AnthropicModel @invokeAnthropicModelSplat
+
+    Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object. A system prompt is provided to give additional context to the model on how to respond. Thinking is enabled, allowing the model to show its reasoning process through thinking content blocks in the response. The maximum number of tokens that Claude may use for its internal reasoning process is set to 2000. This is a required parameter when using the Thinking switch.
+.EXAMPLE
     Invoke-AnthropicModel -CustomConversation $customConversation -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2'
 
     Sends a custom conversation to the on-demand Anthropic model in the specified AWS region and returns the response. The custom conversation must adhere to the Anthropic model conversation format. Reference the pwshBedrock documentation for more information on the custom conversation format.
@@ -124,6 +138,17 @@
     Only sample from the top K options for each subsequent token.
     Use top_k to remove long tail low probability responses.
     Recommended for advanced use cases only. You usually only need to use temperature.
+.PARAMETER Thinking
+    Claude will show its reasoning process through thinking content blocks in the response.
+    This switch is only available for Claude 3.7 model.
+    Thinking is not compatible with temperature, top_p, or top_k modifications, as well as forced tool use.
+    Thinking is only viewable in the full response object, and will not be included in the message history context or the message reply.
+.PARAMETER ThinkingBudgetTokens
+    Maximum number of tokens that Claude may use for its internal reasoning process.
+    Your thinking budgettokens must always be less than the max tokens you specify in your request.
+    This is a required parameter when using the Thinking switch.
+    This parameter is only available for Claude 3.7 model.
+    This paramater has no effect if not using the Thinking switch.
 .PARAMETER Tools
     Definitions of tools that the model may use.
 .PARAMETER ToolChoice
@@ -167,6 +192,9 @@
     Author: Jake Morrison - @jakemorrison - https://www.techthoughts.info/
 
     * For a full tools example, see the advanced documentation on the pwshBedrock website.
+
+    Use of thinking can be useful for debugging and understanding the model's reasoning process. Thinking results are not included in the message history context or the message reply.
+    Use the -ReturnFullObject parameter to get the full response object, which includes the thinking content blocks.
 .COMPONENT
     pwshBedrock
 .LINK
@@ -175,6 +203,8 @@
     https://www.pwshbedrock.dev/en/latest/pwshBedrock-Advanced/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html
+.LINK
+    https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-37.html
 .LINK
     https://docs.anthropic.com/en/docs/models-overview
 .LINK
@@ -187,6 +217,8 @@
     https://docs.anthropic.com/en/docs/vision
 .LINK
     https://docs.anthropic.com/en/docs/build-with-claude/tool-use
+.LINK
+    https://docs.anthropic.com/en/docs/agents-and-tools/computer-use
 #>
 function Invoke-AnthropicModel {
     [CmdletBinding(
@@ -224,6 +256,7 @@ function Invoke-AnthropicModel {
             'anthropic.claude-3-sonnet-20240229-v1:0',
             'anthropic.claude-3-5-sonnet-20241022-v2:0',
             'anthropic.claude-3-5-sonnet-20240620-v1:0',
+            'anthropic.claude-3-7-sonnet-20250219-v1:0',
             'anthropic.claude-3-opus-20240229-v1:0'
         )]
         [string]$ModelID,
@@ -240,7 +273,7 @@ function Invoke-AnthropicModel {
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'The maximum number of tokens to generate before stopping.')]
-        [ValidateRange(1, 4096)]
+        [ValidateRange(1, 64000)]
         [int]$MaxTokens = 4096,
 
         # https://docs.anthropic.com/en/docs/system-prompts
@@ -268,6 +301,19 @@ function Invoke-AnthropicModel {
             HelpMessage = 'Only sample from the top K options for each subsequent token. Not for normal use.')]
         [ValidateRange(0, 500)]
         [int]$TopK,
+
+        # TODO: Computer Use - not supported yet
+        # https://github.com/anthropics/anthropic-quickstarts/issues/251
+        # tools.0: Input tag 'computer_20250124' found using 'type' does not match any of the expected tags: 'bash_20250124', 'custom', 'text_editor_20250124'
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'Claude will show its reasoning process through thinking content blocks in the response.')]
+        [switch]$Thinking,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'Maximum number of tokens that Claude may use for its internal reasoning process.')]
+        [ValidateRange(1024, 63000)]
+        [int]$ThinkingBudgetTokens,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'Definitions of tools that the model may use.')]
@@ -331,6 +377,25 @@ function Invoke-AnthropicModel {
     $modelInfo = $script:anthropicModelInfo | Where-Object { $_.ModelId -eq $ModelID }
     Write-Debug -Message 'Model Info:'
     Write-Debug -Message ($modelInfo | Out-String)
+
+    if ($Thinking) {
+        if ($ModelID -ne 'anthropic.claude-3-7-sonnet-20250219-v1:0') {
+            throw 'Thinking is only available for the Claude 3.7 model.'
+        }
+        if (-not $ThinkingBudgetTokens) {
+            throw 'ThinkingBudgetTokens is a required parameter when using the Thinking switch.'
+        }
+        if ($Temperature -or $TopP -or $TopK) {
+            throw 'Thinking is not compatible with temperature, top_p, or top_k modifications.'
+        }
+        if ($MaxTokens -le $ThinkingBudgetTokens) {
+            throw ('MaxTokens must be greater than ThinkingBudgetTokens. MaxTokens: {0}, ThinkingBudgetTokens: {1}' -f $MaxTokens, $ThinkingBudgetTokens)
+        }
+        $thinkingObj = @{
+            type          = 'enabled'
+            budget_tokens = $ThinkingBudgetTokens
+        }
+    }
 
     if ($ToolChoice -eq 'tool' -and [string]::IsNullOrWhiteSpace($ToolName)) {
         throw 'ToolName must be specified when ToolChoice is set to tool.'
@@ -440,6 +505,9 @@ function Invoke-AnthropicModel {
     }
     if ($TopK) {
         $bodyObj.Add('top_k', $TopK)
+    }
+    if ($Thinking) {
+        $bodyObj.Add('thinking', $thinkingObj)
     }
     if ($Tools) {
         $toolsEval = Test-AnthropicTool -Tools $Tools
@@ -590,7 +658,15 @@ function Invoke-AnthropicModel {
     else {
         Write-Debug -Message ('Stop Reason: {0}' -f $response.stop_reason)
 
-        if ([string]::IsNullOrWhiteSpace($response.content.text)) {
+        # Extract only the text content, ignoring any thinking content
+        $textContent = $null
+        $textBlock = $response.content | Where-Object { $_.type -eq 'text' }
+        if ($textBlock) {
+            $textContent = $textBlock.text
+            Write-Debug -Message 'Found text block in content'
+        }
+
+        if ([string]::IsNullOrWhiteSpace($textContent)) {
             if ($MaxTokens -lt 150) {
                 Write-Warning -Message 'In some cases, the model may return an empty response when the max tokens is set to a low value.'
                 Write-Warning -Message ('MaxTokens on this call was set to {0}.' -f $MaxTokens)
@@ -599,7 +675,7 @@ function Invoke-AnthropicModel {
             throw ('No response text was returned from model API: {0}' -f $ModelID)
         }
 
-        $content = $response.content.text
+        $content = $textContent
         $formatAnthropicMessageSplat = @{
             Role             = 'assistant'
             Message          = $content

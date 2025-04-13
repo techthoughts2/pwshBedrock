@@ -547,6 +547,98 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
+            It 'should throw if Thinking parameter is used with a non-Claude 3.7 model' {
+                {
+                    $invokeAnthropicModelSplat = @{
+                        Message              = 'Tell me about the universe.'
+                        ModelID              = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                        Thinking             = $true
+                        ThinkingBudgetTokens = 1024
+                        AccessKey            = 'ak'
+                        SecretKey            = 'sk'
+                        Region               = 'us-west-2'
+                    }
+                    Invoke-AnthropicModel @invokeAnthropicModelSplat
+                } | Should -Throw -ExpectedMessage 'Thinking is only available for the Claude 3.7 model.'
+            } #it
+
+            It 'should throw if Thinking parameter is used without ThinkingBudgetTokens' {
+                {
+                    $invokeAnthropicModelSplat = @{
+                        Message   = 'Tell me about the universe.'
+                        ModelID   = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+                        Thinking  = $true
+                        AccessKey = 'ak'
+                        SecretKey = 'sk'
+                        Region    = 'us-west-2'
+                    }
+                    Invoke-AnthropicModel @invokeAnthropicModelSplat
+                } | Should -Throw -ExpectedMessage 'ThinkingBudgetTokens is a required parameter when using the Thinking switch.'
+            } #it
+
+            It 'should throw if Thinking is used with Temperature' {
+                {
+                    $invokeAnthropicModelSplat = @{
+                        Message              = 'Tell me about the universe.'
+                        ModelID              = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+                        Thinking             = $true
+                        ThinkingBudgetTokens = 1024
+                        Temperature          = 0.7
+                        AccessKey            = 'ak'
+                        SecretKey            = 'sk'
+                        Region               = 'us-west-2'
+                    }
+                    Invoke-AnthropicModel @invokeAnthropicModelSplat
+                } | Should -Throw -ExpectedMessage 'Thinking is not compatible with temperature, top_p, or top_k modifications.'
+            } #it
+
+            It 'should throw if Thinking is used with TopP' {
+                {
+                    $invokeAnthropicModelSplat = @{
+                        Message              = 'Tell me about the universe.'
+                        ModelID              = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+                        Thinking             = $true
+                        ThinkingBudgetTokens = 1024
+                        TopP                 = 0.9
+                        AccessKey            = 'ak'
+                        SecretKey            = 'sk'
+                        Region               = 'us-west-2'
+                    }
+                    Invoke-AnthropicModel @invokeAnthropicModelSplat
+                } | Should -Throw -ExpectedMessage 'Thinking is not compatible with temperature, top_p, or top_k modifications.'
+            } #it
+
+            It 'should throw if Thinking is used with TopK' {
+                {
+                    $invokeAnthropicModelSplat = @{
+                        Message              = 'Tell me about the universe.'
+                        ModelID              = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+                        Thinking             = $true
+                        ThinkingBudgetTokens = 1024
+                        TopK                 = 40
+                        AccessKey            = 'ak'
+                        SecretKey            = 'sk'
+                        Region               = 'us-west-2'
+                    }
+                    Invoke-AnthropicModel @invokeAnthropicModelSplat
+                } | Should -Throw -ExpectedMessage 'Thinking is not compatible with temperature, top_p, or top_k modifications.'
+            } #it
+
+            It 'should throw if ThinkingBudgetTokens is greater than or equal to MaxTokens' {
+                {
+                    $invokeAnthropicModelSplat = @{
+                        Message              = 'Tell me about the universe.'
+                        ModelID              = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+                        Thinking             = $true
+                        ThinkingBudgetTokens = 5000
+                        MaxTokens            = 4096
+                        AccessKey            = 'ak'
+                        SecretKey            = 'sk'
+                        Region               = 'us-west-2'
+                    }
+                    Invoke-AnthropicModel @invokeAnthropicModelSplat
+                } | Should -Throw -ExpectedMessage 'MaxTokens must be greater than ThinkingBudgetTokens. MaxTokens: 4096, ThinkingBudgetTokens: 5000'
+            } #it
 
         } #context_Error
 
@@ -852,7 +944,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Invoke-BDRRModel {
                     $response
                     $Region             | Should -BeExactly 'us-west-2'
-                    $ModelID            | Should -BeExactly 'us.anthropic.claude-3-sonnet-20240229-v1:0'
+                    $ModelID            | Should -BeExactly 'us.anthropic.claude-3-7-sonnet-20250219-v1:0'
                     $Credential         | Should -Not -BeNullOrEmpty
                     $EndpointUrl        | Should -BeExactly 'string'
                     $NetworkCredential  | Should -Not -BeNullOrEmpty
@@ -861,15 +953,17 @@ InModuleScope 'pwshBedrock' {
                     $Body               | Should -BeOfType [byte]
                 } -Verifiable
                 $invokeAnthropicModelSplat = @{
-                    Message           = "My Dear Doctor, they're all true. 'Even the lies?' Especially the lies"
-                    MediaPath         = 'C:\images\image.jpeg'
-                    ModelID           = 'anthropic.claude-3-sonnet-20240229-v1:0'
-                    Credential        = $awsCred
-                    EndpointUrl       = 'string'
-                    NetworkCredential = $networkCred
-                    ProfileLocation   = 'default'
-                    Region            = 'us-west-2'
-                    SessionToken      = 'string'
+                    Message              = "My Dear Doctor, they're all true. 'Even the lies?' Especially the lies"
+                    MediaPath            = 'C:\images\image.jpeg'
+                    Thinking             = $true
+                    ThinkingBudgetTokens = 1024
+                    ModelID              = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+                    Credential           = $awsCred
+                    EndpointUrl          = 'string'
+                    NetworkCredential    = $networkCred
+                    ProfileLocation      = 'default'
+                    Region               = 'us-west-2'
+                    SessionToken         = 'string'
                 }
                 Invoke-AnthropicModel @invokeAnthropicModelSplat | Should -InvokeVerifiable
             } #it
