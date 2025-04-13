@@ -9,7 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Module changes:
     - Anthropic
-        - `Invoke-AnthropicModel` - added support for new model: `anthropic.claude-3-7-sonnet-20250219-v1:0`
+        - `Invoke-AnthropicModel`
+            - added support for new model: `anthropic.claude-3-7-sonnet-20250219-v1:0`
+            - added new `Thinking` and `ThinkingBudgetTokens` parameters to support thinking and reasoning outputs for Claude 3.7 Sonnet
+
+## [0.55.0]
+
+- Module changes:
     - Luma
         - Added new function `Invoke-LumaAIModel` to support video model: `luma.ray-v2:0`
     - Manifest updates:

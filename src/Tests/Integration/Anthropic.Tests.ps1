@@ -77,6 +77,37 @@ InModuleScope 'pwshBedrock' {
                 Write-Verbose -Message $eval.content.text
             } #it
 
+            It 'should return an object with thinking and reasoning when provided a standard message for <_.ModelID>' -Foreach ($script:anthropicModelInfo | Where-Object { $_.ModelID -eq 'anthropic.claude-3-7-sonnet-20250219-v1:0' }) {
+                $ModelID = $_.ModelID
+                $invokeAnthropicModelSplat = @{
+                    Message              = 'Return the number 1 as a string'
+                    ModelID              = $ModelID
+                    MaxTokens            = 2000
+                    Thinking             = $true
+                    ThinkingBudgetTokens = 1024
+                    Credential           = $awsCredential
+                    Region               = 'us-west-2'
+                    NoContextPersist     = $true
+                    ReturnFullObject     = $true
+                    Verbose              = $false
+                }
+                $eval = Invoke-AnthropicModel @invokeAnthropicModelSplat
+                $eval | Should -BeOfType [System.Management.Automation.PSCustomObject]
+                $eval | Should -Not -BeNullOrEmpty
+                $eval.Id | Should -Not -BeNullOrEmpty
+                $eval.type | Should -Not -BeNullOrEmpty
+                $eval.role | Should -Not -BeNullOrEmpty
+                $eval.model | Should -Not -BeNullOrEmpty
+                $eval.content | Should -Not -BeNullOrEmpty
+                $content = $eval.content
+                $text = $content | Where-Object { $_.type -eq 'text' }
+                $thinking = $content | Where-Object { $_.type -eq 'thinking' }
+                $thinking | Should -Not -BeNullOrEmpty
+                $text | Should -Not -BeNullOrEmpty
+                $eval.'stop_reason' | Should -Not -BeNullOrEmpty
+                Write-Verbose -Message $text
+            } #it
+
         } #context_standard_message
 
         Context 'Vision Message' {
