@@ -178,6 +178,8 @@
                 'Llama',
                 'Llama2',
                 'Llama3',
+                'LLM',
+                'LLMs',
                 'Luma',
                 'LumaAI',
                 'MachineLearning',
