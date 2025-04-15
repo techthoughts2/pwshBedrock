@@ -100,6 +100,7 @@ nav:
       - Invoke-AnthropicModel: Invoke-AnthropicModel.md
       - Invoke-CohereCommandModel: Invoke-CohereCommandModel.md
       - Invoke-CohereCommandRModel: Invoke-CohereCommandRModel.md
+      - Invoke-DeepSeekModel: Invoke-DeepSeekModel.md
       - Invoke-LumaAIModel: Invoke-LumaAIModel.md
       - Invoke-MetaModel: Invoke-MetaModel.md
       - Invoke-MistralAIChatModel: Invoke-MistralAIChatModel.md

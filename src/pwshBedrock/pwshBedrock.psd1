@@ -12,7 +12,7 @@
     RootModule        = 'pwshBedrock.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.60.0'
+    ModuleVersion     = '0.65.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -100,6 +100,7 @@
         'Invoke-CohereCommandModel'
         'Invoke-CohereCommandRModel'
         'Invoke-ConverseAPI'
+        'Invoke-DeepSeekModel'
         'Invoke-LumaAIModel'
         'Invoke-MetaModel'
         'Invoke-MistralAIChatModel'
@@ -163,6 +164,7 @@
                 'CommandR',
                 'Converse',
                 'ConverseAPI',
+                'DeepSeek',
                 'FMs',
                 'FoundationModels',
                 'GenerativeAI',

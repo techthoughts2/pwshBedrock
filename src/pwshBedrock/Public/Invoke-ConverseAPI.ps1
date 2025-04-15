@@ -281,6 +281,7 @@ function Invoke-ConverseAPI {
             # 'cohere.command-light-text-v14', # *note: not supported by Converse API
             'cohere.command-r-v1:0',
             'cohere.command-r-plus-v1:0',
+            'deepseek.r1-v1:0',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-8b-instruct-v1:0',
             'meta.llama3-1-8b-instruct-v1:0',

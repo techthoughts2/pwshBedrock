@@ -81,6 +81,7 @@ function Add-ModelCostEstimate {
             'cohere.command-light-text-v14',
             'cohere.command-r-v1:0',
             'cohere.command-r-plus-v1:0',
+            'deepseek.r1-v1:0',
             'luma.ray-v2:0',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-8b-instruct-v1:0',
@@ -216,6 +217,15 @@ function Add-ModelCostEstimate {
                     'cohere.command-r-plus-v1:0' {
                         $inputTokenCount = Get-TokenCountEstimate -Text $Message
                         $outputTokenCount = Get-TokenCountEstimate -Text $Usage.text
+                    }
+                    'deepseek.r1-v1:0' {
+                        # this model does not return token counts, but does return the prompt and completion text
+                        # so, we can calculate the token counts based on the text length
+                        $inputTokenCount = Get-TokenCountEstimate -Text $Usage
+                        # because this model supports multiple generations, we need to sum the token counts
+                        foreach ($textGeneration in $Usage.choices.text) {
+                            $outputTokenCount += Get-TokenCountEstimate -Text $textGeneration
+                        }
                     }
                     'meta.llama3-70b-instruct-v1:0' {
                         $inputTokenCount = $Usage.prompt_token_count
