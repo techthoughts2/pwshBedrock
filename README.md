@@ -142,6 +142,15 @@ Invoke-CohereCommandRModel -Message 'Explain zero-point energy.' -ModelID 'coher
 #------------------------------------------------------------------------------------------------
 ```
 
+##### DeepSeek Models
+
+```powershell
+#------------------------------------------------------------------------------------------------
+# Sends a text message to the on-demand Cohere Command R model in the specified AWS region and returns the response.
+Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID 'deepseek.r1-v1:0' -Credential $awsCredential -Region 'us-west-2'
+#------------------------------------------------------------------------------------------------
+```
+
 ##### Luma AI Models
 
 ```powershell

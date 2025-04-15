@@ -9,15 +9,15 @@
     Additionally, the cmdlet estimates the cost of model usage based on the provided
     input and output tokens and adds the estimate to the models tally information.
 .EXAMPLE
-    Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $Credential -Region 'us-west-2'
+    Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $awsCredential -Region 'us-west-2'
 
     Sends a text message to the on-demand DeepSeek model in the specified AWS region and returns the response.
 .EXAMPLE
-    Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $Credential -Region 'us-west-2' -ReturnFullObject
+    Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 
     Sends a text message to the on-demand DeepSeek model in the specified AWS region and returns the full response object.
 .EXAMPLE
-    Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $Credential -Region 'us-west-2' -NoContextPersist
+    Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $awsCredential -Region 'us-west-2' -NoContextPersist
 
     Sends a text message to the on-demand DeepSeek model in the specified AWS region and does not persist the conversation context history.
 .PARAMETER Message

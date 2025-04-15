@@ -47,7 +47,7 @@ input and output tokens and adds the estimate to the models tally information.
 ### EXAMPLE 1
 
 ```powershell
-Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $Credential -Region 'us-west-2'
+Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends a text message to the on-demand DeepSeek model in the specified AWS region and returns the response.
@@ -55,7 +55,7 @@ Sends a text message to the on-demand DeepSeek model in the specified AWS region
 ### EXAMPLE 2
 
 ```powershell
-Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $Credential -Region 'us-west-2' -ReturnFullObject
+Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
 Sends a text message to the on-demand DeepSeek model in the specified AWS region and returns the full response object.
@@ -63,7 +63,7 @@ Sends a text message to the on-demand DeepSeek model in the specified AWS region
 ### EXAMPLE 3
 
 ```powershell
-Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $Credential -Region 'us-west-2' -NoContextPersist
+Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID deepseek.r1-v1:0 -Credential $awsCredential -Region 'us-west-2' -NoContextPersist
 ```
 
 Sends a text message to the on-demand DeepSeek model in the specified AWS region and does not persist the conversation context history.
