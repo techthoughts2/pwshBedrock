@@ -99,6 +99,13 @@ InModuleScope 'pwshBedrock' {
                     )
                     finish_reason = 'COMPLETE'
                 }
+                $deepseekUsage = [PSCustomObject]@{
+                    choices = @(
+                        [PSCustomObject]@{
+                            text = '<think>Star Trek: The Next Generation</think> Lt. Commander Data.'
+                        }
+                    )
+                }
                 $metaUsage = [PSCustomObject]@{
                     prompt_token_count     = 1000
                     generation_token_count = 1000
@@ -223,6 +230,18 @@ InModuleScope 'pwshBedrock' {
             It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach ($script:cohereModelInfo | Where-Object { $_.ModelId -eq 'cohere.command-r-v1:0' -or $_.ModelId -eq 'cohere.command-r-plus-v1:0' }) {
                 $modelId = $_.ModelId
                 Add-ModelCostEstimate -Usage $cohereCommandRUsage -Message 'Hi there'  -ModelID $modelId
+                # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
+                $eval = Get-ModelTally -ModelID $modelId
+                $eval.TotalCost | Should -BeGreaterThan 0
+                $eval.InputTokenCount | Should -BeGreaterThan 0
+                $eval.OutputTokenCount | Should -BeGreaterThan 0
+                $eval.InputTokenCost | Should -BeGreaterThan 0
+                $eval.OutputTokenCost | Should -BeGreaterThan 0
+            } #it
+
+            It 'should update the tally for the following <_.ProviderName> model: <_.ModelId>' -ForEach $script:deepseekModelInfo {
+                $modelId = $_.ModelId
+                Add-ModelCostEstimate -Usage $deepseekUsage -Message 'Hi there'  -ModelID $modelId
                 # $eval = $Global:pwshBedRockSessionModelTally | Where-Object { $_.ModelId -eq $modelId }
                 $eval = Get-ModelTally -ModelID $modelId
                 $eval.TotalCost | Should -BeGreaterThan 0

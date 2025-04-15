@@ -2,18 +2,12 @@
 
 ## Why would I use pwshBedrock instead of just calling Invoke-BDRRModel directly?
 
-pwshBedrock is not required to use PowerShell to interact with Amazon Bedrock, as commands like `Invoke-BDRRModel` and `Invoke-BDRRConverse` are already part of the [AWS Tools for PowerShell](https://aws.amazon.com/powershell/). However pwshBedrock offers several key advantages:
+While you can directly use AWS Tools for PowerShell cmdlets (such as `Invoke-BDRRModel` or `Invoke-BDRRConverse` as part of the [AWS Tools for PowerShell](https://aws.amazon.com/powershell/)) to interact with Amazon Bedrock, pwshBedrock offers several key advantages:
 
-1. **Simplified Parameter Handling**:
-    - pwshBedrock provides easy-to-use parameters, removing the need to craft complex JSON payloads or Bedrock runtime objects. You can use simple parameter values and native PowerShell objects to interact with the models.
-2. **Context Management**:
-    - pwshBedrock automatically manages the conversation context for models that support it. This context is stored in memory by default, and you can also save it to the file system for later retrieval, ensuring seamless and continuous interactions.
-3. **Abstraction of Complex Payloads**:
-    - By abstracting the complexity of forming JSON payloads and handling Bedrock runtime objects, pwshBedrock allows you to focus on your core tasks without getting bogged down by the intricacies of payload structure and validation.
-4. **Token Counting and Cost Estimates**:
-    - pwshBedrock tracks token usage and provides basic cost estimation, giving you valuable insights into the usage and cost implications of your model interactions.
-5. **PowerShell Idiomatic Interface**:
-    - pwshBedrock offers a PowerShell-native way to interface with Bedrock, making it intuitive and efficient for PowerShell developers to integrate AI capabilities into their scripts and workflows.
+1. **Simplified Parameter Handling**: No need to manually craft complex JSON payloads or handle Bedrock runtime objects. pwshBedrock takes care of this complexity for you, freeing you to focus on your script logic instead of payload details.
+2. **Context Management**: pwshBedrock automatically handles conversation context for models that support it. The context is stored in memory by default (with an option to save it to disk), so you can pause and resume multi-turn conversations seamlessly.
+3. **Token Tracking & Cost Estimates**: pwshBedrock monitors token usage and provides basic cost estimates for each request. This gives you a clear picture of usage and helps you understand the potential cost of every interaction.
+4. **Built-In Model Validations & Automations**: pwshBedrock includes guardrails for each model's unique constraints—such as max token limits—and automates file conversions (e.g., base64 encoding for image uploads). It also handles tasks like video download from S3 for models that generate media. This frees you from model-specific guesswork and ensures more reliable interactions with less overhead.
 
 While more advanced users may find value in learning the specifics of a particular model and making direct calls with `Invoke-BDRRModel` or `Invoke-BDRRConverse`, pwshBedrock serves as a streamlined option that simplifies the process and enhances productivity for most use cases.
 

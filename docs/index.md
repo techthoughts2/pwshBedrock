@@ -123,6 +123,15 @@ Invoke-CohereCommandRModel -Message 'Explain zero-point energy.' -ModelID 'coher
 #------------------------------------------------------------------------------------------------
 ```
 
+##### DeepSeek Models
+
+```powershell
+#------------------------------------------------------------------------------------------------
+# Sends a text message to the on-demand Cohere Command R model in the specified AWS region and returns the response.
+Invoke-DeepSeekModel -Message 'Explain zero-point energy.' -ModelID 'deepseek.r1-v1:0' -Credential $awsCredential -Region 'us-west-2'
+#------------------------------------------------------------------------------------------------
+```
+
 ##### Luma AI Models
 
 ```powershell
@@ -226,6 +235,7 @@ pwshBedrock leverages the [AWS.Tools.BedrockRuntime](https://docs.aws.amazon.com
 - **Custom Conversations:** Supports custom formats for conversations, allowing for tailored interactions.
 - **Context Control:** Maintain continuous and coherent interactions with models through effective context management.
 - **Image Generation:** Leverage powerful image generative capabilities to both create and transform images.
+- **Video Generation:** Leverage powerful video generative capabilities to create videos.
 - **Document Support:** Upload common document types directly to the model to provide context or generate summaries.
 - **Vision:**: Provide medial files directly to the model for context and evaluation.
 - **Cost Estimation:** Estimates the cost of your AI engagements, helping you keep a tab on model engagement.

@@ -67,6 +67,7 @@ function Reset-ModelContext {
             # 'cohere.command-light-text-v14',
             'cohere.command-r-v1:0',
             'cohere.command-r-plus-v1:0',
+            'deepseek.r1-v1:0',
             'luma.ray-v2:0',
             'meta.llama3-70b-instruct-v1:0',
             'meta.llama3-8b-instruct-v1:0',
@@ -130,6 +131,7 @@ function Reset-ModelContext {
                     if ($model -eq 'amazon.titan-text-express-v1' -or
                         $model -eq 'amazon.titan-text-lite-v1' -or
                         $model -eq 'amazon.titan-tg1-large' -or
+                        $model -eq 'deepseek.r1-v1:0' -or
                         $model -eq 'meta.llama3-8b-instruct-v1:0' -or
                         $model -eq 'meta.llama3-70b-instruct-v1:0' -or
                         $model -eq 'meta.llama3-1-8b-instruct-v1:0' -or

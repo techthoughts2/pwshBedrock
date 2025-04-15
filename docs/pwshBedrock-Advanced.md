@@ -670,3 +670,13 @@ $finalResponse = Invoke-MetaModel @invokeAmazonTextModelSplat
 $finalResponse
 #------------------------------------------------------------------------------------------------
 ```
+
+## Custom Message with DeepSeek Model
+
+The DeepSeek Model requires very specific formatting. If you want to send a custom crafted message rather than engaging the model over a series of conversations, you can send a contextaul custom message:
+
+```powershell
+# Sends a custom conversation message to the on-demand DeepSeek model in the specified AWS region and returns the response.
+$customMessage = "<｜begin_of_sentence｜><｜User｜>Explain zero-point energy.<｜Assistant｜>In what context?<｜end_of_sentence｜><｜User｜>As it related to quantum theory.<｜Assistant｜><｜end_of_sentence｜><｜Assistant｜>"
+Invoke-DeepSeekModel -CustomConversation $customMessage -ModelID deepseek.r1-v1:0 -Credential $Credential -Region 'us-west-2'
+```

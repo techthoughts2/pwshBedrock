@@ -173,6 +173,10 @@ InModuleScope 'pwshBedrock' {
                         }
                     }
                     [PSCustomObject]@{
+                        ModelId = 'deepseek.r1-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
                         ModelId = 'meta.llama3-70b-instruct-v1:0'
                         Context = 'test'
                     }

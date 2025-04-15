@@ -390,6 +390,20 @@ User: "Hi there!
                             }
                         )
                     }
+                    [PSCustomObject]@{
+                        ModelID = 'deepseek.r1-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Deepseek r1 v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
                     # [PSCustomObject]@{
                     #     ModelID = 'luma.ray-v2:0'
                     #     Context = @(

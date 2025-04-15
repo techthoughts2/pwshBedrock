@@ -214,6 +214,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'deepseek.r1-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId    = 'luma.ray-v2:0'
         ImageCount = 0
         ImageCost  = 0
@@ -477,6 +485,10 @@ $Global:pwshBedrockModelContext = @(
     [PSCustomObject]@{
         ModelId = 'cohere.command-r-plus-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'deepseek.r1-v1:0'
+        Context = ''
     }
     [PSCustomObject]@{
         ModelId = 'meta.llama3-70b-instruct-v1:0'
@@ -1279,6 +1291,37 @@ $script:cohereModelInfo = @(
         OutputTokenCost            = 0.0150
     }
 ) #cohereModelInfo
+
+#endregion
+
+#region DeepSeek
+
+$script:deepseekModelInfo = @(
+    [PSCustomObject]@{
+        ProviderName               = 'DeepSeek'
+        ModelName                  = 'DeepSeek R1'
+        ModelId                    = 'deepseek.r1-v1:0'
+        Description                = 'DeepSeek is a large language model that is designed to be fast, efficient, and easy to use.'
+        Strength                   = 'text generation, text classification, and text summarization.'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $false
+        SystemPrompt               = $true
+        ToolUse                    = $false
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 128000
+        MaxOutput                  = 32768
+        TrainingCutoff             = ''
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00135
+        OutputTokenCost            = 0.0054
+    }
+)
 
 #endregion
 
