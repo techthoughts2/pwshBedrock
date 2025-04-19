@@ -27,6 +27,13 @@ Get-ModelCostEstimate -ImageCount <Int32> [-Steps <Int32>] -ModelID <String>
  [<CommonParameters>]
 ```
 
+### Video
+
+```powershell
+Get-ModelCostEstimate -Duration <Int32> -ModelID <String>
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 
 This function estimates the cost of using a model based on the provided input and output token counts.
@@ -42,6 +49,22 @@ Get-ModelCostEstimate -InputTokenCount 1000 -OutputTokenCount 1000 -ModelID 'ant
 ```
 
 Estimates the cost of using the model 'anthropic.claude-3-sonnet-20240229-v1:0' with 1000 input tokens and 1000 output tokens.
+
+### EXAMPLE 2
+
+```powershell
+Get-ModelCostEstimate -ImageCount 5 -Steps 10 -ModelID 'amazon.titan-image-generator-v2:0'
+```
+
+Estimates the cost of using the model 'amazon.titan-image-generator-v2:0' with 5 images and 10 steps.
+
+### EXAMPLE 3
+
+```powershell
+Get-ModelCostEstimate -Duration 6 -ModelID 'amazon.nova-reel-v1:1'
+```
+
+Estimates the cost of using the model 'amazon.nova-reel-v1:1' with a duration of 6 seconds.
 
 ## PARAMETERS
 
@@ -103,6 +126,22 @@ Parameter Sets: Image
 Aliases:
 
 Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Duration
+
+Duration in seconds for video generation models.
+
+```yaml
+Type: Int32
+Parameter Sets: Video
+Aliases:
+
+Required: True
 Position: Named
 Default value: 0
 Accept pipeline input: False

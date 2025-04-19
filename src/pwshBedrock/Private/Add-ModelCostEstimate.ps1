@@ -16,6 +16,8 @@
     Image count returned by the API.
 .PARAMETER Steps
     Number of steps to run the image model for.
+.PARAMETER Duration
+    Duration in seconds for video generation models.
 .PARAMETER ModelID
     The unique identifier of the model.
 .OUTPUTS
@@ -23,6 +25,7 @@
 .NOTES
     Tally estimates are approximations. The actual cost may vary.
     * Note: Image models pass their image count and steps to the cost estimate function.
+    * Note: Video models (like amazon.nova-reel-v1:1) are charged based on duration in seconds.
 .COMPONENT
     pwshBedrock
 #>
@@ -53,6 +56,12 @@ function Add-ModelCostEstimate {
         [int]$Steps,
 
         [Parameter(Mandatory = $true,
+            HelpMessage = 'Duration in seconds for video generation models.',
+            ParameterSetName = 'Video')]
+        [ValidateRange(6, 120)]
+        [int]$Duration,
+
+        [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
             'ai21.jamba-instruct-v1:0',
@@ -62,7 +71,7 @@ function Add-ModelCostEstimate {
             'amazon.nova-lite-v1:0',
             'amazon.nova-micro-v1:0',
             'amazon.nova-canvas-v1:0',
-            'amazon.nova-reel-v1:0',
+            'amazon.nova-reel-v1:1',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',
@@ -340,6 +349,18 @@ function Add-ModelCostEstimate {
             $modelTally.ImageCount += $ImageCount
             $modelTally.ImageCost += $costInfo.ImageCost
         } #image
+        Video {
+            Write-Verbose -Message ('Adding video cost estimates for model {0} with duration {1} seconds' -f $ModelID, $Duration)
+
+            # Calculate cost based on duration in seconds
+            $costInfo = Get-ModelCostEstimate -Duration $Duration -ModelID $ModelID
+
+            Write-Debug -Message ($costInfo | Out-String)
+
+            $Global:pwshBedRockSessionCostEstimate += $costInfo.VideoCost
+            $modelTally.ImageCount += 1  # Still using ImageCount for tracking
+            $modelTally.ImageCost += $costInfo.VideoCost
+        } #video
     } #switch_parameterSetName
 
 } #Add-ModelCostEstimate

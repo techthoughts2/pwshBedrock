@@ -209,5 +209,29 @@ InModuleScope 'pwshBedrock' {
 
         } #context_custom_message
 
+        Context 'Video Generation' {
+            AfterEach {
+                Start-Sleep -Milliseconds 5500
+            }
+
+            It 'should return an invocation arn when provided a video prompt for <_.ModelId>' -Foreach ($script:amazonModelInfo | Where-Object { $_.Video -eq $true }) {
+                $ModelID = $_.ModelID
+                $invokeAmazonVideoModelSplat = @{
+                    VideoPrompt      = 'A cat playing with a ball'
+                    ModelID          = $ModelID
+                    S3OutputURI      = 's3://bedrockvideotestbucket/'
+                    Credential       = $awsCredential
+                    Region           = 'us-east-1'
+                    Verbose          = $false
+                }
+                $eval = Invoke-AmazonVideoModel @invokeAmazonVideoModelSplat
+                $eval | Should -BeOfType [System.Management.Automation.PSCustomObject]
+                $eval.InvocationArn | Should -BeLike 'arn:aws:bedrock*'
+                $eval.Message | Should -BeOfType [System.String]
+                Write-Verbose -Message $eval
+            } #it
+
+        } #context_video_generation
+
     } #describe
 } #inModule

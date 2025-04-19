@@ -48,7 +48,7 @@ function Reset-ModelContext {
             'amazon.nova-lite-v1:0',
             'amazon.nova-micro-v1:0',
             'amazon.nova-canvas-v1:0',
-            'amazon.nova-reel-v1:0',
+            'amazon.nova-reel-v1:1',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',
@@ -162,7 +162,7 @@ function Reset-ModelContext {
                             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
                             $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
                             $_.ModelId -ne 'amazon.nova-canvas-v1:0' -and
-                            $_.ModelId -ne 'amazon.nova-reel-v1:0' -and
+                            $_.ModelId -ne 'amazon.nova-reel-v1:1' -and
                             $_.ModelId -ne 'cohere.command-text-v14' -and
                             $_.ModelId -ne 'cohere.command-light-text-v14' -and
                             $_.ModelId -ne 'luma.ray-v2:0'

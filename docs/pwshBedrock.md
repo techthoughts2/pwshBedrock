@@ -2,7 +2,7 @@
 Module Name: pwshBedrock
 Module Guid: b4f9e4dc-0229-44ef-99a1-08be4c5e81f2
 Download Help Link: NA
-Help Version: 0.65.0
+Help Version: 0.70.0
 Locale: en-US
 ---
 
@@ -37,6 +37,9 @@ Sends message(s) to an Amazon Nova model on the Amazon Bedrock platform and retr
 
 ### [Invoke-AmazonTextModel](Invoke-AmazonTextModel.md)
 Sends message(s) to an Amazon Titan model on the Amazon Bedrock platform and retrieves the response.
+
+### [Invoke-AmazonVideoModel](Invoke-AmazonVideoModel.md)
+Sends messages to an Amazon Nova Reel model on the Amazon Bedrock platform to generate a video.
 
 ### [Invoke-AnthropicModel](Invoke-AnthropicModel.md)
 Sends message(s) or media files to an Anthropic model on the Amazon Bedrock platform and retrieves the response.

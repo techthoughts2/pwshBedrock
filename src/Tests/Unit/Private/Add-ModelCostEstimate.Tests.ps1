@@ -329,6 +329,19 @@ InModuleScope 'pwshBedrock' {
                 $eval.ImageCost | Should -BeGreaterThan 0
             } #it
 
+            It 'should update the tally for video model amazon.nova-reel-v1:1 using duration' {
+                $modelId = 'amazon.nova-reel-v1:1'
+                Mock -CommandName Get-ModelCostEstimate -MockWith {
+                    [PSCustomObject]@{
+                        VideoCost = 30
+                    }
+                } #endMock
+                Add-ModelCostEstimate -Duration 30 -ModelID $modelId
+                $eval = Get-ModelTally -ModelID $modelId
+                $eval.ImageCount | Should -BeGreaterThan 0  # Still using ImageCount for tracking videos
+                $eval.ImageCost | Should -BeGreaterThan 0   # Still using ImageCost for tracking video costs
+            } #it
+
         } #context_Success
 
     } #describe_Add-ModelCostEstimate

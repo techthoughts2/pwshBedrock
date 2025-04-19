@@ -12,7 +12,7 @@
     RootModule        = 'pwshBedrock.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.65.0'
+    ModuleVersion     = '0.70.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -96,6 +96,7 @@
         'Invoke-AmazonImageModel'
         'Invoke-AmazonNovaTextModel'
         'Invoke-AmazonTextModel'
+        'Invoke-AmazonVideoModel'
         'Invoke-AnthropicModel'
         'Invoke-CohereCommandModel'
         'Invoke-CohereCommandRModel'

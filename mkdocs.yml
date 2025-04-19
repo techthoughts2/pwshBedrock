@@ -97,6 +97,7 @@ nav:
       - Invoke-AI21LabsJambaModel: Invoke-AI21LabsJambaModel.md
       - Invoke-AmazonImageModel: Invoke-AmazonImageModel.md
       - Invoke-AmazonTextModel: Invoke-AmazonTextModel.md
+      - Invoke-AmazonVideoModel: Invoke-AmazonVideoModel.md
       - Invoke-AnthropicModel: Invoke-AnthropicModel.md
       - Invoke-CohereCommandModel: Invoke-CohereCommandModel.md
       - Invoke-CohereCommandRModel: Invoke-CohereCommandRModel.md
