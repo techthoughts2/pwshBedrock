@@ -52,7 +52,7 @@ function Reset-ModelTally {
             'amazon.nova-lite-v1:0',
             'amazon.nova-micro-v1:0',
             'amazon.nova-canvas-v1:0',
-            'amazon.nova-reel-v1:0',
+            'amazon.nova-reel-v1:1',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',

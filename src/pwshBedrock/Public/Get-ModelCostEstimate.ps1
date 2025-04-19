@@ -9,6 +9,14 @@
     Get-ModelCostEstimate -InputTokenCount 1000 -OutputTokenCount 1000 -ModelID 'anthropic.claude-3-sonnet-20240229-v1:0'
 
     Estimates the cost of using the model 'anthropic.claude-3-sonnet-20240229-v1:0' with 1000 input tokens and 1000 output tokens.
+.EXAMPLE
+    Get-ModelCostEstimate -ImageCount 5 -Steps 10 -ModelID 'amazon.titan-image-generator-v2:0'
+
+    Estimates the cost of using the model 'amazon.titan-image-generator-v2:0' with 5 images and 10 steps.
+.EXAMPLE
+    Get-ModelCostEstimate -Duration 6 -ModelID 'amazon.nova-reel-v1:1'
+
+    Estimates the cost of using the model 'amazon.nova-reel-v1:1' with a duration of 6 seconds.
 .PARAMETER InputTokenCount
     The number of input tokens.
 .PARAMETER OutputTokenCount
@@ -17,6 +25,8 @@
     Image count returned by the API.
 .PARAMETER Steps
     Number of steps to run the image model for.
+.PARAMETER Duration
+    Duration in seconds for video generation models.
 .PARAMETER ModelID
     The unique identifier of the model.
 .OUTPUTS
@@ -65,6 +75,12 @@ function Get-ModelCostEstimate {
         [int]$Steps,
 
         [Parameter(Mandatory = $true,
+            HelpMessage = 'Duration in seconds for video generation models.',
+            ParameterSetName = 'Video')]
+        [ValidateRange(6, 120)]
+        [int]$Duration,
+
+        [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
             'ai21.jamba-instruct-v1:0',
@@ -74,7 +90,7 @@ function Get-ModelCostEstimate {
             'amazon.nova-lite-v1:0',
             'amazon.nova-micro-v1:0',
             'amazon.nova-canvas-v1:0',
-            'amazon.nova-reel-v1:0',
+            'amazon.nova-reel-v1:1',
             'amazon.titan-image-generator-v1',
             'amazon.titan-image-generator-v2:0',
             'amazon.titan-text-express-v1',
@@ -188,6 +204,15 @@ function Get-ModelCostEstimate {
 
             $costObj = [PSCustomObject]@{
                 ImageCost = $imageCost
+            }
+        }
+        Video {
+            Write-Debug ('Calculating video cost. {0} seconds at {1} per second' -f $Duration, $modelInfo.ImageCost)
+            # For video models, the cost is per second of video
+            [float]$videoCost = ($Duration * $modelInfo.ImageCost)
+
+            $costObj = [PSCustomObject]@{
+                VideoCost = $videoCost
             }
         }
     } #switch_parameterSetName

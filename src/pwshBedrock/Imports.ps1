@@ -113,7 +113,7 @@ $Global:pwshBedRockSessionModelTally = @(
         ImageCost  = 0
     }
     [PSCustomObject]@{
-        ModelId    = 'amazon.nova-reel-v1:0'
+        ModelId    = 'amazon.nova-reel-v1:1'
         ImageCount = 0
         ImageCost  = 0
     }
@@ -435,7 +435,7 @@ $Global:pwshBedrockModelContext = @(
     #     Context = New-Object System.Collections.Generic.List[object]
     # }
     # [PSCustomObject]@{
-    #     ModelId = 'amazon.nova-reel-v1:0'
+    #     ModelId = 'amazon.nova-reel-v1:1'
     #     Context = New-Object System.Collections.Generic.List[object]
     # }
     [PSCustomObject]@{
@@ -1067,9 +1067,9 @@ This model is integrated with Amazon Bedrock Knowledge Base and Amazon Bedrock A
     [PSCustomObject]@{
         ProviderName               = 'Amazon'
         ModelName                  = 'Amazon Nova Reel'
-        ModelId                    = 'amazon.nova-reel-v1:0'
-        Description                = 'state-of-the-art video generation model that supports the generation of short videos from input text and images.'
-        Strength                   = 'camera motion controls using natural language inputs.'
+        ModelId                    = 'amazon.nova-reel-v1:1'
+        Description                = 'state-of-the-art video generation model that supports the generation of short and long video generation from input text and images.'
+        Strength                   = 'enables the generation of multi-shot videos up to 2-minutes in length and style consistency across shots'
         Multilingual               = $false
         Text                       = $false
         Image                      = $false

@@ -13,7 +13,7 @@ InModuleScope 'pwshBedrock' {
             $_.ModelId -ne 'amazon.titan-image-generator-v1' -and
             $_.ModelId -ne 'amazon.titan-image-generator-v2:0' -and
             $_.ModelId -ne 'amazon.nova-canvas-v1:0' -and
-            $_.ModelId -ne 'amazon.nova-reel-v1:0' -and
+            $_.ModelId -ne 'amazon.nova-reel-v1:1' -and
             $_.ModelId -ne 'cohere.command-text-v14' -and
             $_.ModelId -ne 'cohere.command-light-text-v14' -and
             $_.ModelId -ne 'luma.ray-v2:0'

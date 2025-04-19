@@ -193,6 +193,19 @@ InModuleScope 'pwshBedrock' {
                 $eval.ImageCost | Should -BeExactly $ExpectedCost.ImageCost
             } #it
 
+            It 'should return the expected video cost results for amazon.nova-reel-v1:1' {
+                $Duration = 30
+                $ModelID = 'amazon.nova-reel-v1:1'
+                # Get the model info to calculate expected cost
+                $modelInfo = $script:amazonModelInfo | Where-Object { $_.ModelID -eq $ModelID }
+                [float]$videoCost = $Duration * $modelInfo.ImageCost
+                $ExpectedCost = [PSCustomObject]@{
+                    VideoCost = $videoCost
+                }
+                $eval = Get-ModelCostEstimate -Duration $Duration -ModelID $ModelID
+                $eval.VideoCost | Should -BeExactly $ExpectedCost.VideoCost
+            } #it
+
         } #context_Success
 
     } #describe_Get-ModelCostEstimate

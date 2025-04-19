@@ -84,6 +84,18 @@ Invoke-AmazonTextModel -Message 'Explain zero-point energy.' -ModelID amazon.tit
 #------------------------------------------------------------------------------------------------
 ```
 
+##### Amazon Nova Reel models
+
+```powershell
+#------------------------------------------------------------------------------------------------
+# Sends messages to an Amazon Nova Reel model on the Amazon Bedrock platform to generate a video.
+Invoke-AmazonVideoModel -VideoPrompt 'Closeup of a large seashell in the sand, gentle waves flow around the shell. Camera zoom in.' -ModelID 'amazon.nova-reel-v1:1' -S3OutputURI 's3://mybucket' -Credential $awsCredential -Region 'us-east-1'
+#------------------------------------------------------------------------------------------------
+# Generates a video asynchronously using the Nova Reel AI model and stores the output in the specified S3 bucket. Downloads the video to the specified local path.
+Invoke-AmazonVideoModel -VideoPrompt 'A cat playing with a ball.' -ModelID 'amazon.nova-reel-v1:1' -S3OutputURI 's3://mybucket' -AttemptS3Download -LocalSavePath 'C:\temp\videos' -Credential $awsCredential -Region 'us-east-1'
+#------------------------------------------------------------------------------------------------
+```
+
 ##### Amazon Nova Text models
 
 ```powershell
