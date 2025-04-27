@@ -7,10 +7,16 @@
     Format-MistralAIChatModel -Role 'User' -Message 'Hello, how are you?' -ModelID 'mistral.mistral-large-2407-v1:0'
 
     This example formats a message to be sent to the Mistral AI model 'mistral.mistral-large-2407-v1:0'.
+.EXAMPLE
+    Format-MistralAIChatModel -Role 'User' -Message 'Describe this image:' -MediaPath 'C:\path\to\image.jpg' -ModelID 'mistral.pixtral-large-2502-v1:0'
+
+    This example formats a message with an image to be sent to the Mistral AI Pixtral model.
 .PARAMETER Role
     The role of the message sender.
 .PARAMETER Message
     The message to be sent to the model.
+.PARAMETER MediaPath
+    File path to local media file. Only supported by image-capable models like Pixtral.
 .PARAMETER ToolsResults
     A list of results from invoking tools recommended by the model in the previous chat turn.
 .PARAMETER ToolCalls
@@ -24,6 +30,7 @@
 .NOTES
     The model requires a specific format for the message. This function formats the message accordingly.
     This model uses object based updates to the context instead of a single string.
+    The Pixtral model requires a different message format that supports images.
 .COMPONENT
     pwshBedrock
 #>
@@ -41,6 +48,12 @@ function Format-MistralAIChatModel {
         [string]$Message,
 
         [Parameter(Mandatory = $false,
+            HelpMessage = 'File path to local media file. Only supported by image-capable models.')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$MediaPath,
+
+        [Parameter(Mandatory = $false,
             HelpMessage = 'A list of results from invoking tools recommended by the model in the previous chat turn.')]
         [ValidateNotNull()]
         [object]$ToolsResults,
@@ -53,8 +66,10 @@ function Format-MistralAIChatModel {
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
         [ValidateSet(
+            'mistral.mistral-small-2402-v1:0',
             'mistral.mistral-large-2402-v1:0',
-            'mistral.mistral-large-2407-v1:0'
+            'mistral.mistral-large-2407-v1:0',
+            'mistral.pixtral-large-2502-v1:0'
         )]
         [string]$ModelID,
 
@@ -76,10 +91,16 @@ function Format-MistralAIChatModel {
     }
     else {
         $firstMessage = $false
+    }    # Check if we're using a vision-capable model that requires special formatting
+
+    $isVisionModel = $ModelID -like '*pixtral*'
+    if ($isVisionModel) {
+        Write-Debug -Message 'Using vision model. Formatting message accordingly.'
     }
 
     switch ($Role) {
         'system' {
+            Write-Debug -Message 'Formatting system message.'
             if ($firstMessage -eq $true) {
                 $obj = [PSCustomObject]@{
                     role    = 'system'
@@ -104,23 +125,118 @@ function Format-MistralAIChatModel {
             }
         }
         'user' {
-            $obj = [PSCustomObject]@{
-                role    = 'user'
-                content = $Message
-            }
-        }
-        'assistant' {
-            if ($ToolCalls) {
+            Write-Debug -Message 'Formatting user message.'
+
+            if ($isVisionModel) {
+                Write-Debug -Message '....Vision model handling.'
+
+                # Vision model with content array
+                $contentArray = @()
+
+                # Add text message if provided
+                if ($Message) {
+                    $contentArray += [PSCustomObject]@{
+                        type = 'text'
+                        text = $Message
+                    }
+                }
+
+                # Add images if provided
+                if ($MediaPath) {
+                    Write-Debug -Message '....Adding media to message.'
+                    foreach ($media in $MediaPath) {
+                        # Reset variables
+                        $base64 = $null
+                        $mediaFileInfo = $null
+                        $extension = $null
+
+                        Write-Verbose -Message ('Converting media to base64: {0}' -f $media)
+                        try {
+                            $base64 = Convert-MediaToBase64 -MediaPath $media
+                        }
+                        catch {
+                            throw 'Unable to format Mistral message. Failed to convert media to base64.'
+                        }
+
+                        Write-Verbose -Message ('Getting file info for {0}' -f $media)
+                        try {
+                            $mediaFileInfo = Get-Item -Path $media -ErrorAction Stop
+                        }
+                        catch {
+                            throw 'Unable to format Mistral message. Failed to get media file info.'
+                        }
+
+                        if ($mediaFileInfo) {
+                            $extension = $mediaFileInfo.Extension.TrimStart('.')
+                            # special case
+                            if ($extension -eq 'jpg') {
+                                $extension = 'jpeg'
+                            }
+                            Write-Debug -Message ('Media extension: {0}' -f $extension)
+                        }
+                        else {
+                            throw 'Unable to format Mistral message. Media extension not found.'
+                        }
+
+                        $contentArray += [PSCustomObject]@{
+                            type      = 'image_url'
+                            image_url = [PSCustomObject]@{
+                                url = 'data:image/{0};base64,{1}' -f $extension, $base64
+                            }
+                        }
+                    }
+                }
+
                 $obj = [PSCustomObject]@{
-                    role       = 'assistant'
-                    content    = $Message
-                    tool_calls = $ToolCalls
+                    role    = 'user'
+                    content = $contentArray
                 }
             }
             else {
+                Write-Debug -Message '....Standard model handling.'
+                # Standard model handling
                 $obj = [PSCustomObject]@{
-                    role    = 'assistant'
+                    role    = 'user'
                     content = $Message
+                }
+            }
+        }
+        'assistant' {
+            if ($isVisionModel) {
+                if ($ToolCalls) {
+                    $obj = [PSCustomObject]@{
+                        role       = 'assistant'
+                        content    = @([PSCustomObject]@{
+                                type = 'text'
+                                text = $Message
+                            })
+                        tool_calls = $ToolCalls
+                    }
+                }
+                else {
+                    $obj = [PSCustomObject]@{
+                        role    = 'assistant'
+                        content = @([PSCustomObject]@{
+                                type = 'text'
+                                text = $Message
+                            })
+                    }
+                }
+            }
+            else {
+                # Standard model handling
+                if ($ToolCalls) {
+                    $obj = [PSCustomObject]@{
+                        role       = 'assistant'
+                        content    = $Message
+                        tool_calls = $ToolCalls
+                    }
+                }
+                else {
+                    $obj = [PSCustomObject]@{
+                        role    = 'assistant'
+                        content = $Message
+                    }
                 }
             }
         }

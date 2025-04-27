@@ -14,13 +14,20 @@ InModuleScope 'pwshBedrock' {
         BeforeAll {
             $WarningPreference = 'SilentlyContinue'
             $ErrorActionPreference = 'SilentlyContinue'
-
         } #beforeAll
 
         Context 'Error' {
 
             BeforeEach {
                 Reset-ModelContext -AllModels -Force
+
+                Mock -CommandName Get-Item -MockWith {
+                    [PSCustomObject]@{ Extension = '.jpg' }
+                } #endMock
+
+                Mock -CommandName Convert-MediaToBase64 -MockWith {
+                    'base64'
+                } #endMock
             } #beforeEach
 
             It 'should throw if an unsupported model is provided' {
@@ -37,6 +44,14 @@ InModuleScope 'pwshBedrock' {
 
             BeforeEach {
                 Reset-ModelContext -AllModels -Force
+
+                Mock -CommandName Get-Item -MockWith {
+                    [PSCustomObject]@{ Extension = '.jpg' }
+                } #endMock
+
+                Mock -CommandName Convert-MediaToBase64 -MockWith {
+                    'base64'
+                } #endMock
             } #beforeEach
 
             It 'should return a PSObject with the expected values for a standard message' {
@@ -171,6 +186,133 @@ InModuleScope 'pwshBedrock' {
                 $context | Should -BeNullOrEmpty
             } #it
 
+            # Pixtral model tests with NoContextPersist to avoid context accumulation
+            It 'should format a user message with text for Pixtral model' {
+                $formatMistralAIChatSplat = @{
+                    Role             = 'user'
+                    Message          = 'Describe this image:'
+                    ModelID          = 'mistral.pixtral-large-2502-v1:0'
+                    NoContextPersist = $true
+                }
+                $result = Format-MistralAIChatModel @formatMistralAIChatSplat
+                $result | Should -BeOfType 'System.Management.Automation.PSObject'
+                $result.role | Should -BeExactly 'user'
+                $result.content | Should -Not -BeNullOrEmpty
+                $result.content[0].type | Should -BeExactly 'text'
+                $result.content[0].text | Should -BeExactly 'Describe this image:'
+            } #it
+
+            It 'should format a user message with text and image for Pixtral model' {
+                $formatMistralAIChatSplat = @{
+                    Role             = 'user'
+                    Message          = 'Describe this image:'
+                    MediaPath        = @('C:\path\to\image.jpg')
+                    ModelID          = 'mistral.pixtral-large-2502-v1:0'
+                    NoContextPersist = $true
+                }
+                $result = Format-MistralAIChatModel @formatMistralAIChatSplat
+                $result | Should -BeOfType 'System.Management.Automation.PSObject'
+                $result.role | Should -BeExactly 'user'
+                $result.content | Should -Not -BeNullOrEmpty
+                $result.content[0].type | Should -BeExactly 'text'
+                $result.content[0].text | Should -BeExactly 'Describe this image:'
+                $result.content[1].type | Should -BeExactly 'image_url'
+                $result.content[1].image_url.url | Should -BeLike 'data:image/jpeg;base64,*'
+            } #it
+
+            It 'should format an assistant message for Pixtral model without tool calls' {
+                $formatMistralAIChatSplat = @{
+                    Role             = 'assistant'
+                    Message          = 'This is an image description'
+                    ModelID          = 'mistral.pixtral-large-2502-v1:0'
+                    NoContextPersist = $true
+                }
+                $result = Format-MistralAIChatModel @formatMistralAIChatSplat
+                $result | Should -BeOfType 'System.Management.Automation.PSObject'
+                $result.role | Should -BeExactly 'assistant'
+                $result.content | Should -Not -BeNullOrEmpty
+                $result.content[0].type | Should -BeExactly 'text'
+                $result.content[0].text | Should -BeExactly 'This is an image description'
+            } #it
+
+            It 'should format an assistant message for Pixtral model with tool calls' {
+                $formatMistralAIChatSplat = @{
+                    Role             = 'assistant'
+                    Message          = 'This is an image description'
+                    ModelID          = 'mistral.pixtral-large-2502-v1:0'
+                    ToolCalls        = @(
+                        [PSCustomObject]@{
+                            id       = 'toolCallId'
+                            function = @{
+                                name      = 'functionName'
+                                arguments = 'functionArgs'
+                            }
+                        }
+                    )
+                    NoContextPersist = $true
+                }
+                $result = Format-MistralAIChatModel @formatMistralAIChatSplat
+                $result | Should -BeOfType 'System.Management.Automation.PSObject'
+                $result.role | Should -BeExactly 'assistant'
+                $result.content | Should -Not -BeNullOrEmpty
+                $result.content[0].type | Should -BeExactly 'text'
+                $result.content[0].text | Should -BeExactly 'This is an image description'
+                $result.tool_calls | Should -Not -BeNullOrEmpty
+                $result.tool_calls[0].id | Should -BeExactly 'toolCallId'
+                $result.tool_calls[0].function.name | Should -BeExactly 'functionName'
+                $result.tool_calls[0].function.arguments | Should -BeExactly 'functionArgs'
+            } #it
+
+            It 'should throw when media conversion to base64 fails' {
+                # Override the mock to throw an exception
+                Mock -CommandName Convert-MediaToBase64 -MockWith { throw 'Conversion failed!' }
+
+                $formatMistralAIChatSplat = @{
+                    Role             = 'user'
+                    Message          = 'Describe this image:'
+                    MediaPath        = @('C:\path\to\image.jpg')
+                    ModelID          = 'mistral.pixtral-large-2502-v1:0'
+                    NoContextPersist = $true
+                }
+
+                { Format-MistralAIChatModel @formatMistralAIChatSplat } |
+                    Should -Throw 'Unable to format Mistral message. Failed to convert media to base64.'
+            } #it
+
+            It 'should throw when getting media file info fails' {
+                # Restore normal conversion mock
+                Mock -CommandName Convert-MediaToBase64 -MockWith { 'base64' }
+
+                # Make Get-Item throw an exception
+                Mock -CommandName Get-Item -MockWith { throw 'File not found!' }
+
+                $formatMistralAIChatSplat = @{
+                    Role             = 'user'
+                    Message          = 'Describe this image:'
+                    MediaPath        = @('C:\path\to\image.jpg')
+                    ModelID          = 'mistral.pixtral-large-2502-v1:0'
+                    NoContextPersist = $true
+                }
+
+                { Format-MistralAIChatModel @formatMistralAIChatSplat } |
+                    Should -Throw 'Unable to format Mistral message. Failed to get media file info.'
+            } #it
+
+            It 'should throw when media extension is not found' {
+                # Return null from Get-Item to trigger the extension not found error
+                Mock -CommandName Get-Item -MockWith { $null }
+
+                $formatMistralAIChatSplat = @{
+                    Role             = 'user'
+                    Message          = 'Describe this image:'
+                    MediaPath        = @('C:\path\to\image.jpg')
+                    ModelID          = 'mistral.pixtral-large-2502-v1:0'
+                    NoContextPersist = $true
+                }
+
+                { Format-MistralAIChatModel @formatMistralAIChatSplat } |
+                    Should -Throw 'Unable to format Mistral message. Media extension not found.'
+            } #it
         } #context_Success
 
     } #describe_Format-MistralAIChatModel

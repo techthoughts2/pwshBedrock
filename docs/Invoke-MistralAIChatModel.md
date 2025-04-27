@@ -16,19 +16,20 @@ Sends message(s) to the Mistral AI chat model on the Amazon Bedrock platform and
 ### CombinedSet
 
 ```powershell
-Invoke-MistralAIChatModel -Message <String> -SystemPrompt <String> -ModelID <String> [-ReturnFullObject]
- [-NoContextPersist] [-Tools <PSObject[]>] [-ToolChoice <String>] [-MaxTokens <Int32>] [-Temperature <Single>]
- [-TopP <Single>] [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
- [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
- [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+Invoke-MistralAIChatModel -Message <String> [-MediaPath <String[]>] -SystemPrompt <String> -ModelID <String>
+ [-ReturnFullObject] [-NoContextPersist] [-Tools <PSObject[]>] [-ToolChoice <String>] [-MaxTokens <Int32>]
+ [-Temperature <Single>] [-TopP <Single>] [-AccessKey <String>] [-Credential <AWSCredentials>]
+ [-EndpointUrl <String>] [-NetworkCredential <PSCredential>] [-ProfileLocation <String>]
+ [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>] [-SessionToken <String>]
+ [<CommonParameters>]
 ```
 
 ### MessageSet
 
 ```powershell
-Invoke-MistralAIChatModel -Message <String> -ModelID <String> [-ReturnFullObject] [-NoContextPersist]
- [-Tools <PSObject[]>] [-ToolChoice <String>] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>]
- [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+Invoke-MistralAIChatModel -Message <String> [-MediaPath <String[]>] -ModelID <String> [-ReturnFullObject]
+ [-NoContextPersist] [-Tools <PSObject[]>] [-ToolChoice <String>] [-MaxTokens <Int32>] [-Temperature <Single>]
+ [-TopP <Single>] [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
  [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
  [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
@@ -87,6 +88,21 @@ Sends a chat message to the on-demand Mistral AI chat model in the specified AWS
 
 ```powershell
 $invokeMistralAIChatModelSplat = @{
+    Message    = 'What can you tell me about this picture? Is it referencing something?'
+    MediaPath  = 'C:\images\tanagra.jpg'
+    ModelID    = 'mistral.pixtral-large-2502-v1:0'
+    Credential = $awsCredential
+    Region     = 'us-west-2'
+}
+Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
+```
+
+Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region with a media file.
+
+### EXAMPLE 4
+
+```powershell
+$invokeMistralAIChatModelSplat = @{
     SystemPrompt     = 'You are a Star Trek trivia expert.'
     Message          = 'How much does Lt. Commander Data weigh?'
     Tools            = $starTrekTriviaFunctionTool
@@ -102,7 +118,7 @@ $result = Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
 
 Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region with a system prompt and tool function call.
 
-### EXAMPLE 4
+### EXAMPLE 5
 
 ```powershell
 $invokeMistralAIChatModelSplat = @{
@@ -129,6 +145,23 @@ Parameter Sets: CombinedSet, MessageSet
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MediaPath
+
+File path to local media file.
+Only supported by image-capable models.
+
+```yaml
+Type: String[]
+Parameter Sets: CombinedSet, MessageSet
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -489,3 +522,5 @@ This was incredibly hard to make.
 [https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-mistral-chat-completion.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-mistral-chat-completion.html)
 
 [https://docs.mistral.ai/capabilities/function_calling/](https://docs.mistral.ai/capabilities/function_calling/)
+
+[https://docs.mistral.ai/capabilities/vision/](https://docs.mistral.ai/capabilities/vision/)

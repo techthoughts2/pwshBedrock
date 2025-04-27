@@ -346,6 +346,66 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Write-Warning -Exactly 1
             } #it
 
+            It 'should throw if a model is specified that does not support vision and media is provided' {
+                $modelInfo = @{
+                    ModelId = 'mistral.mistral-large-2402-v1:0'
+                    Vision = $false
+                }
+                $script:mistralAIModelInfo = @($modelInfo)
+                Mock -CommandName Write-Warning {}
+                {
+                    $invokeMistralAIChatModelSplat = @{
+                        Message   = 'What is in this image?'
+                        MediaPath = @('C:\path\to\image.jpg')
+                        ModelID   = 'mistral.mistral-large-2402-v1:0'
+                        AccessKey = 'ak'
+                        SecretKey = 'sk'
+                        Region    = 'us-west-2'
+                    }
+                    Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
+                } | Should -Throw -ExpectedMessage 'Vision is not supported for this model.'
+                Should -Invoke Write-Warning -Times 1 -Exactly
+            } #it
+
+            It 'should throw if too many media paths are provided' {
+                $modelInfo = @{
+                    ModelId = 'mistral.pixtral-large-2502-v1:0'
+                    Vision = $true
+                }
+                $script:mistralAIModelInfo = @($modelInfo)
+                {
+                    $invokeMistralAIChatModelSplat = @{
+                        Message   = 'What is in these images?'
+                        MediaPath = @('img1.jpg', 'img2.jpg', 'img3.jpg', 'img4.jpg', 'img5.jpg', 'img6.jpg', 'img7.jpg', 'img8.jpg', 'img9.jpg')
+                        ModelID   = 'mistral.pixtral-large-2502-v1:0'
+                        AccessKey = 'ak'
+                        SecretKey = 'sk'
+                        Region    = 'us-west-2'
+                    }
+                    Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
+                } | Should -Throw -ExpectedMessage 'You provided 9 media files. You can only provide up to 8 media files.'
+            } #it
+
+            It 'should throw if media is provided that is not supported by the model' {
+                $modelInfo = @{
+                    ModelId = 'mistral.pixtral-large-2502-v1:0'
+                    Vision = $true
+                }
+                $script:mistralAIModelInfo = @($modelInfo)
+                Mock -CommandName Test-MistralMedia -MockWith { $false }
+                {
+                    $invokeMistralAIChatModelSplat = @{
+                        Message   = 'What is in this image?'
+                        MediaPath = @('C:\path\to\unsupported.xyz')
+                        ModelID   = 'mistral.pixtral-large-2502-v1:0'
+                        AccessKey = 'ak'
+                        SecretKey = 'sk'
+                        Region    = 'us-west-2'
+                    }
+                    Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
+                } | Should -Throw -ExpectedMessage 'Media test for C:\path\to\unsupported.xyz failed.'
+            } #it
+
         } #context_Error
 
         Context 'Success' {
@@ -370,24 +430,6 @@ InModuleScope 'pwshBedrock' {
                     function = @{
                         name        = 'star_trek_trivia_lookup'
                         description = 'This tool will look up the answers to a Star Trek trivia question.'
-                        parameters  = @{
-                            type       = 'object'
-                            properties = @{
-                                character = @{
-                                    type        = 'string'
-                                    description = 'The Star Trek character to look up.'
-                                }
-                                series    = @{
-                                    type        = 'string'
-                                    description = 'The Star Trek series to look up.'
-                                }
-                                question  = @{
-                                    type        = 'string'
-                                    description = 'The Star Trek trivia question to look up.'
-                                }
-                            }
-                            required   = @('character', 'series', 'question')
-                        }
                     }
                 }
                 Mock -CommandName Format-MistralAIChatModel -MockWith {
@@ -404,6 +446,7 @@ InModuleScope 'pwshBedrock' {
                 } #endMock
                 Mock -CommandName Test-MistralAIChatTool -MockWith { $true }
                 Mock -CommandName Test-MistralAIChatToolResult -MockWith { $true }
+                Mock -CommandName Test-MistralMedia -MockWith { $true }
 
                 $response = [Amazon.BedrockRuntime.Model.InvokeModelResponse]::new()
                 $response.ContentType = 'application/json'
@@ -455,6 +498,18 @@ InModuleScope 'pwshBedrock' {
 '@
                 } #endMock
                 Mock Add-ModelCostEstimate -MockWith { }
+
+                # Setup model info for MediaPath tests
+                $script:mistralAIModelInfo = @(
+                    @{
+                        ModelId = 'mistral.mistral-large-2402-v1:0'
+                        Vision = $false
+                    },
+                    @{
+                        ModelId = 'mistral.pixtral-large-2502-v1:0'
+                        Vision = $true
+                    }
+                )
             } #beforeEach
 
             It 'should return just a message if successful' {
@@ -468,6 +523,53 @@ InModuleScope 'pwshBedrock' {
                 $result = Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
                 $result | Should -BeOfType [System.String]
                 $result | Should -BeExactly 'Captain Picard.'
+            } #it
+
+            It 'should successfully process a media message for a vision-capable model' {
+                $invokeMistralAIChatModelSplat = @{
+                    Message   = 'Describe what you see in this image.'
+                    MediaPath = @('C:\path\to\image.jpg')
+                    ModelID   = 'mistral.pixtral-large-2502-v1:0'
+                    AccessKey = 'ak'
+                    SecretKey = 'sk'
+                    Region    = 'us-west-2'
+                }
+                $result = Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
+                $result | Should -BeOfType [System.String]
+                $result | Should -BeExactly 'Captain Picard.'
+
+                # Verify the MediaPath was passed to Format-MistralAIChatModel
+                Should -Invoke Format-MistralAIChatModel -ParameterFilter {
+                    $MediaPath -contains 'C:\path\to\image.jpg'
+                } -Times 1 -Exactly
+
+                # Verify Test-MistralMedia was called for validation
+                Should -Invoke Test-MistralMedia -ParameterFilter {
+                    $MediaPath -eq 'C:\path\to\image.jpg'
+                } -Times 1 -Exactly
+            } #it
+
+            It 'should properly handle multiple media files' {
+                $invokeMistralAIChatModelSplat = @{
+                    Message   = 'Compare these images.'
+                    MediaPath = @('C:\path\to\image1.jpg', 'C:\path\to\image2.jpg')
+                    ModelID   = 'mistral.pixtral-large-2502-v1:0'
+                    AccessKey = 'ak'
+                    SecretKey = 'sk'
+                    Region    = 'us-west-2'
+                }
+                $result = Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
+                $result | Should -BeOfType [System.String]
+                $result | Should -BeExactly 'Captain Picard.'
+
+                # Verify the MediaPath was passed to Format-MistralAIChatModel with all images
+                Should -Invoke Format-MistralAIChatModel -ParameterFilter {
+                    ($MediaPath -contains 'C:\path\to\image1.jpg') -and
+                    ($MediaPath -contains 'C:\path\to\image2.jpg')
+                } -Times 1 -Exactly
+
+                # Verify Test-MistralMedia was called for each image
+                Should -Invoke Test-MistralMedia -Times 2 -Exactly
             } #it
 
             It 'should return the full object if ReturnFullObject is provided' {

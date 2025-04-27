@@ -20,6 +20,17 @@
     Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region and returns the full response object.
 .EXAMPLE
     $invokeMistralAIChatModelSplat = @{
+        Message    = 'What can you tell me about this picture? Is it referencing something?'
+        MediaPath  = 'C:\images\tanagra.jpg'
+        ModelID    = 'mistral.pixtral-large-2502-v1:0'
+        Credential = $awsCredential
+        Region     = 'us-west-2'
+    }
+    Invoke-MistralAIChatModel @invokeMistralAIChatModelSplat
+
+    Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region with a media file.
+.EXAMPLE
+    $invokeMistralAIChatModelSplat = @{
         SystemPrompt     = 'You are a Star Trek trivia expert.'
         Message          = 'How much does Lt. Commander Data weigh?'
         Tools            = $starTrekTriviaFunctionTool
@@ -46,6 +57,8 @@
     Sends a chat message to the on-demand Mistral AI chat model in the specified AWS region with tool results from a previous chat turn.
 .PARAMETER Message
     The message to be sent to the model.
+.PARAMETER MediaPath
+    File path to local media file. Only supported by image-capable models.
 .PARAMETER SystemPrompt
     Sets the behavior and context for the model in the conversation.
 .PARAMETER ToolsResults
@@ -108,29 +121,46 @@
     https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-mistral-chat-completion.html
 .LINK
     https://docs.mistral.ai/capabilities/function_calling/
+.LINK
+    https://docs.mistral.ai/capabilities/vision/
 #>
 function Invoke-MistralAIChatModel {
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUsePSCredentialType', '',
         Justification = 'Suppressed to support AWS credential parameter.')]
     param (
-        [Parameter(Mandatory = $true, ParameterSetName = 'MessageSet',
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'MessageSet',
             HelpMessage = 'The message to be sent to the model.')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'CombinedSet',
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'CombinedSet',
             HelpMessage = 'The message to be sent to the model.')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'SystemPromptSet',
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'MessageSet',
+            HelpMessage = 'File path to local media file. Only supported by image-capable models.')]
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'CombinedSet',
+            HelpMessage = 'File path to local media file. Only supported by image-capable models.')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$MediaPath,
+
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'SystemPromptSet',
             HelpMessage = 'Sets the behavior and context for the model in the conversation.')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'CombinedSet',
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'CombinedSet',
             HelpMessage = 'Sets the behavior and context for the model in the conversation.')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string]$SystemPrompt,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'ToolsResultsSet',
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'ToolsResultsSet',
             HelpMessage = 'A list of results from invoking tools recommended by the model in the previous chat turn.')]
         [ValidateNotNull()]
         [PSCustomObject[]]$ToolsResults,
@@ -140,7 +170,8 @@ function Invoke-MistralAIChatModel {
         [ValidateSet(
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-small-2402-v1:0',
-            'mistral.mistral-large-2407-v1:0'
+            'mistral.mistral-large-2407-v1:0',
+            'mistral.pixtral-large-2502-v1:0'
         )]
         [string]$ModelID,
 
@@ -247,6 +278,25 @@ function Invoke-MistralAIChatModel {
                 ModelID          = $ModelID
                 NoContextPersist = $NoContextPersist
             }
+            if ($MediaPath) {
+                Write-Verbose -Message 'Vision message with media path provided.'
+                if ($modelInfo.Vision -ne $true) {
+                    Write-Warning -Message ('You provided a media path for model {0}. Vision is not supported for this model.' -f $ModelID)
+                    throw 'Vision is not supported for this model.'
+                }
+
+                if ($MediaPath.Count -gt 8) {
+                    throw ('You provided {0} media files. You can only provide up to 8 media files.' -f $MediaPath.Count)
+                }
+
+                foreach ($media in $MediaPath) {
+                    if (-not (Test-MistralMedia -MediaPath $media)) {
+                        throw ('Media test for {0} failed.' -f $media)
+                    }
+                }
+
+                $formatMistralAIChatSplat.Add('MediaPath', $MediaPath)
+            }
             $formattedUserMessage = Format-MistralAIChatModel @formatMistralAIChatSplat
         }
     }
@@ -272,9 +322,13 @@ function Invoke-MistralAIChatModel {
     if ($NoContextPersist -eq $true) {
         $formattedMessages = @(
             $formattedUserMessage
-            $formattedSystemMessage
-            $formattedToolsResults
         )
+        if ($formattedSystemMessage) {
+            $formattedMessages += $formattedSystemMessage
+        }
+        if ($formattedToolsResults) {
+            $formattedMessages += $formattedToolsResults
+        }
     }
     else {
         $formattedMessages = Get-ModelContext -ModelID $ModelID

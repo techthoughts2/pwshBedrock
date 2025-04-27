@@ -229,6 +229,10 @@ InModuleScope 'pwshBedrock' {
                         Context = 'test'
                     }
                     [PSCustomObject]@{
+                        ModelId = 'mistral.pixtral-large-2502-v1:0'
+                        Context = 'test'
+                    }
+                    [PSCustomObject]@{
                         ModelId = 'mistral.mistral-small-2402-v1:0'
                         Context = 'test'
                     }
