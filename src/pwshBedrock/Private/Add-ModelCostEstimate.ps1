@@ -105,6 +105,7 @@ function Add-ModelCostEstimate {
             'mistral.mistral-7b-instruct-v0:2',
             'mistral.mistral-large-2402-v1:0',
             'mistral.mistral-large-2407-v1:0',
+            'mistral.pixtral-large-2502-v1:0',
             'mistral.mistral-small-2402-v1:0',
             'mistral.mixtral-8x7b-instruct-v0:1',
             'stability.stable-diffusion-xl-v1',
@@ -312,9 +313,37 @@ function Add-ModelCostEstimate {
                             $outputTokenCount = Get-TokenCountEstimate -Text $Usage.outputs.text
                         }
                     }
+                    'mistral.pixtral-large-2502-v1:0' {
+                        # this model can return different results depending on the calling API used
+                        if ($Usage.choices.message.role -is [string]) {
+                            $inputTokenCount = Get-TokenCountEstimate -Text $Message
+                            if ($Usage.choices.stop_reason -eq 'tool_calls') {
+                                $outputTokenCount = Get-TokenCountEstimate -Text $Usage.choices.message.tool_calls.function.arguments
+                            }
+                            else {
+                                $outputTokenCount = Get-TokenCountEstimate -Text $Usage.choices.message.content
+                            }
+                        }
+                        else {
+                            $inputTokenCount = Get-TokenCountEstimate -Text $Message
+                            $outputTokenCount = Get-TokenCountEstimate -Text $Usage.outputs.text
+                        }
+                    }
                     'mistral.mistral-small-2402-v1:0' {
-                        $inputTokenCount = Get-TokenCountEstimate -Text $Message
-                        $outputTokenCount = Get-TokenCountEstimate -Text $Usage.outputs.text
+                        # this model can return different results depending on the calling API used
+                        if ($Usage.choices.message.role -is [string]) {
+                            $inputTokenCount = Get-TokenCountEstimate -Text $Message
+                            if ($Usage.choices.stop_reason -eq 'tool_calls') {
+                                $outputTokenCount = Get-TokenCountEstimate -Text $Usage.choices.message.tool_calls.function.arguments
+                            }
+                            else {
+                                $outputTokenCount = Get-TokenCountEstimate -Text $Usage.choices.message.content
+                            }
+                        }
+                        else {
+                            $inputTokenCount = Get-TokenCountEstimate -Text $Message
+                            $outputTokenCount = Get-TokenCountEstimate -Text $Usage.outputs.text
+                        }
                     }
                     'mistral.mixtral-8x7b-instruct-v0:1' {
                         $inputTokenCount = Get-TokenCountEstimate -Text $Message

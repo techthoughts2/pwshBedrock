@@ -331,6 +331,14 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'mistral.pixtral-large-2502-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'mistral.mistral-small-2402-v1:0'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -544,6 +552,10 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'mistral.mistral-large-2407-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'mistral.pixtral-large-2502-v1:0'
         Context = ''
     }
     [PSCustomObject]@{
@@ -1738,6 +1750,30 @@ $script:mistralAIModelInfo = @(
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
         InferenceProfile           = $false
+        ContextWindow              = 128000
+        MaxOutput                  = 8192
+        TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation
+        PayloadLimit               = ''
+        InputTokenCost             = 0.002
+        OutputTokenCost            = 0.006
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Mistral AI'
+        ModelName                  = 'Pixtral Large'
+        ModelId                    = 'mistral.pixtral-large-2502-v1:0'
+        Description                = 'frontier-class performance across document analysis, chart interpretation, and natural image understanding tasks, while maintaining the advanced text capabilities of Mistral Large 2.'
+        Strength                   = 'multilingual translation, text summarization, complex multilingual reasoning tasks, State-of-the-art on MathVista, DocVQA, VQAv2'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
         ContextWindow              = 128000
         MaxOutput                  = 8192
         TrainingCutoff             = 'UNKNOWN' # ! Could not find this information in the documentation

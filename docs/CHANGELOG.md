@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.75.0]
+
+- Module changes:
+    - Mistral AI
+        - `Invoke-MistralAIChatModel.ps1`
+            - Added support for new model: `mistral.pixtral-large-2502-v1:0`
+                - Added new `MediaPath` parameter as this new model supports vision
+            - Fixed bug where `mistral.mistral-small-2402-v1:0` was not functioning properly.
+
 ## [0.70.0]
 
 - Module changes:

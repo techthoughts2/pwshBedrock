@@ -9,7 +9,8 @@ BeforeDiscovery {
 }
 
 InModuleScope 'pwshBedrock' {
-    $mistralAIModels = (Get-ModelInfo -Provider 'Mistral AI').ModelID
+    $rawMistralAIModels = Get-ModelInfo -Provider 'Mistral AI'
+    $mistralAIModels = ($rawMistralAIModels | Where-Object { $_.Vision -eq $false }).ModelID
     Describe 'Format-MistralAITextMessage Private Function Tests' -Tag Unit {
         BeforeAll {
             $WarningPreference = 'SilentlyContinue'
