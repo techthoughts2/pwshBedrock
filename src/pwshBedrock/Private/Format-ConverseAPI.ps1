@@ -31,8 +31,8 @@
     The role of the message sender.
 .PARAMETER Message
     The message to be sent to the model.
-.PARAMETER MediaPath
-    File path to local media file.
+.PARAMETER ImagePath
+    File path to local image file.
 .PARAMETER DocumentPath
     File path to local document.
 .PARAMETER ToolsResults
@@ -79,10 +79,10 @@ function Format-ConverseAPI {
         [string]$Message,
 
         [Parameter(Mandatory = $false,
-            HelpMessage = 'File path to local media file.')]
+            HelpMessage = 'File path to local image file.')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
-        [string[]]$MediaPath,
+        [string[]]$ImagePath,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'File path to local document.')]
@@ -145,13 +145,13 @@ function Format-ConverseAPI {
 
                 $messageObj.Content = $messageContentBlock
             }
-            elseif ($MediaPath) {
+            elseif ($ImagePath) {
                 Write-Verbose -Message 'Formatting vision message'
 
                 $messageObj = [Amazon.BedrockRuntime.Model.Message]::new()
                 $messageObj.Role = 'user'
 
-                foreach ($media in $MediaPath) {
+                foreach ($media in $ImagePath) {
                     #____________________
                     # resets
                     $memoryStream = $null

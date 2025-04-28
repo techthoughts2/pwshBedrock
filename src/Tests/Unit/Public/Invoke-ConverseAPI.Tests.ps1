@@ -97,7 +97,7 @@ InModuleScope 'pwshBedrock' {
                         content = $messageObj
                     }
                 } #endMock
-                Mock -CommandName Test-ConverseAPIMedia -MockWith { $true }
+                Mock -CommandName Test-ConverseAPIImage -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIDocument -MockWith { $true }
                 Mock -CommandName Test-ConverseAPITool -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIToolResult -MockWith { $true }
@@ -214,11 +214,11 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
-            It 'should throw if a MediaPath is provided for a model that does not support vision' {
+            It 'should throw if a ImagePath is provided for a model that does not support vision' {
                 {
                     $invokeConverseAPISplat = @{
                         Message     = 'Make it so.'
-                        MediaPath   = 'C:\Users\user\Documents\image.jpg'
+                        ImagePath   = 'C:\Users\user\Documents\image.jpg'
                         ModelID     = 'meta.llama3-2-1b-instruct-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
@@ -227,15 +227,15 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
-            It 'should throw if more than 20 MediaPaths are provided' {
-                $mediaPaths = @()
+            It 'should throw if more than 20 ImagePaths are provided' {
+                $ImagePaths = @()
                 for ($i = 0; $i -lt 21; $i++) {
-                    $mediaPaths += "C:\Users\user\Documents\image$i.jpg"
+                    $ImagePaths += "C:\Users\user\Documents\image$i.jpg"
                 }
                 {
                     $invokeConverseAPISplat = @{
                         Message     = 'Make it so.'
-                        MediaPath   = $mediaPaths
+                        ImagePath   = $ImagePaths
                         ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
@@ -244,12 +244,12 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
-            It 'should throw if MediaPath is provided and it does not pass validation' {
-                Mock -CommandName Test-ConverseAPIMedia -MockWith { $false }
+            It 'should throw if ImagePath is provided and it does not pass validation' {
+                Mock -CommandName Test-ConverseAPIImage -MockWith { $false }
                 {
                     $invokeConverseAPISplat = @{
                         Message     = 'Make it so.'
-                        MediaPath   = 'C:\Users\user\Documents\image.jpg'
+                        ImagePath   = 'C:\Users\user\Documents\image.jpg'
                         ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
@@ -302,7 +302,7 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
-            It 'should throw if neither a Message, MediaPath, or DocumentPath is provided' {
+            It 'should throw if neither a Message, ImagePath, or DocumentPath is provided' {
                 {
                     $invokeConverseAPISplat = @{
                         ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
@@ -497,7 +497,7 @@ InModuleScope 'pwshBedrock' {
                         content = $messageObj
                     }
                 } #endMock
-                Mock -CommandName Test-ConverseAPIMedia -MockWith { $true }
+                Mock -CommandName Test-ConverseAPIImage -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIDocument -MockWith { $true }
                 Mock -CommandName Test-ConverseAPITool -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIToolResult -MockWith { $true }
@@ -626,7 +626,7 @@ InModuleScope 'pwshBedrock' {
                     Region    = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
@@ -640,14 +640,14 @@ InModuleScope 'pwshBedrock' {
             It 'should run all expected subcommands when media file is provided' {
                 $invokeConverseAPISplat = @{
                     Message   = 'Make it so.'
-                    MediaPath = 'C:\Users\user\Documents\image.jpg'
+                    ImagePath = 'C:\Users\user\Documents\image.jpg'
                     ModelID   = 'anthropic.claude-3-sonnet-20240229-v1:0'
                     AccessKey = 'ak'
                     SecretKey = 'sk'
                     Region    = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 1 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
@@ -668,7 +668,7 @@ InModuleScope 'pwshBedrock' {
                     Region       = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
@@ -690,7 +690,7 @@ InModuleScope 'pwshBedrock' {
                     Region     = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
@@ -711,7 +711,7 @@ InModuleScope 'pwshBedrock' {
                     Region       = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 1 -Scope It

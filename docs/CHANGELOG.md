@@ -5,9 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.80.0]
+## [0.80.0] - **BREAKING CHANGES**
 
 - Module changes:
+    - Converse
+        - `Invoke-ConverseAPI` parameter `MediaPath` renamed to `ImagePath` - ***Breaking Change***
     - Updated model pricing to latest published model prices
 
 ## [0.75.0]

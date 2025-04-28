@@ -16,7 +16,7 @@ Sends messages, media, or documents to a model via the Converse API and returns 
 ### MessageSet (Default)
 
 ```powershell
-Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-MediaPath <String[]>] [-DocumentPath <String[]>]
+Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-ImagePath <String[]>] [-DocumentPath <String[]>]
  [-ReturnFullObject] [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>]
  [-Temperature <Single>] [-TopP <Single>] [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>]
  [-ToolName <String>] [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
@@ -122,7 +122,7 @@ Additional parameters are provided to control the response generation.
 ```powershell
 $invokeConverseAPISplat = @{
     Message          = 'Please describe the painting in the attached image.'
-    MediaPath        = $pathToMediaFile
+    ImagePath        = $pathToImageFile
     ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
     ReturnFullObject = $true
     Credential       = $awsCredential
@@ -131,8 +131,8 @@ $invokeConverseAPISplat = @{
 Invoke-ConverseAPI @invokeConverseAPISplat
 ```
 
-Sends a media vision message to the on-demand specified model via the Converse API.
-The model will describe the image in the media file.
+Sends an image vision message to the on-demand specified model via the Converse API.
+The model will describe the image in the image file.
 
 ### EXAMPLE 7
 
@@ -261,11 +261,11 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -MediaPath
+### -ImagePath
 
-File path to local media file.
-Up to 20 media files can be sent in a single request.
-The media files must adhere to the model's media requirements.
+File path to local image file.
+Up to 20 image files can be sent in a single request.
+The image files must adhere to the model's image requirements.
 
 ```yaml
 Type: String[]

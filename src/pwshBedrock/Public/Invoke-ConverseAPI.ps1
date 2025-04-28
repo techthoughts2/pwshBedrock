@@ -53,7 +53,7 @@
 .EXAMPLE
     $invokeConverseAPISplat = @{
         Message          = 'Please describe the painting in the attached image.'
-        MediaPath        = $pathToMediaFile
+        ImagePath        = $pathToImageFile
         ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
         ReturnFullObject = $true
         Credential       = $awsCredential
@@ -61,7 +61,7 @@
     }
     Invoke-ConverseAPI @invokeConverseAPISplat
 
-    Sends a media vision message to the on-demand specified model via the Converse API. The model will describe the image in the media file.
+    Sends an image vision message to the on-demand specified model via the Converse API. The model will describe the image in the image file.
 .EXAMPLE
     $invokeConverseAPISplat = @{
         Message          = 'Provide a one sentence summary of the document.'
@@ -144,9 +144,9 @@
     The unique identifier of the model.
 .PARAMETER Message
     The message to be sent to the model.
-.PARAMETER MediaPath
-    File path to local media file.
-    Up to 20 media files can be sent in a single request. The media files must adhere to the model's media requirements.
+.PARAMETER ImagePath
+    File path to local image file.
+    Up to 20 image files can be sent in a single request. The image files must adhere to the model's image requirements.
 .PARAMETER DocumentPath
     File path to local document.
     You can include up to five documents. The document(s) must adhere to the model's document requirements.
@@ -307,13 +307,12 @@ function Invoke-ConverseAPI {
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
-
         [Parameter(Mandatory = $false,
-            HelpMessage = 'File path to local media file.',
+            HelpMessage = 'File path to local image file.',
             ParameterSetName = 'MessageSet')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
-        [string[]]$MediaPath,
+        [string[]]$ImagePath,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'File path to local document.',
@@ -471,29 +470,29 @@ function Invoke-ConverseAPI {
     Write-Debug -Message ('Parameter Set: {0}' -f $PSCmdlet.ParameterSetName)
     if ($PSCmdlet.ParameterSetName -eq 'MessageSet') {
 
-        if ($MediaPath) {
-            Write-Debug -Message 'Media path provided.'
+        if ($ImagePath) {
+            Write-Debug -Message 'Image path provided.'
 
             if ($modelInfo.Vision -ne $true) {
-                Write-Warning -Message ('You provided a media path for model {0}. Vision is not supported for this model.' -f $ModelID)
+                Write-Warning -Message ('You provided an image path for model {0}. Vision is not supported for this model.' -f $ModelID)
                 throw 'Vision is not supported for this model.'
             }
 
-            Write-Debug -Message ('Media Path Count: {0}' -f $MediaPath.Count)
-            if ($MediaPath.Count -gt 20) {
-                throw ('You provided {0} media files. You can only provide up to 20 media files.' -f $MediaPath.Count)
+            Write-Debug -Message ('Image Path Count: {0}' -f $ImagePath.Count)
+            if ($ImagePath.Count -gt 20) {
+                throw ('You provided {0} image files. You can only provide up to 20 image files.' -f $ImagePath.Count)
             }
 
-            foreach ($media in $MediaPath) {
-                if (-not (Test-ConverseAPIMedia -MediaPath $media)) {
-                    throw ('Media test for {0} failed.' -f $media)
+            foreach ($image in $ImagePath) {
+                if (-not (Test-ConverseAPIImage -ImagePath $image)) {
+                    throw ('Image test for {0} failed.' -f $image)
                 }
             }
 
             $formatConverseAPISplat = @{
                 Role             = 'user'
                 ModelID          = 'Converse'
-                MediaPath        = $MediaPath
+                ImagePath        = $ImagePath
                 NoContextPersist = $NoContextPersist
             }
             if ($Message) {

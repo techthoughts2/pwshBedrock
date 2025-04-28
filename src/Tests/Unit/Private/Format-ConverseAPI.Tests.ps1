@@ -41,7 +41,7 @@ InModuleScope 'pwshBedrock' {
                         Role      = 'user'
                         Message   = 'Live long and prosper!'
                         ModelID   = 'Converse'
-                        MediaPath = 'path/to/media.jpg'
+                        ImagePath = 'path/to/media.jpg'
                     }
                     Format-ConverseAPI @formatConverseAPISplat
                 } | Should -Throw
@@ -54,7 +54,7 @@ InModuleScope 'pwshBedrock' {
                         Role      = 'user'
                         Message   = 'Live long and prosper!'
                         ModelID   = 'Converse'
-                        MediaPath = 'path/to/media.jpg'
+                        ImagePath = 'path/to/media.jpg'
                     }
                     Format-ConverseAPI @formatConverseAPISplat
                 } | Should -Throw
@@ -69,7 +69,7 @@ InModuleScope 'pwshBedrock' {
                         Role      = 'user'
                         Message   = 'Live long and prosper!'
                         ModelID   = 'Converse'
-                        MediaPath = 'path/to/media.jpg'
+                        ImagePath = 'path/to/media.jpg'
                     }
                     Format-ConverseAPI @formatConverseAPISplat
                 } | Should -Throw
@@ -195,7 +195,7 @@ InModuleScope 'pwshBedrock' {
                 $formatConverseAPISplat = @{
                     Role      = 'user'
                     ModelID   = 'Converse'
-                    MediaPath = 'path/to/media.jpg'
+                    ImagePath = 'path/to/media.jpg'
                 }
                 $result = Format-ConverseAPI @formatConverseAPISplat
                 $result | Should -BeOfType 'Amazon.BedrockRuntime.Model.Message'
@@ -210,7 +210,7 @@ InModuleScope 'pwshBedrock' {
                     Role      = 'user'
                     Message   = 'The needs of the many outweigh the needs of the few.'
                     ModelID   = 'Converse'
-                    MediaPath = 'path/to/media.jpg'
+                    ImagePath = 'path/to/media.jpg'
                 }
                 $result = Format-ConverseAPI @formatConverseAPISplat
                 $result | Should -BeOfType 'Amazon.BedrockRuntime.Model.Message'
@@ -221,7 +221,7 @@ InModuleScope 'pwshBedrock' {
                 $formatConverseAPISplat = @{
                     Role      = 'user'
                     ModelID   = 'Converse'
-                    MediaPath = @('path/to/media1.jpg', 'path/to/media2.jpg')
+                    ImagePath = @('path/to/media1.jpg', 'path/to/media2.jpg')
                 }
                 $result = Format-ConverseAPI @formatConverseAPISplat
                 $result | Should -BeOfType 'Amazon.BedrockRuntime.Model.Message'
