@@ -101,6 +101,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Test-ConverseAPIDocument -MockWith { $true }
                 Mock -CommandName Test-ConverseAPITool -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIToolResult -MockWith { $true }
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $true }
 
                 <#
                 AdditionalModelResponseFields : {Document null value}
@@ -302,7 +303,34 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
-            It 'should throw if neither a Message, ImagePath, or DocumentPath is provided' {
+            It 'should throw if a VideoPath is provided for a model that does not support vision' {
+                {
+                    $invokeConverseAPISplat = @{
+                        Message     = 'Make it so.'
+                        VideoPath   = 'C:\Users\user\Documents\video.mp4'
+                        ModelID     = 'meta.llama3-2-1b-instruct-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-ConverseAPI @invokeConverseAPISplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if VideoPath is provided and it does not pass validation' {
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $false }
+                {
+                    $invokeConverseAPISplat = @{
+                        Message     = 'Make it so.'
+                        VideoPath   = 'C:\Users\user\Documents\video.mp4'
+                        ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-ConverseAPI @invokeConverseAPISplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if neither a Message, ImagePath, VideoPath, or DocumentPath is provided' {
                 {
                     $invokeConverseAPISplat = @{
                         ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
@@ -501,6 +529,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Test-ConverseAPIDocument -MockWith { $true }
                 Mock -CommandName Test-ConverseAPITool -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIToolResult -MockWith { $true }
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $true }
 
                 <#
                 AdditionalModelResponseFields : {Document null value}
@@ -630,6 +659,7 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
@@ -651,6 +681,7 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
@@ -672,6 +703,30 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
+                Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
+                Should -Invoke Get-ModelContext -Exactly 1 -Scope It
+                Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
+                Should -Invoke Invoke-BDRRConverse -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+            } #it
+
+            It 'should run all expected subcommands when video file is provided' {
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $true }
+                $invokeConverseAPISplat = @{
+                    Message   = 'Make it so.'
+                    VideoPath = 'C:\Users\user\Documents\video.mp4'
+                    ModelID   = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                    AccessKey = 'ak'
+                    SecretKey = 'sk'
+                    Region    = 'us-west-2'
+                }
+                $result = Invoke-ConverseAPI @invokeConverseAPISplat
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
@@ -694,6 +749,7 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Test-ConverseAPITool -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 1 -Scope It
@@ -715,6 +771,7 @@ InModuleScope 'pwshBedrock' {
                 Should -Invoke Test-ConverseAPITool -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 1 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 1 -Scope It

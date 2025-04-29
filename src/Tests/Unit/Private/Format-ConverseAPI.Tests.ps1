@@ -116,6 +116,47 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
+            It 'should throw if an error is encountered while getting video file info' {
+                Mock -CommandName Get-Item -MockWith { throw 'Failed to get video file info' }
+                {
+                    $formatConverseAPISplat = @{
+                        Role      = 'user'
+                        Message   = 'Live long and prosper!'
+                        ModelID   = 'Converse'
+                        VideoPath = 'path/to/video.mp4'
+                    }
+                    Format-ConverseAPI @formatConverseAPISplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if Get-Item does not return an extension for video' {
+                Mock -CommandName Get-Item -MockWith { $null }
+                {
+                    $formatConverseAPISplat = @{
+                        Role      = 'user'
+                        Message   = 'Live long and prosper!'
+                        ModelID   = 'Converse'
+                        VideoPath = 'path/to/video.mp4'
+                    }
+                    Format-ConverseAPI @formatConverseAPISplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if Convert-MediaToMemoryStream fails for video' {
+                Mock -CommandName Convert-MediaToMemoryStream -MockWith {
+                    throw 'Failed to convert video to memory stream'
+                } #endMock
+                {
+                    $formatConverseAPISplat = @{
+                        Role      = 'user'
+                        Message   = 'Live long and prosper!'
+                        ModelID   = 'Converse'
+                        VideoPath = 'path/to/video.mp4'
+                    }
+                    Format-ConverseAPI @formatConverseAPISplat
+                } | Should -Throw
+            } #it
+
         } #context_Error
 
         Context 'Success' {
@@ -272,6 +313,25 @@ InModuleScope 'pwshBedrock' {
                 $result = Format-ConverseAPI @formatConverseAPISplat
                 $result | Should -BeOfType 'Amazon.BedrockRuntime.Model.Message'
                 $result.Content[1].Text | Should -BeExactly 'The needs of the many outweigh the needs of the few.'
+            } #it
+
+            It 'should return a Amazon.BedrockRuntime.Model.VideoBlock with the expected values if video is provided' {
+                Mock -CommandName Get-Item -MockWith {
+                    [PSCustomObject]@{
+                        Extension = '.mp4'
+                    }
+                } #endMock
+                $formatConverseAPISplat = @{
+                    Role      = 'user'
+                    ModelID   = 'Converse'
+                    VideoPath = 'path/to/video.mp4'
+                }
+                $result = Format-ConverseAPI @formatConverseAPISplat
+                $result | Should -BeOfType 'Amazon.BedrockRuntime.Model.Message'
+                $result.Content.Video | Should -BeOfType 'Amazon.BedrockRuntime.Model.VideoBlock'
+                $result.Content.Video.Source | Should -BeOfType 'Amazon.BedrockRuntime.Model.VideoSource'
+                $result.Content.Video.Format.Value | Should -BeExactly 'mp4'
+                $result.Content.Video.Source.Bytes | Should -BeOfType 'System.IO.MemoryStream'
             } #it
 
             It 'should return the expected results if multiple media is provided' {

@@ -33,6 +33,8 @@
     The message to be sent to the model.
 .PARAMETER ImagePath
     File path to local image file.
+.PARAMETER VideoPath
+    File path to local video file.
 .PARAMETER DocumentPath
     File path to local document.
 .PARAMETER ToolsResults
@@ -83,6 +85,12 @@ function Format-ConverseAPI {
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string[]]$ImagePath,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'File path to local video file.')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$VideoPath,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'File path to local document.')]
@@ -146,7 +154,7 @@ function Format-ConverseAPI {
                 $messageObj.Content = $messageContentBlock
             }
             elseif ($ImagePath) {
-                Write-Verbose -Message 'Formatting vision message'
+                Write-Verbose -Message 'Formatting image vision message'
 
                 $messageObj = [Amazon.BedrockRuntime.Model.Message]::new()
                 $messageObj.Role = 'user'
@@ -163,12 +171,12 @@ function Format-ConverseAPI {
                     $imageSource = $null
                     #____________________
 
-                    Write-Verbose -Message 'Converting media to memory stream'
+                    Write-Verbose -Message 'Converting image media to memory stream'
                     try {
                         $memoryStream = Convert-MediaToMemoryStream -MediaPath $media -ErrorAction Stop
                     }
                     catch {
-                        throw 'Unable to format Converse API vision message. Unable to convert media to memory stream.'
+                        throw 'Unable to format Converse API vision message. Unable to convert image media to memory stream.'
                     }
 
                     Write-Verbose -Message ('Getting file info for {0}' -f $media)
@@ -176,7 +184,7 @@ function Format-ConverseAPI {
                         $mediaFileInfo = Get-Item -Path $media -ErrorAction Stop
                     }
                     catch {
-                        throw 'Unable to format Converse API vision message. Failed to get media file info.'
+                        throw 'Unable to format Converse API vision message. Failed to get image media file info.'
                     }
 
                     Write-Verbose -Message ('Getting file extension for {0}' -f $media)
@@ -189,7 +197,7 @@ function Format-ConverseAPI {
                         Write-Debug -Message ('Media extension: {0}' -f $extension)
                     }
                     else {
-                        throw 'Unable to format Converse API vision message. Media extension not found.'
+                        throw 'Unable to format Converse API vision message. Image Media extension not found.'
                     }
 
                     $imageBlock = [Amazon.BedrockRuntime.Model.ImageBlock]::new()
@@ -212,7 +220,53 @@ function Format-ConverseAPI {
                     $messageObj.Content.Add($messageContentBlock)
                 }
 
-            }
+            } #if_ImagePath
+            elseif ($VideoPath) {
+                Write-Verbose -Message 'Formatting video vision message'
+
+                $messageObj = [Amazon.BedrockRuntime.Model.Message]::new()
+                $messageObj.Role = 'user'
+
+                Write-Verbose -Message 'Converting video media to memory stream'
+                try {
+                    $memoryStream = Convert-MediaToMemoryStream -MediaPath $VideoPath -ErrorAction Stop
+                }
+                catch {
+                    throw 'Unable to format Converse API vision message. Unable to convert video media to memory stream.'
+                }
+
+                Write-Verbose -Message ('Getting file info for {0}' -f $VideoPath)
+                try {
+                    $mediaFileInfo = Get-Item -Path $VideoPath -ErrorAction Stop
+                }
+                catch {
+                    throw 'Unable to format Converse API vision message. Failed to get video media file info.'
+                }
+
+                Write-Verbose -Message ('Getting file extension for {0}' -f $VideoPath)
+                if ($mediaFileInfo) {
+                    $extension = $mediaFileInfo.Extension.TrimStart('.')
+                    # special case
+                    Write-Debug -Message ('Media extension: {0}' -f $extension)
+                }
+                else {
+                    throw 'Unable to format Converse API vision message. Video Media extension not found.'
+                }
+
+                $messageContentBlock = [Amazon.BedrockRuntime.Model.ContentBlock]::new()
+
+                $videoBlock = [Amazon.BedrockRuntime.Model.VideoBlock]::new()
+                $videoFormat = [Amazon.BedrockRuntime.VideoFormat]::new($extension)
+                $videoSource = [Amazon.BedrockRuntime.Model.VideoSource]::new()
+                $videoSource.Bytes = $memoryStream
+                $videoBlock.Format = $videoFormat
+                $videoBlock.Source = $videoSource
+
+                $messageContentBlock.Video = $videoBlock
+
+                $messageObj.Content.Add($messageContentBlock)
+
+            } #elseif_videoPath
             elseif ($DocumentPath) {
                 Write-Verbose -Message 'Formatting document message'
 

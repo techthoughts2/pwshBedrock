@@ -1,4 +1,3 @@
-# filepath: c:\Users\jakew\OneDrive\Desktop\Project\0_CodeProject\1_git\pwshBedrock\src\pwshBedrock\Private\Test-ConverseAPIImage.ps1
 <#
 .SYNOPSIS
     Tests if an image file is compatible with Converse API's requirements.

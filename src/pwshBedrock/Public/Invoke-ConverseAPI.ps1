@@ -64,6 +64,18 @@
     Sends an image vision message to the on-demand specified model via the Converse API. The model will describe the image in the image file.
 .EXAMPLE
     $invokeConverseAPISplat = @{
+        Message          = 'Please describe the video in the attached video.'
+        VideoPath        = $pathToVideoFile
+        ModelID          = 'amazon.nova-pro-v1:0'
+        ReturnFullObject = $true
+        Credential       = $awsCredential
+        Region           = 'us-west-2'
+    }
+    Invoke-ConverseAPI @invokeConverseAPISplat
+
+    Sends a video vision message to the on-demand specified model via the Converse API. The model will describe the video in the video file.
+.EXAMPLE
+    $invokeConverseAPISplat = @{
         Message          = 'Provide a one sentence summary of the document.'
         DocumentPath     = $pathToDocumentFile
         ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
@@ -147,6 +159,8 @@
 .PARAMETER ImagePath
     File path to local image file.
     Up to 20 image files can be sent in a single request. The image files must adhere to the model's image requirements.
+.PARAMETER VideoPath
+    File path to local video file.
 .PARAMETER DocumentPath
     File path to local document.
     You can include up to five documents. The document(s) must adhere to the model's document requirements.
@@ -249,7 +263,7 @@
 #>
 function Invoke-ConverseAPI {
     [CmdletBinding(
-        DefaultParameterSetName = 'MessageSet'
+        DefaultParameterSetName = 'MessageOnlySet'
     )]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUsePSCredentialType', '',
         Justification = 'Suppressed to support AWS credential parameter.')]
@@ -300,23 +314,40 @@ function Invoke-ConverseAPI {
             'mistral.mixtral-8x7b-instruct-v0:1'
             # 'stability.stable-diffusion-xl-v1' # *note: not supported by Converse API
         )]
-        [string]$ModelID,
-
-        [Parameter(Mandatory = $false, ParameterSetName = 'MessageSet',
+        [string]$ModelID, [Parameter(Mandatory = $false,
+            ParameterSetName = 'MessageOnlySet',
             HelpMessage = 'The message to be sent to the model.')]
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'MessageImageSet',
+            HelpMessage = 'The message to be sent with an image to the model.')]
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'MessageVideoSet',
+            HelpMessage = 'The message to be sent with a video to the model.')]
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'MessageDocumentSet',
+            HelpMessage = 'The message to be sent with a document to the model.')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
+
         [Parameter(Mandatory = $false,
-            HelpMessage = 'File path to local image file.',
-            ParameterSetName = 'MessageSet')]
+            ParameterSetName = 'MessageImageSet',
+            HelpMessage = 'File path to local image file.'
+        )]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string[]]$ImagePath,
 
         [Parameter(Mandatory = $false,
+            ParameterSetName = 'MessageVideoSet',
+            HelpMessage = 'File path to local video file.')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$VideoPath,
+
+        [Parameter(Mandatory = $false,
             HelpMessage = 'File path to local document.',
-            ParameterSetName = 'MessageSet')]
+            ParameterSetName = 'MessageDocumentSet')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string[]]$DocumentPath,
@@ -465,10 +496,11 @@ function Invoke-ConverseAPI {
             throw 'If any of the GuardrailID, GuardrailVersion, or GuardrailTrace parameters are provided, all three must be provided.'
         }
         $guardrailUse = $true
-    }
-
-    Write-Debug -Message ('Parameter Set: {0}' -f $PSCmdlet.ParameterSetName)
-    if ($PSCmdlet.ParameterSetName -eq 'MessageSet') {
+    }    Write-Debug -Message ('Parameter Set: {0}' -f $PSCmdlet.ParameterSetName)
+    if ($PSCmdlet.ParameterSetName -eq 'MessageOnlySet' -or
+        $PSCmdlet.ParameterSetName -eq 'MessageImageSet' -or
+        $PSCmdlet.ParameterSetName -eq 'MessageVideoSet' -or
+        $PSCmdlet.ParameterSetName -eq 'MessageDocumentSet') {
 
         if ($ImagePath) {
             Write-Debug -Message 'Image path provided.'
@@ -493,6 +525,29 @@ function Invoke-ConverseAPI {
                 Role             = 'user'
                 ModelID          = 'Converse'
                 ImagePath        = $ImagePath
+                NoContextPersist = $NoContextPersist
+            }
+            if ($Message) {
+                $formatConverseAPISplat.Add('Message', $Message)
+            }
+            $formattedUserMessage = Format-ConverseAPI @formatConverseAPISplat
+        }
+        elseif ($VideoPath) {
+            Write-Debug -Message 'Video path provided.'
+
+            if ($modelInfo.Vision -ne $true) {
+                Write-Warning -Message ('You provided a video path for model {0}. Vision is not supported for this model.' -f $ModelID)
+                throw 'Vision is not supported for this model.'
+            }
+
+            if (-not (Test-ConverseAPIVideo -VideoPath $VideoPath)) {
+                throw ('Video test for {0} failed.' -f $VideoPath)
+            }
+
+            $formatConverseAPISplat = @{
+                Role             = 'user'
+                ModelID          = 'Converse'
+                VideoPath        = $VideoPath
                 NoContextPersist = $NoContextPersist
             }
             if ($Message) {
@@ -584,9 +639,12 @@ function Invoke-ConverseAPI {
     -ToolChoice_Auto <AutoToolChoice>
     -GuardrailConfig_GuardrailIdentifier <String>
     -GuardrailConfig_GuardrailVersion <String>
+    -PerformanceConfig_Latency <PerformanceConfigLatency>
     -InferenceConfig_MaxToken <Int32>
     -Message <Message[]>
     -Tool_Name <String>
+    -PromptVariable <Hashtable>
+    -RequestMetadata <Hashtable>
     -InferenceConfig_StopSequence <String[]>
     -System <SystemContentBlock[]>
     -InferenceConfig_Temperature <Single>
@@ -623,7 +681,7 @@ function Invoke-ConverseAPI {
     }
 
     <#
-    ToolChoice is only supported by Anthropic Claude 3 models and by Mistral AI Mistral Large.
+    ToolChoice is only supported by select models
     Error example: Invoke-BDRRConverse: This model doesn't support the toolConfig.toolChoice.any field. Remove toolConfig.toolChoice.any and try again.
     #>
     if ($ToolChoice) {

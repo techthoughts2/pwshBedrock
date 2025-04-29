@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Module changes:
     - Converse
-        - `Invoke-ConverseAPI` parameter `MediaPath` renamed to `ImagePath` - ***Breaking Change***
+        - `Invoke-ConverseAPI`
+            - parameter `MediaPath` renamed to `ImagePath` - ***Breaking Change***
+            - Added new parameter `VideoPath` to support Vision models that can take video files
     - Updated model pricing to latest published model prices
 
 ## [0.75.0]
