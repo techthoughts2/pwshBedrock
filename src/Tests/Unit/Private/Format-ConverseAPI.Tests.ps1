@@ -157,10 +157,24 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
+            It 'should throw if Get-S3Extension returns null' {
+                Mock -CommandName Get-S3Extension -MockWith {
+                    return $null
+                } #endMock
+                {
+                    $formatConverseAPISplat = @{
+                        Role       = 'user'
+                        Message    = 'Live long and prosper!'
+                        ModelID    = 'Converse'
+                        S3Location = 's3://my-bucket/path/to/video'
+                    }
+                    Format-ConverseAPI @formatConverseAPISplat
+                } | Should -Throw
+            } #it
+
         } #context_Error
 
         Context 'Success' {
-
             BeforeEach {
                 Reset-ModelContext -AllModels -Force
                 Mock -CommandName Get-Item -MockWith {
@@ -168,6 +182,9 @@ InModuleScope 'pwshBedrock' {
                 } #endMock
                 Mock -CommandName Convert-MediaToMemoryStream -MockWith {
                     [System.IO.MemoryStream]::new()
+                } #endMock
+                Mock -CommandName Get-S3Extension -MockWith {
+                    return 'mp4'
                 } #endMock
                 $toolResult = [PSCustomObject]@{
                     ToolUseId = 'tooluse_ihA1_9blR3S1QJixGq5gwg'
@@ -331,7 +348,49 @@ InModuleScope 'pwshBedrock' {
                 $result.Content.Video | Should -BeOfType 'Amazon.BedrockRuntime.Model.VideoBlock'
                 $result.Content.Video.Source | Should -BeOfType 'Amazon.BedrockRuntime.Model.VideoSource'
                 $result.Content.Video.Format.Value | Should -BeExactly 'mp4'
-                $result.Content.Video.Source.Bytes | Should -BeOfType 'System.IO.MemoryStream'
+                $result.Content.Video.Source.Bytes | Should -BeOfType 'System.IO.MemoryStream' } #it
+
+            It 'should return a Amazon.BedrockRuntime.Model.VideoBlock with the expected values if S3Location is provided' {
+                $formatConverseAPISplat = @{
+                    Role       = 'user'
+                    ModelID    = 'Converse'
+                    S3Location = 's3://my-bucket/path/to/video.mp4'
+                }
+                $result = Format-ConverseAPI @formatConverseAPISplat
+                $result | Should -BeOfType 'Amazon.BedrockRuntime.Model.Message'
+                $result.Content.Video | Should -BeOfType 'Amazon.BedrockRuntime.Model.VideoBlock'
+                $result.Content.Video.Source | Should -BeOfType 'Amazon.BedrockRuntime.Model.VideoSource'
+                $result.Content.Video.Format.Value | Should -BeExactly 'mp4'
+                $result.Content.Video.Source.S3Location | Should -BeOfType 'Amazon.BedrockRuntime.Model.S3Location'
+                $result.Content.Video.Source.S3Location.Uri | Should -BeExactly 's3://my-bucket/path/to/video.mp4'
+            } #it
+
+            It 'should include S3BucketOwner in the S3Location if provided' {
+                $formatConverseAPISplat = @{
+                    Role          = 'user'
+                    ModelID       = 'Converse'
+                    S3Location    = 's3://my-bucket/path/to/video.mp4'
+                    S3BucketOwner = '123456789012'
+                }
+                $result = Format-ConverseAPI @formatConverseAPISplat
+                $result | Should -BeOfType 'Amazon.BedrockRuntime.Model.Message'
+                $result.Content.Video | Should -BeOfType 'Amazon.BedrockRuntime.Model.VideoBlock'
+                $result.Content.Video.Source.S3Location.BucketOwner | Should -BeExactly '123456789012'
+            } #it
+
+            It 'should convert jpg to jpeg in S3Location' {
+                Mock -CommandName Get-S3Extension -MockWith {
+                    return 'jpg'
+                } #endMock
+                $formatConverseAPISplat = @{
+                    Role       = 'user'
+                    ModelID    = 'Converse'
+                    S3Location = 's3://my-bucket/path/to/image.jpg'
+                }
+                $result = Format-ConverseAPI @formatConverseAPISplat
+                $result | Should -BeOfType 'Amazon.BedrockRuntime.Model.Message'
+                $result.Content.Video | Should -BeOfType 'Amazon.BedrockRuntime.Model.VideoBlock'
+                $result.Content.Video.Format.Value | Should -BeExactly 'jpeg'
             } #it
 
             It 'should return the expected results if multiple media is provided' {

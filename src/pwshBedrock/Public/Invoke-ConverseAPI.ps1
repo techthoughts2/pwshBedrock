@@ -76,6 +76,18 @@
     Sends a video vision message to the on-demand specified model via the Converse API. The model will describe the video in the video file.
 .EXAMPLE
     $invokeConverseAPISplat = @{
+        Message          = 'Please describe the video in the attached video.'
+        S3Location       = 's3://mybucket/myvideo.mp4'
+        ModelID          = 'amazon.nova-pro-v1:0'
+        ReturnFullObject = $true
+        Credential       = $awsCredential
+        Region           = 'us-west-2'
+    }
+    Invoke-ConverseAPI @invokeConverseAPISplat
+
+    Sends a video vision message to the on-demand specified model via the Converse API. The model will describe the video in the S3 location.
+.EXAMPLE
+    $invokeConverseAPISplat = @{
         Message          = 'Provide a one sentence summary of the document.'
         DocumentPath     = $pathToDocumentFile
         ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
@@ -161,6 +173,10 @@
     Up to 20 image files can be sent in a single request. The image files must adhere to the model's image requirements.
 .PARAMETER VideoPath
     File path to local video file.
+.PARAMETER S3Location
+    The location of a video object in an Amazon S3 bucket.
+.PARAMETER S3BucketOwner
+    If the bucket belongs to another AWS account, specify that accounts ID.
 .PARAMETER DocumentPath
     File path to local document.
     You can include up to five documents. The document(s) must adhere to the model's document requirements.
@@ -314,7 +330,9 @@ function Invoke-ConverseAPI {
             'mistral.mixtral-8x7b-instruct-v0:1'
             # 'stability.stable-diffusion-xl-v1' # *note: not supported by Converse API
         )]
-        [string]$ModelID, [Parameter(Mandatory = $false,
+        [string]$ModelID,
+
+        [Parameter(Mandatory = $false,
             ParameterSetName = 'MessageOnlySet',
             HelpMessage = 'The message to be sent to the model.')]
         [Parameter(Mandatory = $false,
@@ -323,6 +341,9 @@ function Invoke-ConverseAPI {
         [Parameter(Mandatory = $false,
             ParameterSetName = 'MessageVideoSet',
             HelpMessage = 'The message to be sent with a video to the model.')]
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'MessageS3VideoSet',
+            HelpMessage = 'The message to be sent with a video from S3 to the model.')]
         [Parameter(Mandatory = $false,
             ParameterSetName = 'MessageDocumentSet',
             HelpMessage = 'The message to be sent with a document to the model.')]
@@ -344,6 +365,19 @@ function Invoke-ConverseAPI {
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string]$VideoPath,
+
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'MessageS3VideoSet',
+            HelpMessage = 'The location of a video object in an Amazon S3 bucket. ')]
+        [ValidatePattern('^s3://[a-z0-9][\.\-a-z0-9]{1,61}[a-z0-9](/.*)?$')]
+        [ValidateLength(1, 1024)]
+        [string]$S3Location,
+
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'MessageS3VideoSet',
+            HelpMessage = 'If the bucket belongs to another AWS account, specify that accounts ID.')]
+        [ValidatePattern('^[0-9]{12}$')]
+        [string]$S3BucketOwner,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'File path to local document.',
@@ -500,7 +534,8 @@ function Invoke-ConverseAPI {
     if ($PSCmdlet.ParameterSetName -eq 'MessageOnlySet' -or
         $PSCmdlet.ParameterSetName -eq 'MessageImageSet' -or
         $PSCmdlet.ParameterSetName -eq 'MessageVideoSet' -or
-        $PSCmdlet.ParameterSetName -eq 'MessageDocumentSet') {
+        $PSCmdlet.ParameterSetName -eq 'MessageDocumentSet' -or
+        $PSCmdlet.ParameterSetName -eq 'MessageS3VideoSet') {
 
         if ($ImagePath) {
             Write-Debug -Message 'Image path provided.'
@@ -552,6 +587,38 @@ function Invoke-ConverseAPI {
             }
             if ($Message) {
                 $formatConverseAPISplat.Add('Message', $Message)
+            }
+            $formattedUserMessage = Format-ConverseAPI @formatConverseAPISplat
+        }
+        elseif ($S3Location) {
+            Write-Debug -Message 'S3 location provided.'
+
+            if ($modelInfo.Vision -ne $true) {
+                Write-Warning -Message ('You provided a S3 location for model {0}. Vision is not supported for this model.' -f $ModelID)
+                throw 'Vision is not supported for this model.'
+            }
+
+            $extensionFromS3 = Get-S3Extension -S3Location $S3Location
+            if ($extensionFromS3) {
+                if (-not (Test-ConverseAPIVideo -Extension $extensionFromS3)) {
+                    throw ('Video test for {0} failed.' -f $S3Location)
+                }
+            }
+            else {
+                throw ('S3 location {0} does not have a valid extension.' -f $S3Location)
+            }
+
+            $formatConverseAPISplat = @{
+                Role             = 'user'
+                ModelID          = 'Converse'
+                S3Location       = $S3Location
+                NoContextPersist = $NoContextPersist
+            }
+            if ($Message) {
+                $formatConverseAPISplat.Add('Message', $Message)
+            }
+            if ($S3BucketOwner) {
+                $formatConverseAPISplat.Add('S3BucketOwner', $S3BucketOwner)
             }
             $formattedUserMessage = Format-ConverseAPI @formatConverseAPISplat
         }

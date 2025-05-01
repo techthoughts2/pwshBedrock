@@ -39,6 +39,19 @@ Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-DocumentPath <String[
  [-SessionToken <String>] [<CommonParameters>]
 ```
 
+### MessageS3VideoSet
+
+```powershell
+Invoke-ConverseAPI -ModelID <String> [-Message <String>] -S3Location <String> [-S3BucketOwner <String>]
+ [-ReturnFullObject] [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>]
+ [-Temperature <Single>] [-TopP <Single>] [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>]
+ [-ToolName <String>] [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
+ [-AdditionalModelRequestField <PSObject>] [-AdditionalModelResponseFieldPath <String[]>] [-AccessKey <String>]
+ [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
+ [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
+ [-SessionToken <String>] [<CommonParameters>]
+```
+
 ### MessageVideoSet
 
 ```powershell
@@ -194,6 +207,23 @@ The model will describe the video in the video file.
 
 ```powershell
 $invokeConverseAPISplat = @{
+    Message          = 'Please describe the video in the attached video.'
+    S3Location       = 's3://mybucket/myvideo.mp4'
+    ModelID          = 'amazon.nova-pro-v1:0'
+    ReturnFullObject = $true
+    Credential       = $awsCredential
+    Region           = 'us-west-2'
+}
+Invoke-ConverseAPI @invokeConverseAPISplat
+```
+
+Sends a video vision message to the on-demand specified model via the Converse API.
+The model will describe the video in the S3 location.
+
+### EXAMPLE 9
+
+```powershell
+$invokeConverseAPISplat = @{
     Message          = 'Provide a one sentence summary of the document.'
     DocumentPath     = $pathToDocumentFile
     ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
@@ -206,7 +236,7 @@ Invoke-ConverseAPI @invokeConverseAPISplat
 Sends a document message to the on-demand specified model via the Converse API.
 The model will provide a one sentence summary of the document.
 
-### EXAMPLE 9
+### EXAMPLE 10
 
 ```powershell
 $tools = [PSCustomObject]@{
@@ -241,7 +271,7 @@ A tool is provided to answer the user's question.
 Additional parameters are provided to require the use of the tool and to specify the tool to use.
 This will prompt the model to return a tool-based response.
 
-### EXAMPLE 10
+### EXAMPLE 11
 
 ```powershell
 $tools = [PSCustomObject]@{
@@ -307,7 +337,7 @@ The message to be sent to the model.
 
 ```yaml
 Type: String
-Parameter Sets: MessageOnlySet, MessageDocumentSet, MessageVideoSet, MessageImageSet
+Parameter Sets: MessageOnlySet, MessageDocumentSet, MessageS3VideoSet, MessageVideoSet, MessageImageSet
 Aliases:
 
 Required: False
@@ -342,6 +372,38 @@ File path to local video file.
 ```yaml
 Type: String
 Parameter Sets: MessageVideoSet
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -S3Location
+
+The location of a video object in an Amazon S3 bucket.
+
+```yaml
+Type: String
+Parameter Sets: MessageS3VideoSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -S3BucketOwner
+
+If the bucket belongs to another AWS account, specify that accounts ID.
+
+```yaml
+Type: String
+Parameter Sets: MessageS3VideoSet
 Aliases:
 
 Required: False

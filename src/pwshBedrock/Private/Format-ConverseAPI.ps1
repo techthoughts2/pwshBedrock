@@ -35,6 +35,10 @@
     File path to local image file.
 .PARAMETER VideoPath
     File path to local video file.
+.PARAMETER S3Location
+    The location of a video object in an Amazon S3 bucket.
+.PARAMETER S3BucketOwner
+    If the bucket belongs to another AWS account, specify that accounts ID.
 .PARAMETER DocumentPath
     File path to local document.
 .PARAMETER ToolsResults
@@ -91,6 +95,17 @@ function Format-ConverseAPI {
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string]$VideoPath,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'The location of a video object in an Amazon S3 bucket. ')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$S3Location,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'If the bucket belongs to another AWS account, specify that accounts ID.')]
+        [ValidatePattern('^[0-9]{12}$')]
+        [string]$S3BucketOwner,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'File path to local document.')]
@@ -267,6 +282,46 @@ function Format-ConverseAPI {
                 $messageObj.Content.Add($messageContentBlock)
 
             } #elseif_videoPath
+            elseif ($S3Location) {
+                Write-Verbose -Message 'Formatting video vision message'
+
+                $messageObj = [Amazon.BedrockRuntime.Model.Message]::new()
+                $messageObj.Role = 'user'
+
+                $messageContentBlock = [Amazon.BedrockRuntime.Model.ContentBlock]::new()
+
+
+                $extension = Get-S3Extension -S3Location $S3Location
+                if ($extension) {
+                    Write-Debug -Message ('Media extension: {0}' -f $extension)
+                    # special case
+                    if ($extension -eq 'jpg') {
+                        $extension = 'jpeg'
+                    }
+                    $videoFormat = [Amazon.BedrockRuntime.VideoFormat]::new($extension)
+                }
+                else {
+                    throw 'unable to format Converse API vision message. Unable to extract file extension from S3 location.'
+                }
+
+                $videoBlock = [Amazon.BedrockRuntime.Model.VideoBlock]::new()
+                $s3LocationObj = [Amazon.BedrockRuntime.Model.S3Location]::new()
+                $s3LocationObj.Uri = $S3Location
+                if ($S3BucketOwner) {
+                    $s3LocationObj.BucketOwner = $S3BucketOwner
+                }
+
+                $videoSource = [Amazon.BedrockRuntime.Model.VideoSource]::new()
+
+                $videoSource.S3Location = $s3LocationObj
+                $videoBlock.Source = $videoSource
+                $videoBlock.Format = $videoFormat
+
+                $messageContentBlock.Video = $videoBlock
+
+                $messageObj.Content.Add($messageContentBlock)
+
+            } #elseif_S3Location
             elseif ($DocumentPath) {
                 Write-Verbose -Message 'Formatting document message'
 

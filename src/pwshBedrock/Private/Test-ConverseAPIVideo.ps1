@@ -1,17 +1,24 @@
 <#
 .SYNOPSIS
-    Tests if an video file is compatible with Converse API's requirements.
+    Tests if a video file or extension is compatible with Converse API's requirements.
 .DESCRIPTION
-    Evaluates the specified video file to ensure it meets Converse API's compatibility requirements
-    based on their public documentation. It checks the file's presence, type, and size. If the file is not found,
-    the function returns false. If the file type is not supported, the function returns false. If the file resolution
+    Evaluates the specified video file or extension to ensure it meets Converse API's compatibility requirements
+    based on their public documentation. If a video file path is provided, it checks the file's presence, type, and size.
+    If an extension is provided, it only checks if the extension is supported. If the file is not found, the function
+    returns false. If the file type or extension is not supported, the function returns false. If the file size
     exceeds Converse API's recommendations, the function returns false.
 .EXAMPLE
     Test-ConverseAPIVideo -VideoPath 'C:\path\to\video.mp4'
 
     Tests the video located at 'C:\path\to\video.mp4' for Converse API compatibility.
+.EXAMPLE
+    Test-ConverseAPIVideo -Extension 'mp4'
+
+    Tests if the 'mp4' extension is supported by Converse API.
 .PARAMETER VideoPath
-    File path to local video file.
+    File path to local video file. Mutually exclusive with Extension.
+.PARAMETER Extension
+    Video file extension to check (e.g., 'mp4'). Mutually exclusive with VideoPath.
 .OUTPUTS
     System.Boolean
 .NOTES
@@ -28,39 +35,28 @@
     pwshBedrock
 #>
 function Test-ConverseAPIVideo {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'VideoPath')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '',
         Justification = 'Just a collective noun.')]
     param (
-        [Parameter(Mandatory = $false,
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'VideoPath',
             HelpMessage = 'File path to local video file.')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
-        [string]$VideoPath
+        [string]$VideoPath,
+
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'Extension',
+            HelpMessage = 'Video file extension to check (e.g., ''mp4'').')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$Extension
     )
 
     $result = $true # Assume success
 
-    Write-Verbose -Message 'Verifying presence of video...'
-    try {
-        $pathEval = Test-Path -Path $VideoPath -ErrorAction Stop
-    }
-    catch {
-        Write-Error ('Error verifying video path: {0}' -f $VideoPath)
-        Write-Error $_
-        $result = $false
-        return $result
-    }
-    if ($pathEval -ne $true) {
-        Write-Warning -Message ('The specified video path: {0} was not found.' -f $PhotoPath)
-        $result = $false
-        return $result
-    } #if_testPath
-    else {
-        Write-Verbose -Message 'Path verified.'
-    } #else_testPath
-
-    Write-Verbose -Message 'Verifying video type...'
+    # Define supported extensions once for reuse
     $supportedMediaExtensions = @(
         'MKV'
         'MOV'
@@ -72,6 +68,42 @@ function Test-ConverseAPIVideo {
         'WMV'
         '3GP'
     )
+
+    # Handle Extension parameter set
+    if ($PSCmdlet.ParameterSetName -eq 'Extension') {
+        Write-Verbose -Message "Verifying extension: $Extension"
+        $extensionUpper = $Extension.ToUpper()
+        if ($supportedMediaExtensions -notcontains $extensionUpper) {
+            Write-Warning -Message ("The specified extension: {0} is not supported." -f $extensionUpper)
+            $result = $false
+        }
+        else {
+            Write-Verbose -Message 'Extension verified.'
+        }
+        return $result
+    }
+
+    # Handle VideoPath parameter set (original file-based checks)
+    Write-Verbose -Message 'Verifying presence of video...'
+    try {
+        $pathEval = Test-Path -Path $VideoPath -ErrorAction Stop
+    }
+    catch {
+        Write-Error ('Error verifying video path: {0}' -f $VideoPath)
+        Write-Error $_
+        $result = $false
+        return $result
+    }
+    if ($pathEval -ne $true) {
+        Write-Warning -Message ('The specified video path: {0} was not found.' -f $VideoPath)
+        $result = $false
+        return $result
+    } #if_testPath
+    else {
+        Write-Verbose -Message 'Path verified.'
+    } #else_testPath
+
+    Write-Verbose -Message 'Verifying video type...'
     Write-Verbose -Message ('Splitting video path: {0}' -f $VideoPath)
     $divide = $VideoPath.Split('.')
     $rawExtension = $divide[$divide.Length - 1]

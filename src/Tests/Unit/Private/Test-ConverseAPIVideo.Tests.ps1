@@ -95,6 +95,26 @@ InModuleScope 'pwshBedrock' {
                 $result | Should -Not -BeNullOrEmpty
             } #it
 
+            It 'Should return true for supported extension <_>' -ForEach $supportedMediaExtensions {
+                Mock -CommandName Write-Verbose {}
+                $result = Test-ConverseAPIVideo -Extension $_
+                $result | Should -Be $true
+            } #it
+
+            It 'Should return true for supported extension <_> in lowercase' -ForEach $supportedMediaExtensions {
+                Mock -CommandName Write-Verbose {}
+                $extensionLower = $_.ToLower()
+                $result = Test-ConverseAPIVideo -Extension $extensionLower
+                $result | Should -Be $true
+            } #it
+
+            It 'Should return false for unsupported extension' {
+                Mock -CommandName Write-Warning {}
+                $extension = 'txt'
+                $result = Test-ConverseAPIVideo -Extension $extension
+                $result | Should -Be $false
+            } #it
+
         } #context_Success
 
     } #describe_Test-ConverseAPIVideo
