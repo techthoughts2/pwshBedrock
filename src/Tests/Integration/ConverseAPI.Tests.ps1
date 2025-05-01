@@ -69,9 +69,11 @@ InModuleScope 'pwshBedrock' {
             $assetPath = [System.IO.Path]::Combine($PSScriptRoot, '..', 'assets')
             $inpaintingMainFile = [System.IO.Path]::Combine($assetPath, 'jedicat_inpainting.png')
             $docFile = [System.IO.Path]::Combine($assetPath, 'ds9.docx')
+            $videoFile = [System.IO.Path]::Combine($assetPath, 'super_boy.mp4')
 
             $inpaintingMainImage = [System.IO.Path]::GetFullPath($inpaintingMainFile)
             $docPath = [System.IO.Path]::GetFullPath($docFile)
+            $videoPath = [System.IO.Path]::GetFullPath($videoFile)
         } #beforeAll
 
         Context 'Standard Message' {
@@ -169,9 +171,9 @@ InModuleScope 'pwshBedrock' {
                 $eval.Output.Message.Content.ToolUse | Should -BeOfType [Amazon.BedrockRuntime.Model.ToolUseBlock]
             } #it
 
-            It 'should return an object when provided a media path' {
+            It 'should return an object when provided an image path' {
                 $invokeConverseAPISplat = @{
-                    MediaPath        = $inpaintingMainImage
+                    ImagePath        = $inpaintingMainImage
                     ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
                     SystemPrompt     = 'You are a star wars trivia master.'
                     ReturnFullObject = $true
@@ -198,6 +200,55 @@ InModuleScope 'pwshBedrock' {
                     DocumentPath     = $docPath
                     ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
                     SystemPrompt     = 'You are a star trek trivia master.'
+                    ReturnFullObject = $true
+                    Credential       = $awsCredential
+                    Region           = 'us-west-2'
+                    Verbose          = $false
+                }
+                $eval = Invoke-ConverseAPI @invokeConverseAPISplat
+                $eval | Should -BeOfType [Amazon.BedrockRuntime.Model.ConverseResponse]
+                $eval.StopReason | Should -Not -BeNullOrEmpty
+                $eval.Metrics | Should -BeOfType [Amazon.BedrockRuntime.Model.ConverseMetrics]
+                $eval.Usage | Should -BeOfType [Amazon.BedrockRuntime.Model.TokenUsage]
+                $eval.Output | Should -BeOfType [Amazon.BedrockRuntime.Model.ConverseOutput]
+                $eval.Output.Message | Should -BeOfType [Amazon.BedrockRuntime.Model.Message]
+                $eval.Output.Message.Role | Should -BeExactly 'assistant'
+                $eval.Output.Message.Content | Should -BeOfType [Amazon.BedrockRuntime.Model.ContentBlock]
+                $eval.Output.Message.Content.Text | Should -Not -BeNullOrEmpty
+                Write-Verbose -Message $eval.Output.Message.Content.Text
+            } #it
+
+            It 'should return an object when provided a video path' {
+                $invokeConverseAPISplat = @{
+                    Message          = 'Provide a one sentence summary of the video.'
+                    VideoPath        = $videoPath
+                    ModelID          = 'amazon.nova-pro-v1:0'
+                    SystemPrompt     = 'You are a pop culture expert.'
+                    ReturnFullObject = $true
+                    Credential       = $awsCredential
+                    Region           = 'us-west-2'
+                    Verbose          = $false
+                }
+                $eval = Invoke-ConverseAPI @invokeConverseAPISplat
+                $eval | Should -BeOfType [Amazon.BedrockRuntime.Model.ConverseResponse]
+                $eval.StopReason | Should -Not -BeNullOrEmpty
+                $eval.Metrics | Should -BeOfType [Amazon.BedrockRuntime.Model.ConverseMetrics]
+                $eval.Usage | Should -BeOfType [Amazon.BedrockRuntime.Model.TokenUsage]
+                $eval.Output | Should -BeOfType [Amazon.BedrockRuntime.Model.ConverseOutput]
+                $eval.Output.Message | Should -BeOfType [Amazon.BedrockRuntime.Model.Message]
+                $eval.Output.Message.Role | Should -BeExactly 'assistant'
+                $eval.Output.Message.Content | Should -BeOfType [Amazon.BedrockRuntime.Model.ContentBlock]
+                $eval.Output.Message.Content.Text | Should -Not -BeNullOrEmpty
+                Write-Verbose -Message $eval.Output.Message.Content.Text
+            } #it
+
+            It 'should return an object when provided a video path in a S3 bucket' {
+                $s3Uri = 's3://bedrockvideotestbucket/super_boy.mp4'
+                $invokeConverseAPISplat = @{
+                    Message          = 'Please describe the video in the attached video.'
+                    S3Location       = $s3Uri
+                    ModelID          = 'amazon.nova-pro-v1:0'
+                    SystemPrompt     = 'You are a pop culture expert.'
                     ReturnFullObject = $true
                     Credential       = $awsCredential
                     Region           = 'us-west-2'
