@@ -21,6 +21,9 @@ InModuleScope 'pwshBedrock' {
                     Context = ''
                 }
             )
+            $script:Ordered = [ordered]@{
+                top_k = 10
+            }
         } #beforeAll
 
         Context 'Error' {
@@ -97,10 +100,11 @@ InModuleScope 'pwshBedrock' {
                         content = $messageObj
                     }
                 } #endMock
-                Mock -CommandName Test-ConverseAPIMedia -MockWith { $true }
+                Mock -CommandName Test-ConverseAPIImage -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIDocument -MockWith { $true }
                 Mock -CommandName Test-ConverseAPITool -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIToolResult -MockWith { $true }
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $true }
 
                 <#
                 AdditionalModelResponseFields : {Document null value}
@@ -214,11 +218,11 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
-            It 'should throw if a MediaPath is provided for a model that does not support vision' {
+            It 'should throw if a ImagePath is provided for a model that does not support vision' {
                 {
                     $invokeConverseAPISplat = @{
                         Message     = 'Make it so.'
-                        MediaPath   = 'C:\Users\user\Documents\image.jpg'
+                        ImagePath   = 'C:\Users\user\Documents\image.jpg'
                         ModelID     = 'meta.llama3-2-1b-instruct-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
@@ -227,15 +231,15 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
-            It 'should throw if more than 20 MediaPaths are provided' {
-                $mediaPaths = @()
+            It 'should throw if more than 20 ImagePaths are provided' {
+                $ImagePaths = @()
                 for ($i = 0; $i -lt 21; $i++) {
-                    $mediaPaths += "C:\Users\user\Documents\image$i.jpg"
+                    $ImagePaths += "C:\Users\user\Documents\image$i.jpg"
                 }
                 {
                     $invokeConverseAPISplat = @{
                         Message     = 'Make it so.'
-                        MediaPath   = $mediaPaths
+                        ImagePath   = $ImagePaths
                         ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
@@ -244,12 +248,12 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
-            It 'should throw if MediaPath is provided and it does not pass validation' {
-                Mock -CommandName Test-ConverseAPIMedia -MockWith { $false }
+            It 'should throw if ImagePath is provided and it does not pass validation' {
+                Mock -CommandName Test-ConverseAPIImage -MockWith { $false }
                 {
                     $invokeConverseAPISplat = @{
                         Message     = 'Make it so.'
-                        MediaPath   = 'C:\Users\user\Documents\image.jpg'
+                        ImagePath   = 'C:\Users\user\Documents\image.jpg'
                         ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
                         ProfileName = 'default'
                         Region      = 'us-west-2'
@@ -303,6 +307,86 @@ InModuleScope 'pwshBedrock' {
             } #it
 
             It 'should throw if neither a Message, MediaPath, or DocumentPath is provided' {
+                {
+                    $invokeConverseAPISplat = @{
+                        ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                        Tools       = $standardTools
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-ConverseAPI @invokeConverseAPISplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if a VideoPath is provided for a model that does not support vision' {
+                {
+                    $invokeConverseAPISplat = @{
+                        Message     = 'Make it so.'
+                        VideoPath   = 'C:\Users\user\Documents\video.mp4'
+                        ModelID     = 'meta.llama3-2-1b-instruct-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-ConverseAPI @invokeConverseAPISplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if VideoPath is provided and it does not pass validation' {
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $false }
+                {
+                    $invokeConverseAPISplat = @{
+                        Message     = 'Make it so.'
+                        VideoPath   = 'C:\Users\user\Documents\video.mp4'
+                        ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-ConverseAPI @invokeConverseAPISplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if an S3Location is provided for a model that does not support vision' {
+                {
+                    $invokeConverseAPISplat = @{
+                        Message     = 'Make it so.'
+                        S3Location  = 's3://my-bucket/path/to/video.mp4'
+                        ModelID     = 'meta.llama3-2-1b-instruct-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-ConverseAPI @invokeConverseAPISplat
+                } | Should -Throw
+            } #it
+
+            It 'should throw if S3Location extension cannot be extracted' {
+                Mock -CommandName Get-S3Extension -MockWith { $null }
+                {
+                    $invokeConverseAPISplat = @{
+                        Message     = 'Make it so.'
+                        S3Location  = 's3://my-bucket/path/to/video'
+                        ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-ConverseAPI @invokeConverseAPISplat
+                } | Should -Throw
+            } #it
+            It 'should throw if S3Location video extension is not valid' {
+                Mock -CommandName Get-S3Extension -MockWith { 'invalidext' }
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $false }
+                {
+                    $invokeConverseAPISplat = @{
+                        Message     = 'Make it so.'
+                        S3Location  = 's3://my-bucket/path/to/video.invalidext'
+                        ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-ConverseAPI @invokeConverseAPISplat
+                } | Should -Throw
+            } #it
+
+            It 'should neither a Message, ImagePath, VideoPath, or DocumentPath is provided' {
                 {
                     $invokeConverseAPISplat = @{
                         ModelID     = 'anthropic.claude-3-sonnet-20240229-v1:0'
@@ -497,10 +581,11 @@ InModuleScope 'pwshBedrock' {
                         content = $messageObj
                     }
                 } #endMock
-                Mock -CommandName Test-ConverseAPIMedia -MockWith { $true }
+                Mock -CommandName Test-ConverseAPIImage -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIDocument -MockWith { $true }
                 Mock -CommandName Test-ConverseAPITool -MockWith { $true }
                 Mock -CommandName Test-ConverseAPIToolResult -MockWith { $true }
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $true }
 
                 <#
                 AdditionalModelResponseFields : {Document null value}
@@ -592,9 +677,7 @@ InModuleScope 'pwshBedrock' {
                     GuardrailID                      = 'guardrailID'
                     GuardrailVersion                 = '1'
                     GuardrailTrace                   = 'enabled'
-                    AdditionalModelRequestField      = [psobject]@{
-                        top_k = 10
-                    }
+                    AdditionalModelRequestField      = $script:Ordered
                     AdditionalModelResponseFieldPath = "/stop_sequence"
                     AccessKey                        = 'ak'
                     SecretKey                        = 'sk'
@@ -626,10 +709,11 @@ InModuleScope 'pwshBedrock' {
                     Region    = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
@@ -640,17 +724,18 @@ InModuleScope 'pwshBedrock' {
             It 'should run all expected subcommands when media file is provided' {
                 $invokeConverseAPISplat = @{
                     Message   = 'Make it so.'
-                    MediaPath = 'C:\Users\user\Documents\image.jpg'
+                    ImagePath = 'C:\Users\user\Documents\image.jpg'
                     ModelID   = 'anthropic.claude-3-sonnet-20240229-v1:0'
                     AccessKey = 'ak'
                     SecretKey = 'sk'
                     Region    = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 1 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
@@ -668,10 +753,109 @@ InModuleScope 'pwshBedrock' {
                     Region       = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
+                Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
+                Should -Invoke Get-ModelContext -Exactly 1 -Scope It
+                Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
+                Should -Invoke Invoke-BDRRConverse -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+            } #it
+
+            It 'should run all expected subcommands when video file is provided' {
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $true }
+                $invokeConverseAPISplat = @{
+                    Message   = 'Make it so.'
+                    VideoPath = 'C:\Users\user\Documents\video.mp4'
+                    ModelID   = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                    AccessKey = 'ak'
+                    SecretKey = 'sk'
+                    Region    = 'us-west-2'
+                }
+                $result = Invoke-ConverseAPI @invokeConverseAPISplat
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 1 -Scope It
+                Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
+                Should -Invoke Get-ModelContext -Exactly 1 -Scope It
+                Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
+                Should -Invoke Invoke-BDRRConverse -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+            } #it
+
+            It 'should run all expected subcommands when S3 video is provided' {
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $true }
+                Mock -CommandName Get-S3Extension -MockWith { 'mp4' }
+                $invokeConverseAPISplat = @{
+                    S3Location = 's3://my-bucket/path/to/video.mp4'
+                    ModelID    = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                    AccessKey  = 'ak'
+                    SecretKey  = 'sk'
+                    Region     = 'us-west-2'
+                }
+                $result = Invoke-ConverseAPI @invokeConverseAPISplat
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 1 -Scope It
+                Should -Invoke Get-S3Extension -Exactly 1 -Scope It
+                Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
+                Should -Invoke Get-ModelContext -Exactly 1 -Scope It
+                Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
+                Should -Invoke Invoke-BDRRConverse -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+            } #it
+
+            It 'should run all expected subcommands when S3 video with message is provided' {
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $true }
+                Mock -CommandName Get-S3Extension -MockWith { 'mp4' }
+                $invokeConverseAPISplat = @{
+                    Message    = 'Describe this video'
+                    S3Location = 's3://my-bucket/path/to/video.mp4'
+                    ModelID    = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                    AccessKey  = 'ak'
+                    SecretKey  = 'sk'
+                    Region     = 'us-west-2'
+                }
+                $result = Invoke-ConverseAPI @invokeConverseAPISplat
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 1 -Scope It
+                Should -Invoke Get-S3Extension -Exactly 1 -Scope It
+                Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
+                Should -Invoke Get-ModelContext -Exactly 1 -Scope It
+                Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
+                Should -Invoke Invoke-BDRRConverse -Exactly 1 -Scope It
+                Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+            } #it
+
+            It 'should run all expected subcommands when S3 video with bucket owner is provided' {
+                Mock -CommandName Test-ConverseAPIVideo -MockWith { $true }
+                Mock -CommandName Get-S3Extension -MockWith { 'mp4' }
+                $invokeConverseAPISplat = @{
+                    Message       = 'Describe this video'
+                    S3Location    = 's3://my-bucket/path/to/video.mp4'
+                    S3BucketOwner = '123456789012'
+                    ModelID       = 'anthropic.claude-3-sonnet-20240229-v1:0'
+                    AccessKey     = 'ak'
+                    SecretKey     = 'sk'
+                    Region        = 'us-west-2'
+                }
+                $result = Invoke-ConverseAPI @invokeConverseAPISplat
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPITool -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 1 -Scope It
+                Should -Invoke Get-S3Extension -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 0 -Scope It
@@ -690,10 +874,11 @@ InModuleScope 'pwshBedrock' {
                     Region     = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 1 -Scope It
@@ -711,10 +896,11 @@ InModuleScope 'pwshBedrock' {
                     Region       = 'us-west-2'
                 }
                 $result = Invoke-ConverseAPI @invokeConverseAPISplat
-                Should -Invoke Test-ConverseAPIMedia -Exactly 0 -Scope It
+                Should -Invoke Test-ConverseAPIImage -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPITool -Exactly 1 -Scope It
                 Should -Invoke Test-ConverseAPIDocument -Exactly 0 -Scope It
                 Should -Invoke Test-ConverseAPIToolResult -Exactly 1 -Scope It
+                Should -Invoke Test-ConverseAPIVideo -Exactly 0 -Scope It
                 Should -Invoke Format-ConverseAPI -Exactly 2 -Scope It
                 Should -Invoke Get-ModelContext -Exactly 1 -Scope It
                 Should -Invoke Format-ConverseAPIToolConfig -Exactly 1 -Scope It
@@ -728,7 +914,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Invoke-BDRRConverse {
                     $response
                     $ModelID                                | Should -BeExactly 'anthropic.claude-3-sonnet-20240229-v1:0'
-                    $AdditionalModelRequestField            | Should -BeOfType [PSObject]
+                    $AdditionalModelRequestField            | Should -BeOfType [System.Collections.Specialized.OrderedDictionary]
                     $AdditionalModelResponseFieldPath       | Should -BeOfType [string]
                     # $ToolChoice_Any                         | Should -BeOfType [Amazon.BedrockRuntime.Model.AnyToolChoice]
                     # $GuardrailConfig_GuardrailIdentifier    | Should -BeExactly 'guardrailID'
@@ -762,9 +948,7 @@ InModuleScope 'pwshBedrock' {
                     GuardrailID                      = 'guardrailID'
                     GuardrailVersion                 = '1'
                     GuardrailTrace                   = 'enabled'
-                    AdditionalModelRequestField      = [PSObject]@{
-                        top_k = 10
-                    }
+                    AdditionalModelRequestField      = $script:Ordered
                     AdditionalModelResponseFieldPath = "/stop_sequence"
                     AccessKey                        = 'ak'
                     SecretKey                        = 'sk'

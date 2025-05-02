@@ -1,3 +1,4 @@
+# filepath: c:\Users\jakew\OneDrive\Desktop\Project\0_CodeProject\1_git\pwshBedrock\src\Tests\Unit\Private\Test-ConverseAPIVideo.Tests.ps1
 BeforeDiscovery {
     Set-Location -Path $PSScriptRoot
     $ModuleName = 'pwshBedrock'
@@ -8,15 +9,19 @@ BeforeDiscovery {
     Import-Module $PathToManifest -Force
 }
 $script:supportedMediaExtensions = @(
-    'JPG'
-    'JPEG'
-    'PNG'
-    'GIF'
-    'WEBP'
+    'MKV'
+    'MOV'
+    'MP4'
+    'WEBM'
+    'FLV'
+    'MPEG'
+    'MPG'
+    'WMV'
+    '3GP'
 )
 
 InModuleScope 'pwshBedrock' {
-    Describe 'Test-ConverseAPIMedia Private Function Tests' -Tag Unit {
+    Describe 'Test-ConverseAPIVideo Private Function Tests' -Tag Unit {
         BeforeAll {
             $WarningPreference = 'SilentlyContinue'
             $ErrorActionPreference = 'SilentlyContinue'
@@ -27,16 +32,16 @@ InModuleScope 'pwshBedrock' {
 
             It 'Should return false if an error is encountered running Test-Path' {
                 Mock -CommandName Test-Path -MockWith { throw 'Test-Path Error' }
-                $mediaPath = 'C:\path\to\image.jpg'
-                $result = Test-ConverseAPIMedia -MediaPath $mediaPath
+                $videoPath = 'C:\path\to\video.mp4'
+                $result = Test-ConverseAPIVideo -VideoPath $videoPath
                 $result | Should -Be $false
             } #it
 
             It 'Should return false if an error is encountered running Get-Item' {
                 Mock -CommandName Test-Path -MockWith { $true }
                 Mock -CommandName Get-Item -MockWith { throw 'Get-Item Error' }
-                $mediaPath = 'C:\path\to\image.jpg'
-                $result = Test-ConverseAPIMedia -MediaPath $mediaPath
+                $videoPath = 'C:\path\to\video.mp4'
+                $result = Test-ConverseAPIVideo -VideoPath $videoPath
                 $result | Should -Be $false
             } #it
 
@@ -46,39 +51,27 @@ InModuleScope 'pwshBedrock' {
 
             It 'Should return true for <_> type if checks pass' -ForEach $supportedMediaExtensions {
                 Mock -CommandName Test-Path -MockWith { $true }
-                Mock -CommandName Get-Item -Mockwith {
+                Mock -CommandName Get-Item -MockWith {
                     [PSCustomObject]@{
                         Length = 10000
                     }
                 } #endMock
-                Mock -CommandName Get-ImageResolution -MockWith {
-                    [PSCustomObject]@{
-                        Width  = 100
-                        Height = 100
-                    }
-                } #endMock
-                $mediaPath = 'C:\path\to\image.' + $_.ToLower()
-                $result = Test-ConverseAPIMedia -MediaPath $MediaPath
+                $videoPath = 'C:\path\to\video.' + $_.ToLower()
+                $result = Test-ConverseAPIVideo -VideoPath $videoPath
                 $result | Should -Be $true
             } #it
 
             It 'Should return false if file can not be found' {
                 Mock -CommandName Test-Path -MockWith { $false }
-                $mediaPath = 'C:\path\to\image.jpg'
-                $result = Test-ConverseAPIMedia -MediaPath $mediaPath
+                $videoPath = 'C:\path\to\video.mp4'
+                $result = Test-ConverseAPIVideo -VideoPath $videoPath
                 $result | Should -Be $false
             } #it
 
             It 'Should return false if file type is not supported' {
                 Mock -CommandName Test-Path -MockWith { $true }
-                Mock -CommandName Get-ImageResolution -MockWith {
-                    [PSCustomObject]@{
-                        Width  = 100
-                        Height = 100
-                    }
-                } #endMock
-                $mediaPath = 'C:\path\to\image.zip'
-                $result = Test-ConverseAPIMedia -MediaPath $mediaPath
+                $videoPath = 'C:\path\to\video.txt'
+                $result = Test-ConverseAPIVideo -VideoPath $videoPath
                 $result | Should -Be $false
             } #it
 
@@ -86,41 +79,43 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Test-Path -MockWith { $true }
                 Mock -CommandName Get-Item -MockWith {
                     [PSCustomObject]@{
-                        Length = 10000000
+                        Length = 30 * 1024 * 1024 # 30MB (larger than 25MB limit)
                     }
                 }
-                Mock -CommandName Get-ImageResolution -MockWith {
-                    [PSCustomObject]@{
-                        Width  = 100
-                        Height = 100
-                    }
-                } #endMock
-                $mediaPath = 'C:\path\to\image.jpg'
-                $result = Test-ConverseAPIMedia -MediaPath $mediaPath
+                $videoPath = 'C:\path\to\video.mp4'
+                $result = Test-ConverseAPIVideo -VideoPath $videoPath
                 $result | Should -Be $false
             } #it
 
-            It 'Should return false if the resolution is too large' {
+            It 'Should handle incorrect path variable' {
+                Mock -CommandName Write-Warning {}
                 Mock -CommandName Test-Path -MockWith { $true }
-                Mock -CommandName Get-Item -Mockwith {
-                    [PSCustomObject]@{
-                        Length = 10000
-                    }
-                } #endMock
-                Mock -CommandName Get-ImageResolution -MockWith {
-                    [PSCustomObject]@{
-                        Width  = 9000
-                        Height = 9000
-                    }
-                } #endMock
-                Mock Write-Warning {}
-                $mediaPath = 'C:\path\to\image.jpg'
-                $result = Test-ConverseAPIMedia -MediaPath $mediaPath
-                Should -Invoke Write-Warning -Exactly 1
+                $videoPath = 'C:\path\to\video.mp4'
+                $result = Test-ConverseAPIVideo -VideoPath $videoPath
+                $result | Should -Not -BeNullOrEmpty
+            } #it
+
+            It 'Should return true for supported extension <_>' -ForEach $supportedMediaExtensions {
+                Mock -CommandName Write-Verbose {}
+                $result = Test-ConverseAPIVideo -Extension $_
+                $result | Should -Be $true
+            } #it
+
+            It 'Should return true for supported extension <_> in lowercase' -ForEach $supportedMediaExtensions {
+                Mock -CommandName Write-Verbose {}
+                $extensionLower = $_.ToLower()
+                $result = Test-ConverseAPIVideo -Extension $extensionLower
+                $result | Should -Be $true
+            } #it
+
+            It 'Should return false for unsupported extension' {
+                Mock -CommandName Write-Warning {}
+                $extension = 'txt'
+                $result = Test-ConverseAPIVideo -Extension $extension
                 $result | Should -Be $false
             } #it
 
         } #context_Success
 
-    } #describe_Test-ConverseAPIMedia
+    } #describe_Test-ConverseAPIVideo
 } #inModule

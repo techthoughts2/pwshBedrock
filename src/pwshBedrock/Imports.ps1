@@ -1480,8 +1480,8 @@ $script:metaModelInfo = @(
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.00099
-        OutputTokenCost            = 0.00099
+        InputTokenCost             = 0.00072
+        OutputTokenCost            = 0.00072
     }
     [PSCustomObject]@{
         ProviderName               = 'Meta'
@@ -1504,8 +1504,8 @@ $script:metaModelInfo = @(
         MaxOutput                  = 2048
         TrainingCutoff             = '12-01-2023'
         PayloadLimit               = ''
-        InputTokenCost             = 0.00532
-        OutputTokenCost            = 0.016
+        InputTokenCost             = 0.0024
+        OutputTokenCost            = 0.0024
     }
     [PSCustomObject]@{
         ProviderName               = 'Meta'

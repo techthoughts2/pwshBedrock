@@ -145,10 +145,10 @@
     Thinking is only viewable in the full response object, and will not be included in the message history context or the message reply.
 .PARAMETER ThinkingBudgetTokens
     Maximum number of tokens that Claude may use for its internal reasoning process.
-    Your thinking budgettokens must always be less than the max tokens you specify in your request.
+    thinking budget tokens must always be less than the max tokens you specify in your request.
     This is a required parameter when using the Thinking switch.
     This parameter is only available for Claude 3.7 model.
-    This paramater has no effect if not using the Thinking switch.
+    This parameter has no effect if not using the Thinking switch.
 .PARAMETER Tools
     Definitions of tools that the model may use.
 .PARAMETER ToolChoice

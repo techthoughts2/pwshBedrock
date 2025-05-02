@@ -13,17 +13,69 @@ Sends messages, media, or documents to a model via the Converse API and returns 
 
 ## SYNTAX
 
-### MessageSet (Default)
+### MessageOnlySet (Default)
 
 ```powershell
-Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-MediaPath <String[]>] [-DocumentPath <String[]>]
+Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-ReturnFullObject] [-NoContextPersist]
+ [-MaxTokens <Int32>] [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>]
+ [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>]
+ [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+```
+
+### MessageDocumentSet
+
+```powershell
+Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-DocumentPath <String[]>] [-ReturnFullObject]
+ [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>]
+ [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>]
+ [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+```
+
+### MessageS3VideoSet
+
+```powershell
+Invoke-ConverseAPI -ModelID <String> [-Message <String>] -S3Location <String> [-S3BucketOwner <String>]
  [-ReturnFullObject] [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>]
  [-Temperature <Single>] [-TopP <Single>] [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>]
  [-ToolName <String>] [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
- [-AdditionalModelRequestField <PSObject>] [-AdditionalModelResponseFieldPath <String[]>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+```
+
+### MessageVideoSet
+
+```powershell
+Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-VideoPath <String>] [-ReturnFullObject]
+ [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>]
+ [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>]
+ [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
+```
+
+### MessageImageSet
+
+```powershell
+Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-ImagePath <String[]>] [-ReturnFullObject]
+ [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>]
+ [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>]
+ [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ### ToolsResultsSet
@@ -33,10 +85,10 @@ Invoke-ConverseAPI -ModelID <String> [-ReturnFullObject] [-NoContextPersist] [-M
  [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>] [-SystemPrompt <String>]
  [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>] -ToolsResults <PSObject[]>
  [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
- [-AdditionalModelRequestField <PSObject>] [-AdditionalModelResponseFieldPath <String[]>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -122,7 +174,7 @@ Additional parameters are provided to control the response generation.
 ```powershell
 $invokeConverseAPISplat = @{
     Message          = 'Please describe the painting in the attached image.'
-    MediaPath        = $pathToMediaFile
+    ImagePath        = $pathToImageFile
     ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
     ReturnFullObject = $true
     Credential       = $awsCredential
@@ -131,10 +183,44 @@ $invokeConverseAPISplat = @{
 Invoke-ConverseAPI @invokeConverseAPISplat
 ```
 
-Sends a media vision message to the on-demand specified model via the Converse API.
-The model will describe the image in the media file.
+Sends an image vision message to the on-demand specified model via the Converse API.
+The model will describe the image in the image file.
 
 ### EXAMPLE 7
+
+```powershell
+$invokeConverseAPISplat = @{
+    Message          = 'Please describe the video in the attached video.'
+    VideoPath        = $pathToVideoFile
+    ModelID          = 'amazon.nova-pro-v1:0'
+    ReturnFullObject = $true
+    Credential       = $awsCredential
+    Region           = 'us-west-2'
+}
+Invoke-ConverseAPI @invokeConverseAPISplat
+```
+
+Sends a video vision message to the on-demand specified model via the Converse API.
+The model will describe the video in the video file.
+
+### EXAMPLE 8
+
+```powershell
+$invokeConverseAPISplat = @{
+    Message          = 'Please describe the video in the attached video.'
+    S3Location       = 's3://mybucket/myvideo.mp4'
+    ModelID          = 'amazon.nova-pro-v1:0'
+    ReturnFullObject = $true
+    Credential       = $awsCredential
+    Region           = 'us-west-2'
+}
+Invoke-ConverseAPI @invokeConverseAPISplat
+```
+
+Sends a video vision message to the on-demand specified model via the Converse API.
+The model will describe the video in the S3 location.
+
+### EXAMPLE 9
 
 ```powershell
 $invokeConverseAPISplat = @{
@@ -150,7 +236,31 @@ Invoke-ConverseAPI @invokeConverseAPISplat
 Sends a document message to the on-demand specified model via the Converse API.
 The model will provide a one sentence summary of the document.
 
-### EXAMPLE 8
+### EXAMPLE 10
+
+```powershell
+$additionalModelRequestFields = [ordered]@{
+    thinking = [ordered]@{
+        type          = 'enabled'
+        budget_tokens = 1024
+    }
+}
+$invokeConverseAPISplat = @{
+    Message                    = 'Explain zero-point energy.'
+    ModelID                    = 'anthropic.claude-3-sonnet-20240229-v1:0'
+    SystemPrompt               = 'You are a physicist explaining zero-point energy to a layperson.'
+    AdditionalModelRequestField = $additionalModelRequestFields
+    Credential                 = $awsCredential
+    Region                     = 'us-west-2'
+}
+Invoke-ConverseAPI @invokeConverseAPISplat
+```
+
+Sends a message to the on-demand specified model via the Converse API.
+Additional parameters are provided to control the response generation.
+The additional model request field is used to enable thinking and set the budget tokens for the model's internal reasoning process.
+
+### EXAMPLE 11
 
 ```powershell
 $tools = [PSCustomObject]@{
@@ -185,7 +295,7 @@ A tool is provided to answer the user's question.
 Additional parameters are provided to require the use of the tool and to specify the tool to use.
 This will prompt the model to return a tool-based response.
 
-### EXAMPLE 9
+### EXAMPLE 12
 
 ```powershell
 $tools = [PSCustomObject]@{
@@ -251,7 +361,7 @@ The message to be sent to the model.
 
 ```yaml
 Type: String
-Parameter Sets: MessageSet
+Parameter Sets: MessageOnlySet, MessageDocumentSet, MessageS3VideoSet, MessageVideoSet, MessageImageSet
 Aliases:
 
 Required: False
@@ -261,15 +371,63 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -MediaPath
+### -ImagePath
 
-File path to local media file.
-Up to 20 media files can be sent in a single request.
-The media files must adhere to the model's media requirements.
+File path to local image file.
+Up to 20 image files can be sent in a single request.
+The image files must adhere to the model's image requirements.
 
 ```yaml
 Type: String[]
-Parameter Sets: MessageSet
+Parameter Sets: MessageImageSet
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -VideoPath
+
+File path to local video file.
+
+```yaml
+Type: String
+Parameter Sets: MessageVideoSet
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -S3Location
+
+The location of a video object in an Amazon S3 bucket.
+
+```yaml
+Type: String
+Parameter Sets: MessageS3VideoSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -S3BucketOwner
+
+If the bucket belongs to another AWS account, specify that accounts ID.
+
+```yaml
+Type: String
+Parameter Sets: MessageS3VideoSet
 Aliases:
 
 Required: False
@@ -287,7 +445,7 @@ The document(s) must adhere to the model's document requirements.
 
 ```yaml
 Type: String[]
-Parameter Sets: MessageSet
+Parameter Sets: MessageDocumentSet
 Aliases:
 
 Required: False
@@ -544,7 +702,7 @@ Accept wildcard characters: False
 Additional inference parameters that the model supports, beyond the base set of inference parameters that Converse supports.
 
 ```yaml
-Type: PSObject
+Type: OrderedDictionary
 Parameter Sets: (All)
 Aliases:
 

@@ -13,7 +13,7 @@ Install-Module -Name pwshBedrock -Repository PSGallery -Scope CurrentUser
 
 Before you can use pwshBedrock, you'll need to meet a few prerequisites:
 
-1. **AWS Account**: You need an AWS account. Within your AWS account, you must [manage and add model acesss](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) for each model you want to interact with. This is a one-time manual action. Note that model access is region-specific, so if you plan to engage with models in multiple regions, you'll need to perform this step in each region.
+1. **AWS Account**: You need an AWS account. Within your AWS account, you must [manage and add model access](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) for each model you want to interact with. This is a one-time manual action. Note that model access is region-specific, so if you plan to engage with models in multiple regions, you'll need to perform this step in each region.
 1. **AWS Credentials**: You'll need AWS credentials with the `bedrock:InvokeModel` permission.
 
 ### Determine which model you'll engage with
@@ -62,7 +62,7 @@ Refer to the [FAQ - When should I use Converse vs calling the model directly usi
 
 `pwshBedrock` supports the [Converse](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Converse.html) API which provides a consistent interface for most models that support messages. This allows you to write code once and use it with different models.
 
-In the example below, you can change the ModelID to another model, such as `meta.llama3-8b-instruct-v1:0` to engage a different model without modifying the function or parameters. *Note: Converse does not support all model IDs, particulary image-only models.*
+In the example below, you can change the ModelID to another model, such as `meta.llama3-8b-instruct-v1:0` to engage a different model without modifying the function or parameters. *Note: Converse does not support all model IDs, particularly image-only models.*
 
 ```powershell
 Invoke-ConverseAPI -ModelID anthropic.claude-3-5-sonnet-20240620-v1:0 -Message 'Explain zero-point energy.' -Credential $awsCredential -Region us-east-1

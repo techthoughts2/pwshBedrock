@@ -31,8 +31,14 @@
     The role of the message sender.
 .PARAMETER Message
     The message to be sent to the model.
-.PARAMETER MediaPath
-    File path to local media file.
+.PARAMETER ImagePath
+    File path to local image file.
+.PARAMETER VideoPath
+    File path to local video file.
+.PARAMETER S3Location
+    The location of a video object in an Amazon S3 bucket.
+.PARAMETER S3BucketOwner
+    If the bucket belongs to another AWS account, specify that accounts ID.
 .PARAMETER DocumentPath
     File path to local document.
 .PARAMETER ToolsResults
@@ -79,10 +85,27 @@ function Format-ConverseAPI {
         [string]$Message,
 
         [Parameter(Mandatory = $false,
-            HelpMessage = 'File path to local media file.')]
+            HelpMessage = 'File path to local image file.')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
-        [string[]]$MediaPath,
+        [string[]]$ImagePath,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'File path to local video file.')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$VideoPath,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'The location of a video object in an Amazon S3 bucket. ')]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string]$S3Location,
+
+        [Parameter(Mandatory = $false,
+            HelpMessage = 'If the bucket belongs to another AWS account, specify that accounts ID.')]
+        [ValidatePattern('^[0-9]{12}$')]
+        [string]$S3BucketOwner,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'File path to local document.')]
@@ -145,13 +168,13 @@ function Format-ConverseAPI {
 
                 $messageObj.Content = $messageContentBlock
             }
-            elseif ($MediaPath) {
-                Write-Verbose -Message 'Formatting vision message'
+            elseif ($ImagePath) {
+                Write-Verbose -Message 'Formatting image vision message'
 
                 $messageObj = [Amazon.BedrockRuntime.Model.Message]::new()
                 $messageObj.Role = 'user'
 
-                foreach ($media in $MediaPath) {
+                foreach ($media in $ImagePath) {
                     #____________________
                     # resets
                     $memoryStream = $null
@@ -163,12 +186,12 @@ function Format-ConverseAPI {
                     $imageSource = $null
                     #____________________
 
-                    Write-Verbose -Message 'Converting media to memory stream'
+                    Write-Verbose -Message 'Converting image media to memory stream'
                     try {
                         $memoryStream = Convert-MediaToMemoryStream -MediaPath $media -ErrorAction Stop
                     }
                     catch {
-                        throw 'Unable to format Converse API vision message. Unable to convert media to memory stream.'
+                        throw 'Unable to format Converse API vision message. Unable to convert image media to memory stream.'
                     }
 
                     Write-Verbose -Message ('Getting file info for {0}' -f $media)
@@ -176,7 +199,7 @@ function Format-ConverseAPI {
                         $mediaFileInfo = Get-Item -Path $media -ErrorAction Stop
                     }
                     catch {
-                        throw 'Unable to format Converse API vision message. Failed to get media file info.'
+                        throw 'Unable to format Converse API vision message. Failed to get image media file info.'
                     }
 
                     Write-Verbose -Message ('Getting file extension for {0}' -f $media)
@@ -189,7 +212,7 @@ function Format-ConverseAPI {
                         Write-Debug -Message ('Media extension: {0}' -f $extension)
                     }
                     else {
-                        throw 'Unable to format Converse API vision message. Media extension not found.'
+                        throw 'Unable to format Converse API vision message. Image Media extension not found.'
                     }
 
                     $imageBlock = [Amazon.BedrockRuntime.Model.ImageBlock]::new()
@@ -212,7 +235,93 @@ function Format-ConverseAPI {
                     $messageObj.Content.Add($messageContentBlock)
                 }
 
-            }
+            } #if_ImagePath
+            elseif ($VideoPath) {
+                Write-Verbose -Message 'Formatting video vision message'
+
+                $messageObj = [Amazon.BedrockRuntime.Model.Message]::new()
+                $messageObj.Role = 'user'
+
+                Write-Verbose -Message 'Converting video media to memory stream'
+                try {
+                    $memoryStream = Convert-MediaToMemoryStream -MediaPath $VideoPath -ErrorAction Stop
+                }
+                catch {
+                    throw 'Unable to format Converse API vision message. Unable to convert video media to memory stream.'
+                }
+
+                Write-Verbose -Message ('Getting file info for {0}' -f $VideoPath)
+                try {
+                    $mediaFileInfo = Get-Item -Path $VideoPath -ErrorAction Stop
+                }
+                catch {
+                    throw 'Unable to format Converse API vision message. Failed to get video media file info.'
+                }
+
+                Write-Verbose -Message ('Getting file extension for {0}' -f $VideoPath)
+                if ($mediaFileInfo) {
+                    $extension = $mediaFileInfo.Extension.TrimStart('.')
+                    # special case
+                    Write-Debug -Message ('Media extension: {0}' -f $extension)
+                }
+                else {
+                    throw 'Unable to format Converse API vision message. Video Media extension not found.'
+                }
+
+                $messageContentBlock = [Amazon.BedrockRuntime.Model.ContentBlock]::new()
+
+                $videoBlock = [Amazon.BedrockRuntime.Model.VideoBlock]::new()
+                $videoFormat = [Amazon.BedrockRuntime.VideoFormat]::new($extension)
+                $videoSource = [Amazon.BedrockRuntime.Model.VideoSource]::new()
+                $videoSource.Bytes = $memoryStream
+                $videoBlock.Format = $videoFormat
+                $videoBlock.Source = $videoSource
+
+                $messageContentBlock.Video = $videoBlock
+
+                $messageObj.Content.Add($messageContentBlock)
+
+            } #elseif_videoPath
+            elseif ($S3Location) {
+                Write-Verbose -Message 'Formatting video vision message'
+
+                $messageObj = [Amazon.BedrockRuntime.Model.Message]::new()
+                $messageObj.Role = 'user'
+
+                $messageContentBlock = [Amazon.BedrockRuntime.Model.ContentBlock]::new()
+
+
+                $extension = Get-S3Extension -S3Location $S3Location
+                if ($extension) {
+                    Write-Debug -Message ('Media extension: {0}' -f $extension)
+                    # special case
+                    if ($extension -eq 'jpg') {
+                        $extension = 'jpeg'
+                    }
+                    $videoFormat = [Amazon.BedrockRuntime.VideoFormat]::new($extension)
+                }
+                else {
+                    throw 'unable to format Converse API vision message. Unable to extract file extension from S3 location.'
+                }
+
+                $videoBlock = [Amazon.BedrockRuntime.Model.VideoBlock]::new()
+                $s3LocationObj = [Amazon.BedrockRuntime.Model.S3Location]::new()
+                $s3LocationObj.Uri = $S3Location
+                if ($S3BucketOwner) {
+                    $s3LocationObj.BucketOwner = $S3BucketOwner
+                }
+
+                $videoSource = [Amazon.BedrockRuntime.Model.VideoSource]::new()
+
+                $videoSource.S3Location = $s3LocationObj
+                $videoBlock.Source = $videoSource
+                $videoBlock.Format = $videoFormat
+
+                $messageContentBlock.Video = $videoBlock
+
+                $messageObj.Content.Add($messageContentBlock)
+
+            } #elseif_S3Location
             elseif ($DocumentPath) {
                 Write-Verbose -Message 'Formatting document message'
 

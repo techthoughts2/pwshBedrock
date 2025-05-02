@@ -673,7 +673,7 @@ $finalResponse
 
 ## Custom Message with DeepSeek Model
 
-The DeepSeek Model requires very specific formatting. If you want to send a custom crafted message rather than engaging the model over a series of conversations, you can send a contextaul custom message:
+The DeepSeek Model requires very specific formatting. If you want to send a custom crafted message rather than engaging the model over a series of conversations, you can send a contextual custom message:
 
 ```powershell
 # Sends a custom conversation message to the on-demand DeepSeek model in the specified AWS region and returns the response.
