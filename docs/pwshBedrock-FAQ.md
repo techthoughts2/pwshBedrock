@@ -7,7 +7,7 @@ While you can directly use AWS Tools for PowerShell cmdlets (such as `Invoke-BDR
 1. **Simplified Parameter Handling**: No need to manually craft complex JSON payloads or handle Bedrock runtime objects. pwshBedrock takes care of this complexity for you, freeing you to focus on your script logic instead of payload details.
 2. **Context Management**: pwshBedrock automatically handles conversation context for models that support it. The context is stored in memory by default (with an option to save it to disk), so you can pause and resume multi-turn conversations seamlessly.
 3. **Token Tracking & Cost Estimates**: pwshBedrock monitors token usage and provides basic cost estimates for each request. This gives you a clear picture of usage and helps you understand the potential cost of every interaction.
-4. **Built-In Model Validations & Automations**: pwshBedrock includes guardrails for each model's unique constraints—such as max token limits—and automates file conversions (e.g., base64 encoding for image uploads). It also handles tasks like video download from S3 for models that generate media. This frees you from model-specific guesswork and ensures more reliable interactions with less overhead.
+4. **Built-In Model Validations & Automation**: pwshBedrock includes guardrails for each model's unique constraints—such as max token limits—and automates file conversions (e.g., base64 encoding for image uploads). It also handles tasks like video download from S3 for models that generate media. This frees you from model-specific guesswork and ensures more reliable interactions with less overhead.
 
 While more advanced users may find value in learning the specifics of a particular model and making direct calls with `Invoke-BDRRModel` or `Invoke-BDRRConverse`, pwshBedrock serves as a streamlined option that simplifies the process and enhances productivity for most use cases.
 
@@ -59,7 +59,7 @@ Choosing the right model depends on your specific use case, as each model excels
 
 There is no single model that excels in all areas. If you need a general recommendation, the Anthropic Claude 3 models are a good choice. They support advanced features, including vision (image evaluation), and generally perform well across various categories.
 
-pwshBedrock also has the `Get-ModelInfo` function which can give you quick insight into the various model's capabitilties.
+pwshBedrock also has the `Get-ModelInfo` function which can give you quick insight into the various model's capabilities.
 
 Here are some model links to learn about the respective models:
 
@@ -67,14 +67,14 @@ Here are some model links to learn about the respective models:
 - [Jurassic-2 models](https://docs.ai21.com/docs/jurassic-2-models)
 - [Amazon Titan Image Generator G1 model](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-image-models.html)
 - [Amazon Titan Text models](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-text-models.html)
-- [Anthropic Calude Models](https://docs.anthropic.com/en/docs/about-claude/models)
+- [Anthropic Claude Models](https://docs.anthropic.com/en/docs/about-claude/models)
 - [Cohere Models Overview](https://docs.cohere.com/docs/models)
     - [Command R](https://docs.cohere.com/docs/command-r)
     - [Command R+](https://docs.cohere.com/docs/command-r-plus)
 - [Meta Model Cards](https://llama.meta.com/docs/model-cards-and-prompt-formats)
     -[Llama 2](https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-2/)
     -[Llama 3](https://llama.meta.com/docs/model-cards-and-prompt-formats/meta-llama-3/)
-- [Mistal AI Models Overview]([Models](https://docs.mistral.ai/getting-started/models/))
+- [Mistral AI Models Overview]([Models](https://docs.mistral.ai/getting-started/models/))
 - [Stability AI](https://platform.stability.ai/docs/legacy/grpc-api/features/text-to-image)
 
 ## How do I pass credentials to pwshBedrock?

@@ -611,7 +611,7 @@ function Invoke-AmazonImageModel {
             if ($NegativeText) {
                 $bodyObj.inPaintingParams.Add('negativeText', $NegativeText)
             }
-        } #inpaint
+        } #inPaint
         'OutPaint' {
             # validate that either $OutPaintMaskPrompt or $OutPaintMaskImagePath is provided
             if (-not ($OutPaintMaskPrompt -or $OutPaintMaskImagePath)) {
@@ -676,7 +676,7 @@ function Invoke-AmazonImageModel {
             if ($NegativeText) {
                 $bodyObj.outPaintingParams.Add('negativeText', $NegativeText)
             }
-        } #outpaint
+        } #outPaint
         'Variation' {
             $bodyObj = @{
                 taskType             = 'IMAGE_VARIATION'
