@@ -98,6 +98,24 @@
 
     Sends a document message to the on-demand specified model via the Converse API. The model will provide a one sentence summary of the document.
 .EXAMPLE
+    $additionalModelRequestFields = [ordered]@{
+        thinking = [ordered]@{
+            type          = 'enabled'
+            budget_tokens = 1024
+        }
+    }
+    $invokeConverseAPISplat = @{
+        Message                    = 'Explain zero-point energy.'
+        ModelID                    = 'anthropic.claude-3-sonnet-20240229-v1:0'
+        SystemPrompt               = 'You are a physicist explaining zero-point energy to a layperson.'
+        AdditionalModelRequestField = $additionalModelRequestFields
+        Credential                 = $awsCredential
+        Region                     = 'us-west-2'
+    }
+    Invoke-ConverseAPI @invokeConverseAPISplat
+
+    Sends a message to the on-demand specified model via the Converse API. Additional parameters are provided to control the response generation. The additional model request field is used to enable thinking and set the budget tokens for the model's internal reasoning process.
+.EXAMPLE
     $tools = [PSCustomObject]@{
         Name        = 'restaurant'
         Description = 'This tool will look up restaurant information in a provided geographic area.'
@@ -456,7 +474,7 @@ function Invoke-ConverseAPI {
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'Additional inference parameters that the model supports, beyond the base set of inference parameters that Converse supports.')]
-        [PSObject]$AdditionalModelRequestField,
+        [System.Collections.Specialized.OrderedDictionary]$AdditionalModelRequestField,
 
         [Parameter(Mandatory = $false,
             HelpMessage = 'Additional model parameters field paths to return in the response.')]
@@ -806,7 +824,8 @@ function Invoke-ConverseAPI {
     }
 
     if ($AdditionalModelRequestField) {
-        $invokeBDRRConverseSplat.Add('AdditionalModelRequestField', $AdditionalModelRequestField)
+        $additionalModelRequestFieldDocument = [Amazon.Runtime.Documents.Document]::FromObject($AdditionalModelRequestField)
+        $invokeBDRRConverseSplat.Add('AdditionalModelRequestField', $additionalModelRequestFieldDocument)
     }
 
     if ($AdditionalModelResponseFieldPath) {

@@ -20,10 +20,10 @@ Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-ReturnFullObject] [-N
  [-MaxTokens <Int32>] [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>]
  [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>]
  [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
- [-AdditionalModelRequestField <PSObject>] [-AdditionalModelResponseFieldPath <String[]>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ### MessageDocumentSet
@@ -33,10 +33,10 @@ Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-DocumentPath <String[
  [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>]
  [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>]
  [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
- [-AdditionalModelRequestField <PSObject>] [-AdditionalModelResponseFieldPath <String[]>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ### MessageS3VideoSet
@@ -46,10 +46,10 @@ Invoke-ConverseAPI -ModelID <String> [-Message <String>] -S3Location <String> [-
  [-ReturnFullObject] [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>]
  [-Temperature <Single>] [-TopP <Single>] [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>]
  [-ToolName <String>] [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
- [-AdditionalModelRequestField <PSObject>] [-AdditionalModelResponseFieldPath <String[]>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ### MessageVideoSet
@@ -59,10 +59,10 @@ Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-VideoPath <String>] [
  [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>]
  [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>]
  [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
- [-AdditionalModelRequestField <PSObject>] [-AdditionalModelResponseFieldPath <String[]>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ### MessageImageSet
@@ -72,10 +72,10 @@ Invoke-ConverseAPI -ModelID <String> [-Message <String>] [-ImagePath <String[]>]
  [-NoContextPersist] [-MaxTokens <Int32>] [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>]
  [-SystemPrompt <String>] [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>]
  [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
- [-AdditionalModelRequestField <PSObject>] [-AdditionalModelResponseFieldPath <String[]>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ### ToolsResultsSet
@@ -85,10 +85,10 @@ Invoke-ConverseAPI -ModelID <String> [-ReturnFullObject] [-NoContextPersist] [-M
  [-StopSequences <String[]>] [-Temperature <Single>] [-TopP <Single>] [-SystemPrompt <String>]
  [-Tools <PSObject[]>] [-ToolChoice <String>] [-ToolName <String>] -ToolsResults <PSObject[]>
  [-GuardrailID <String>] [-GuardrailVersion <String>] [-GuardrailTrace <String>]
- [-AdditionalModelRequestField <PSObject>] [-AdditionalModelResponseFieldPath <String[]>] [-AccessKey <String>]
- [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
- [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
- [-SessionToken <String>] [<CommonParameters>]
+ [-AdditionalModelRequestField <OrderedDictionary>] [-AdditionalModelResponseFieldPath <String[]>]
+ [-AccessKey <String>] [-Credential <AWSCredentials>] [-EndpointUrl <String>]
+ [-NetworkCredential <PSCredential>] [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>]
+ [-SecretKey <String>] [-SessionToken <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -239,6 +239,30 @@ The model will provide a one sentence summary of the document.
 ### EXAMPLE 10
 
 ```powershell
+$additionalModelRequestFields = [ordered]@{
+    thinking = [ordered]@{
+        type          = 'enabled'
+        budget_tokens = 1024
+    }
+}
+$invokeConverseAPISplat = @{
+    Message                    = 'Explain zero-point energy.'
+    ModelID                    = 'anthropic.claude-3-sonnet-20240229-v1:0'
+    SystemPrompt               = 'You are a physicist explaining zero-point energy to a layperson.'
+    AdditionalModelRequestField = $additionalModelRequestFields
+    Credential                 = $awsCredential
+    Region                     = 'us-west-2'
+}
+Invoke-ConverseAPI @invokeConverseAPISplat
+```
+
+Sends a message to the on-demand specified model via the Converse API.
+Additional parameters are provided to control the response generation.
+The additional model request field is used to enable thinking and set the budget tokens for the model's internal reasoning process.
+
+### EXAMPLE 11
+
+```powershell
 $tools = [PSCustomObject]@{
     Name        = 'restaurant'
     Description = 'This tool will look up restaurant information in a provided geographic area.'
@@ -271,7 +295,7 @@ A tool is provided to answer the user's question.
 Additional parameters are provided to require the use of the tool and to specify the tool to use.
 This will prompt the model to return a tool-based response.
 
-### EXAMPLE 11
+### EXAMPLE 12
 
 ```powershell
 $tools = [PSCustomObject]@{
@@ -678,7 +702,7 @@ Accept wildcard characters: False
 Additional inference parameters that the model supports, beyond the base set of inference parameters that Converse supports.
 
 ```yaml
-Type: PSObject
+Type: OrderedDictionary
 Parameter Sets: (All)
 Aliases:
 

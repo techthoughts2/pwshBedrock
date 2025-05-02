@@ -21,6 +21,9 @@ InModuleScope 'pwshBedrock' {
                     Context = ''
                 }
             )
+            $script:Ordered = [ordered]@{
+                top_k = 10
+            }
         } #beforeAll
 
         Context 'Error' {
@@ -674,9 +677,7 @@ InModuleScope 'pwshBedrock' {
                     GuardrailID                      = 'guardrailID'
                     GuardrailVersion                 = '1'
                     GuardrailTrace                   = 'enabled'
-                    AdditionalModelRequestField      = [psobject]@{
-                        top_k = 10
-                    }
+                    AdditionalModelRequestField      = $script:Ordered
                     AdditionalModelResponseFieldPath = "/stop_sequence"
                     AccessKey                        = 'ak'
                     SecretKey                        = 'sk'
@@ -913,7 +914,7 @@ InModuleScope 'pwshBedrock' {
                 Mock -CommandName Invoke-BDRRConverse {
                     $response
                     $ModelID                                | Should -BeExactly 'anthropic.claude-3-sonnet-20240229-v1:0'
-                    $AdditionalModelRequestField            | Should -BeOfType [PSObject]
+                    $AdditionalModelRequestField            | Should -BeOfType [System.Collections.Specialized.OrderedDictionary]
                     $AdditionalModelResponseFieldPath       | Should -BeOfType [string]
                     # $ToolChoice_Any                         | Should -BeOfType [Amazon.BedrockRuntime.Model.AnyToolChoice]
                     # $GuardrailConfig_GuardrailIdentifier    | Should -BeExactly 'guardrailID'
@@ -947,9 +948,7 @@ InModuleScope 'pwshBedrock' {
                     GuardrailID                      = 'guardrailID'
                     GuardrailVersion                 = '1'
                     GuardrailTrace                   = 'enabled'
-                    AdditionalModelRequestField      = [PSObject]@{
-                        top_k = 10
-                    }
+                    AdditionalModelRequestField      = $script:Ordered
                     AdditionalModelResponseFieldPath = "/stop_sequence"
                     AccessKey                        = 'ak'
                     SecretKey                        = 'sk'

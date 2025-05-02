@@ -5,13 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.80.0] - **BREAKING CHANGES**
+## [0.85.0] - **BREAKING CHANGES**
 
 - Module changes:
     - Converse
         - `Invoke-ConverseAPI`
             - parameter `MediaPath` renamed to `ImagePath` - ***Breaking Change***
-            - Added new parameter `VideoPath` to support Vision models that can take video files
+            - parameter `AdditionalModelRequestField` change from type `PSObject` to `[System.Collections.Specialized.OrderedDictionary]` - ***Breaking Change***
+            - Fixed bug where use of `AdditionalModelRequestField` was not being properly formatted
+            - Added new parameters `VideoPath`, `S3Location`, and `S3BucketOwner` to support Vision models that can take video files
     - Updated model pricing to latest published model prices
 
 ## [0.75.0]
