@@ -559,6 +559,34 @@ User: "Hi there!
                         )
                     }
                     [PSCustomObject]@{
+                        ModelID = 'meta.llama4-maverick-17b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama4 maverick 17b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
+                        ModelID = 'meta.llama4-scout-17b-instruct-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Llama4 scout 17b instruct v1 context'
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    [PSCustomObject]@{
                         ModelID = 'mistral.mistral-7b-instruct-v0:2'
                         Context = @(
                             [PSCustomObject]@{

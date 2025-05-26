@@ -18,6 +18,7 @@
     // specifies the PowerShell coding style used in this project (https://github.com/PoshCode/PowerShellPracticeAndStyle/issues/81)
     "powershell.codeFormatting.preset": "Stroustrup",
     "cSpell.words": [
+        "agentic",
         "Allman",
         "apac",
         "BDRR",
@@ -45,6 +46,7 @@
         "luma",
         "mixtral",
         "Mogh",
+        "multimodal",
         "mybucket",
         "notcontains",
         "notlike",

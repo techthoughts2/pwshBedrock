@@ -147,6 +147,10 @@
 .LINK
     https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md
 .LINK
+    https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/
+.LINK
+    https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md
+.LINK
     https://www.llama.com/docs/how-to-guides/vision-capabilities/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html
@@ -190,7 +194,9 @@ function Invoke-MetaModel {
             'meta.llama3-2-3b-instruct-v1:0',
             'meta.llama3-2-11b-instruct-v1:0',
             'meta.llama3-2-90b-instruct-v1:0',
-            'meta.llama3-3-70b-instruct-v1:0'
+            'meta.llama3-3-70b-instruct-v1:0',
+            'meta.llama4-maverick-17b-instruct-v1:0',
+            'meta.llama4-scout-17b-instruct-v1:0'
         )]
         [string]$ModelID,
 

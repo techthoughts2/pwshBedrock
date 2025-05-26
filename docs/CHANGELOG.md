@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.90.0]
+
+- Module changes:
+    - Meta
+        - `Invoke-MetaModel`
+            - Added support for two new models: `meta.llama4-maverick-17b-instruct-v1:0`, `meta.llama4-scout-17b-instruct-v1:0`
+
 ## [0.85.0] - **BREAKING CHANGES**
 
 - Module changes:

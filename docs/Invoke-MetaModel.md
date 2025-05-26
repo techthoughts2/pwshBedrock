@@ -538,6 +538,10 @@ For consistent and reliable interactions, it is recommended to set your desired 
 
 [https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md)
 
+[https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/](https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md](https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md)
+
 [https://www.llama.com/docs/how-to-guides/vision-capabilities/](https://www.llama.com/docs/how-to-guides/vision-capabilities/)
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html)
