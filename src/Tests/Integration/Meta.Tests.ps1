@@ -18,7 +18,9 @@ InModuleScope 'pwshBedrock' {
             Set-Location -Path $PSScriptRoot
             $assetPath = [System.IO.Path]::Combine($PSScriptRoot, '..', 'assets')
             $mediaFile = [System.IO.Path]::Combine($assetPath, 'tanagra.jpg')
+            $mediaFile2 = [System.IO.Path]::Combine($assetPath, 'jedicat_inpainting.png')
             $fullMediaFilePath = [System.IO.Path]::GetFullPath($mediaFile)
+            $fullMediaFilePath2 = [System.IO.Path]::GetFullPath($mediaFile2)
         } #beforeAll
 
         Context 'Standard Message' {
@@ -81,6 +83,28 @@ InModuleScope 'pwshBedrock' {
                 $invokeMetaModelSplat = @{
                     ImagePrompt      = 'Describe this image in two sentences.'
                     MediaPath        = $fullMediaFilePath
+                    ModelID          = $ModelID
+                    Credential       = $awsCredential
+                    Region           = 'us-west-2'
+                    NoContextPersist = $true
+                    ReturnFullObject = $true
+                    Verbose          = $false
+                }
+                $eval = Invoke-MetaModel @invokeMetaModelSplat
+                $eval | Should -BeOfType [System.Management.Automation.PSCustomObject]
+                $eval | Should -Not -BeNullOrEmpty
+                $eval.prompt_token_count | Should -Not -BeNullOrEmpty
+                $eval.generation_token_count | Should -Not -BeNullOrEmpty
+                $eval.generation | Should -Not -BeNullOrEmpty
+                $eval.stop_reason | Should -Not -BeNullOrEmpty
+                Write-Verbose -Message $eval.generation
+            } #it
+
+            It 'should return an object when provided a vision message with multiple images for <_.ModelId>' -Foreach ($script:metaModelInfo | Where-Object { $_.Vision -eq $true -and $_.ModelID -like '*llama4*' }) {
+                $ModelID = $_.ModelId
+                $invokeMetaModelSplat = @{
+                    ImagePrompt      = 'Compare these two images and describe the differences.'
+                    MediaPath        = @($fullMediaFilePath, $fullMediaFilePath2)
                     ModelID          = $ModelID
                     Credential       = $awsCredential
                     Region           = 'us-west-2'

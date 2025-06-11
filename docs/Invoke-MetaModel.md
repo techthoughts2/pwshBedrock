@@ -26,7 +26,7 @@ Invoke-MetaModel -Message <String> -ModelID <String> [-ReturnFullObject] [-NoCon
 ### ImageSet
 
 ```powershell
-Invoke-MetaModel -ImagePrompt <String> -MediaPath <String> -ModelID <String> [-ReturnFullObject]
+Invoke-MetaModel -ImagePrompt <String> -MediaPath <String[]> -ModelID <String> [-ReturnFullObject]
  [-NoContextPersist] [-MaxTokens <Int32>] [-Temperature <Single>] [-TopP <Single>] [-AccessKey <String>]
  [-Credential <AWSCredentials>] [-EndpointUrl <String>] [-NetworkCredential <PSCredential>]
  [-ProfileLocation <String>] [-ProfileName <String>] [-Region <Object>] [-SecretKey <String>]
@@ -56,7 +56,7 @@ input and output tokens and adds the estimate to the models tally information.
 ### EXAMPLE 1
 
 ```powershell
-Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-2-90b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
+Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama4-scout-17b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends a text message to the on-demand Meta model in the specified AWS region and returns the response.
@@ -64,7 +64,7 @@ Sends a text message to the on-demand Meta model in the specified AWS region and
 ### EXAMPLE 2
 
 ```powershell
-Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-2-90b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
+Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama4-scout-17b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 ```
 
 Sends a text message to the on-demand Meta model in the specified AWS region and returns the full response object.
@@ -82,7 +82,7 @@ Sends a text message to the on-demand Meta model in the specified AWS region and
 ```powershell
 $invokeMetaModelSplat = @{
     Message          = 'Explain zero-point energy.'
-    ModelID          = 'meta.llama3-2-90b-instruct-v1:0'
+    ModelID          = 'meta.llama4-scout-17b-instruct-v1:0'
     MaxTokens        = 2000
     SystemPrompt     = 'You are a deep thinking model with a galactic perspective'
     Credential       = $awsCredential
@@ -102,6 +102,21 @@ Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID '
 ```
 
 Sends an image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
+
+### EXAMPLE 6
+
+```powershell
+$invokeMetaModelSplat = @{
+    ImagePrompt      = 'Compare these two images and tell me which one is more colorful.'
+    ModelID          = 'meta.llama4-scout-17b-instruct-v1:0'
+    MediaPath        = @('C:\path\to\image1.jpg', 'C:\path\to\image2.jpg')
+    Credential       = $awsCredential
+    Region           = 'us-west-2'
+}
+Invoke-MetaModel @invokeMetaModelSplat
+```
+
+Send a multiple image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
 
 ## PARAMETERS
 
@@ -139,12 +154,13 @@ Accept wildcard characters: False
 
 ### -MediaPath
 
-File path to local media file.
+File path to local media file(s).
 The media files must adhere to the model's media requirements.
-Only large 3.2 vision models support media files.
+Only large 3.2 vision models support single media files.
+4.0 models support multiple media files.
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: ImageSet
 Aliases:
 
@@ -538,6 +554,14 @@ For consistent and reliable interactions, it is recommended to set your desired 
 
 [https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/vision_prompt_format.md)
 
+[https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/](https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md](https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md)
+
+[https://github.com/meta-llama/llama-models/blob/main/models/llama4/prompt_format.md](https://github.com/meta-llama/llama-models/blob/main/models/llama4/prompt_format.md)
+
 [https://www.llama.com/docs/how-to-guides/vision-capabilities/](https://www.llama.com/docs/how-to-guides/vision-capabilities/)
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html)
+
+[https://llama.developer.meta.com/docs/features/image-understanding](https://llama.developer.meta.com/docs/features/image-understanding)

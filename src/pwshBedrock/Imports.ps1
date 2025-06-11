@@ -307,6 +307,22 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'meta.llama4-maverick-17b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'meta.llama4-scout-17b-instruct-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'mistral.mistral-7b-instruct-v0:2'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -536,6 +552,14 @@ $Global:pwshBedrockModelContext = @(
     }
     [PSCustomObject]@{
         ModelId = 'meta.llama3-3-70b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama4-maverick-17b-instruct-v1:0'
+        Context = ''
+    }
+    [PSCustomObject]@{
+        ModelId = 'meta.llama4-scout-17b-instruct-v1:0'
         Context = ''
     }
     # [PSCustomObject]@{
@@ -1385,6 +1409,8 @@ $script:lumaModelInfo = @(
 # https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md
 # https://llama.meta.com/docs/model-cards-and-prompt-formats/llama3_1
 # https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/MODEL_CARD.md
+# https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/
+# https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md
 
 $script:metaModelInfo = @(
     [PSCustomObject]@{
@@ -1448,7 +1474,7 @@ $script:metaModelInfo = @(
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
-        ToolUse                    = $false
+        ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
         InferenceProfile           = $true
@@ -1472,7 +1498,7 @@ $script:metaModelInfo = @(
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
-        ToolUse                    = $false
+        ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
         InferenceProfile           = $true
@@ -1496,7 +1522,7 @@ $script:metaModelInfo = @(
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
-        ToolUse                    = $false
+        ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
         InferenceProfile           = $false # technically documentation says true, but it's not supported in the API call
@@ -1520,7 +1546,7 @@ $script:metaModelInfo = @(
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
-        ToolUse                    = $false
+        ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
         InferenceProfile           = $true
@@ -1544,7 +1570,7 @@ $script:metaModelInfo = @(
         Document                   = $true
         Vision                     = $false
         SystemPrompt               = $true
-        ToolUse                    = $false
+        ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
         InferenceProfile           = $true
@@ -1568,7 +1594,7 @@ $script:metaModelInfo = @(
         Document                   = $true
         Vision                     = $true
         SystemPrompt               = $true
-        ToolUse                    = $false
+        ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
         InferenceProfile           = $true
@@ -1592,7 +1618,7 @@ $script:metaModelInfo = @(
         Document                   = $true
         Vision                     = $true
         SystemPrompt               = $true
-        ToolUse                    = $false
+        ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
         InferenceProfile           = $true
@@ -1616,7 +1642,7 @@ $script:metaModelInfo = @(
         Document                   = $false
         Vision                     = $false
         SystemPrompt               = $true
-        ToolUse                    = $false
+        ToolUse                    = $true
         ResponseStreamingSupported = $true
         ChatHistorySupported       = $true
         InferenceProfile           = $true
@@ -1626,6 +1652,54 @@ $script:metaModelInfo = @(
         PayloadLimit               = ''
         InputTokenCost             = 0.00072
         OutputTokenCost            = 0.00072
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 4 Maverick (17Bx128E)'
+        ModelId                    = 'meta.llama4-maverick-17b-instruct-v1:0'
+        Description                = 'The Llama 4 collection of models are natively multimodal AI models that enable text and multimodal experiences. These models leverage a mixture-of-experts architecture to offer industry-leading performance in text and image understanding.'
+        Strength                   = 'optimized for multimodal understanding, multilingual tasks, coding, tool-calling, and powering agentic systems.'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 10000000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '08-01-2024'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00024
+        OutputTokenCost            = 0.00097
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Meta'
+        ModelName                  = 'Llama 4 Scout (17Bx16E) '
+        ModelId                    = 'meta.llama4-scout-17b-instruct-v1:0'
+        Description                = 'The Llama 4 collection of models are natively multimodal AI models that enable text and multimodal experiences. These models leverage a mixture-of-experts architecture to offer industry-leading performance in text and image understanding.'
+        Strength                   = 'optimized for multimodal understanding, multilingual tasks, coding, tool-calling, and powering agentic systems.'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $false
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 1000000
+        MaxOutput                  = 4096
+        TrainingCutoff             = '08-01-2024'
+        PayloadLimit               = ''
+        InputTokenCost             = 0.00017
+        OutputTokenCost            = 0.00066
     }
 ) #metaModelInfo
 

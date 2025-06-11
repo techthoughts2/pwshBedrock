@@ -162,6 +162,19 @@ Who is the best captain in Star Trek?[/INST]
                 } | Should -Throw
             } #it
 
+            It 'should throw if a 3.2 model is provided more than one image' {
+                {
+                    $invokeMetaModelSplat = @{
+                        ImagePrompt = 'Describe this image in two sentences.'
+                        MediaPath   = @('image1', 'image2')
+                        ModelID     = 'meta.llama3-2-90b-instruct-v1:0'
+                        ProfileName = 'default'
+                        Region      = 'us-west-2'
+                    }
+                    Invoke-MetaModel @invokeMetaModelSplat
+                } | Should -Throw
+            } #it
+
             It 'should throw if a tool is provided that does not pass tool validation' {
                 Mock -CommandName Test-MetaTool -MockWith { $false }
                 {
@@ -720,6 +733,106 @@ Who is the best captain in Star Trek?[/INST]
                 Should -Invoke Invoke-BDRRModel -Exactly 1 -Scope It
                 Should -Invoke ConvertFrom-MemoryStreamToString -Exactly 1 -Scope It
                 Should -Invoke Add-ModelCostEstimate -Exactly 1 -Scope It
+            } #it
+
+            It 'should handle Llama 4 function call pattern correctly' {
+                Mock -CommandName ConvertFrom-MemoryStreamToString -MockWith {
+                    @'
+{
+    "generation": "[spotify_trending_songs(n=\"5\"), weather_forecast(location=\"San Francisco\")]",
+    "prompt_token_count": 16,
+    "generation_token_count": 68,
+    "stop_reason": "stop"
+}
+'@
+                } #endMock
+                $Global:pwshBedrockModelContext = @(
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama4-scout-17b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                )
+                $invokeMetaModelSplat = @{
+                    Message     = 'Get trending songs and weather'
+                    ModelID     = 'meta.llama4-scout-17b-instruct-v1:0'
+                    Tools       = $standardTools
+                    ProfileName = 'default'
+                    Region      = 'us-west-2'
+                }
+                $result = Invoke-MetaModel @invokeMetaModelSplat
+                $result | Should -BeOfType [System.String]
+                $parsedResult = $result | ConvertFrom-Json
+                $parsedResult.Count | Should -BeExactly 2
+                $parsedResult[0].name | Should -BeExactly 'spotify_trending_songs'
+                $parsedResult[0].args.n | Should -BeExactly '5'
+                $parsedResult[1].name | Should -BeExactly 'weather_forecast'
+                $parsedResult[1].args.location | Should -BeExactly 'San Francisco'
+            } #it
+
+            It 'should return function content when Llama 4 function call is detected' {
+                Mock -CommandName ConvertFrom-MemoryStreamToString -MockWith {
+                    @'
+{
+    "generation": "[get_weather(city=\"Seattle\")]",
+    "prompt_token_count": 16,
+    "generation_token_count": 68,
+    "stop_reason": "stop"
+}
+'@
+                } #endMock
+                $Global:pwshBedrockModelContext = @(
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama4-scout-17b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                )
+                $invokeMetaModelSplat = @{
+                    Message     = 'What is the weather in Seattle?'
+                    ModelID     = 'meta.llama4-scout-17b-instruct-v1:0'
+                    Tools       = $standardTools
+                    ProfileName = 'default'
+                    Region      = 'us-west-2'
+                }
+                $result = Invoke-MetaModel @invokeMetaModelSplat
+                $result | Should -BeOfType [System.String]
+                $parsedResult = $result | ConvertFrom-Json
+                $parsedResult.name | Should -BeExactly 'get_weather'
+                $parsedResult.args.city | Should -BeExactly 'Seattle'
+            } #it
+
+            It 'should return full object with function content when ReturnFullObject and Llama 4 function call' {
+                Mock -CommandName ConvertFrom-MemoryStreamToString -MockWith {
+                    @'
+{
+    "generation": "[calculate(expression=\"2+2\")]",
+    "prompt_token_count": 16,
+    "generation_token_count": 68,
+    "stop_reason": "stop"
+}
+'@
+                } #endMock
+                $Global:pwshBedrockModelContext = @(
+                    [PSCustomObject]@{
+                        ModelId = 'meta.llama4-scout-17b-instruct-v1:0'
+                        Context = 'test'
+                    }
+                )
+                $invokeMetaModelSplat = @{
+                    Message          = 'Calculate 2+2'
+                    ModelID          = 'meta.llama4-scout-17b-instruct-v1:0'
+                    Tools            = $standardTools
+                    ProfileName      = 'default'
+                    Region           = 'us-west-2'
+                    ReturnFullObject = $true
+                }
+                $result = Invoke-MetaModel @invokeMetaModelSplat
+                $result | Should -BeOfType [System.Management.Automation.PSCustomObject]
+                $result.prompt_token_count | Should -BeExactly '16'
+                $result.generation_token_count | Should -BeExactly '68'
+                $jsonEval = $result.generation | ConvertFrom-Json
+                $jsonEval.Name | Should -BeExactly 'calculate'
+                $jsonEval.Args.expression | Should -BeExactly '2+2'
+                # $result.generation | Should -BeExactly '[calculate(expression="2+2")]'
             } #it
 
         } #context_Success

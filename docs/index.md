@@ -161,10 +161,10 @@ Invoke-LumaAIModel -VideoPrompt 'A cat playing with a ball' -S3OutputURI 's3://m
 ```powershell
 #------------------------------------------------------------------------------------------------
 # Sends a text message to the on-demand Meta model in the specified AWS region and returns the response.
-Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-8b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
+Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama4-scout-17b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 # Sending a media file to a Meta model and retrieving the response
-Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
+Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama4-scout-17b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 ```
 

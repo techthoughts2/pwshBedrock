@@ -12,6 +12,8 @@
     Tests the image located at 'C:\path\to\image.jpg' for Meta compatibility.
 .PARAMETER MediaPath
     File path to local media file.
+.PARAMETER ModelID
+    The unique identifier of the model.
 .OUTPUTS
     System.Boolean
 .NOTES
@@ -25,6 +27,8 @@
 
     https://old.reddit.com/r/LocalLLaMA/comments/1fqawht/llama_32_vision_models_image_pixel_limits/
     1120x1120 is the max supported image size.
+.LINK
+    https://llama.developer.meta.com/docs/features/image-understanding
 .COMPONENT
     pwshBedrock
 #>
@@ -37,7 +41,26 @@ function Test-MetaMedia {
             HelpMessage = 'File path to local media file.')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
-        [string]$MediaPath
+        [string]$MediaPath,
+
+        [Parameter(Mandatory = $true,
+            HelpMessage = 'The unique identifier of the model.')]
+        [ValidateSet(
+            'meta.llama3-2-90b-instruct-v1:0',
+            'meta.llama3-8b-instruct-v1:0',
+            'meta.llama3-70b-instruct-v1:0',
+            'meta.llama3-1-8b-instruct-v1:0',
+            'meta.llama3-1-70b-instruct-v1:0',
+            'meta.llama3-1-405b-instruct-v1:0',
+            'meta.llama3-2-1b-instruct-v1:0',
+            'meta.llama3-2-3b-instruct-v1:0',
+            'meta.llama3-2-11b-instruct-v1:0',
+            'meta.llama3-2-90b-instruct-v1:0',
+            'meta.llama3-3-70b-instruct-v1:0',
+            'meta.llama4-maverick-17b-instruct-v1:0',
+            'meta.llama4-scout-17b-instruct-v1:0'
+        )]
+        [string]$ModelID
     )
 
     $result = $true # Assume success
@@ -95,8 +118,8 @@ function Test-MetaMedia {
     }
 
     $mediaSize = $mediaFileInfo.Length
-    if ($mediaSize -gt 5MB) {
-        Write-Warning -Message ('The specified media size: {0} exceeds the Meta maximum allowed image file size of 5MB.' -f $mediaSize)
+    if ($mediaSize -gt 25MB) {
+        Write-Warning -Message ('The specified media size: {0} exceeds the Meta maximum allowed image file size of 25MB.' -f $mediaSize)
         $result = $false
         return $result
     } #if_mediaSize
@@ -105,14 +128,21 @@ function Test-MetaMedia {
     } #else_mediaSize
 
 
-    Write-Verbose -Message 'Verifying media resolution...'
-    $resolution = Get-ImageResolution -MediaPath $MediaPath
+    # only check resolution for 3.2 models
+    if ($ModelID -like 'meta.llama3-2-*') {
+        Write-Verbose -Message 'Model is a 3.2 model, checking resolution...'
 
-    if ($resolution.Width -gt 1120 -or $resolution.Height -gt 1120) {
-        Write-Warning -Message ('The specified media size: {0}x{1} exceeds the Meta recommendation to keep the long edge of the image below 1120.' -f $width, $height)
-        $result = $false
-        return $result
-    } #if_size
+        Write-Verbose -Message 'Verifying media resolution...'
+        $resolution = Get-ImageResolution -MediaPath $MediaPath
+
+        if ($resolution.Width -gt 1120 -or $resolution.Height -gt 1120) {
+            Write-Warning -Message ('The specified media size: {0}x{1} exceeds the Meta recommendation to keep the long edge of the image below 1120.' -f $width, $height)
+            $result = $false
+        } #if_size
+    } #if_3_2_model
+    else {
+        Write-Verbose -Message 'Model is not a 3.2 model, skipping resolution check...'
+    } #else_3_2_model
 
     return $result
 
