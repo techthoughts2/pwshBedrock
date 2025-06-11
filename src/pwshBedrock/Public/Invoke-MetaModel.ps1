@@ -8,11 +8,11 @@
     The cmdlet also estimates the cost of model usage based on the provided
     input and output tokens and adds the estimate to the models tally information.
 .EXAMPLE
-    Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-2-90b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
+    Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama4-scout-17b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2'
 
     Sends a text message to the on-demand Meta model in the specified AWS region and returns the response.
 .EXAMPLE
-    Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama3-2-90b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
+    Invoke-MetaModel -Message 'Explain zero-point energy.' -ModelID 'meta.llama4-scout-17b-instruct-v1:0' -Credential $awsCredential -Region 'us-west-2' -ReturnFullObject
 
     Sends a text message to the on-demand Meta model in the specified AWS region and returns the full response object.
 .EXAMPLE
@@ -22,7 +22,7 @@
 .EXAMPLE
     $invokeMetaModelSplat = @{
         Message          = 'Explain zero-point energy.'
-        ModelID          = 'meta.llama3-2-90b-instruct-v1:0'
+        ModelID          = 'meta.llama4-scout-17b-instruct-v1:0'
         MaxTokens        = 2000
         SystemPrompt     = 'You are a deep thinking model with a galactic perspective'
         Credential       = $awsCredential
@@ -37,14 +37,26 @@
     Invoke-MetaModel -ImagePrompt 'Describe this image in two sentences.' -ModelID 'meta.llama3-2-11b-instruct-v1:0' -MediaPath 'C:\path\to\image.jpg' -Credential $awsCredential -Region 'us-west-2'
 
     Sends an image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
+.EXAMPLE
+    $invokeMetaModelSplat = @{
+        ImagePrompt      = 'Compare these two images and tell me which one is more colorful.'
+        ModelID          = 'meta.llama4-scout-17b-instruct-v1:0'
+        MediaPath        = @('C:\path\to\image1.jpg', 'C:\path\to\image2.jpg')
+        Credential       = $awsCredential
+        Region           = 'us-west-2'
+    }
+    Invoke-MetaModel @invokeMetaModelSplat
+
+    Send a multiple image prompt to the Vision-Instruct Meta model in the specified AWS region and returns the response.
 .PARAMETER Message
     The message to be sent to the model.
 .PARAMETER ImagePrompt
     The prompt to the Vision-Instruct model.
 .PARAMETER MediaPath
-    File path to local media file.
+    File path to local media file(s).
     The media files must adhere to the model's media requirements.
-    Only large 3.2 vision models support media files.
+    Only large 3.2 vision models support single media files.
+    4.0 models support multiple media files.
 .PARAMETER ModelID
     The unique identifier of the model.
 .PARAMETER ReturnFullObject
@@ -151,9 +163,13 @@
 .LINK
     https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md
 .LINK
+    https://github.com/meta-llama/llama-models/blob/main/models/llama4/prompt_format.md
+.LINK
     https://www.llama.com/docs/how-to-guides/vision-capabilities/
 .LINK
     https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html
+.LINK
+    https://llama.developer.meta.com/docs/features/image-understanding
 #>
 function Invoke-MetaModel {
     [CmdletBinding()]
@@ -175,11 +191,11 @@ function Invoke-MetaModel {
         [string]$ImagePrompt,
 
         [Parameter(Mandatory = $true,
-            HelpMessage = 'File path to local media file.',
+            HelpMessage = 'File path to local media file(s).',
             ParameterSetName = 'ImageSet')]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
-        [string]$MediaPath,
+        [string[]]$MediaPath,
 
         [Parameter(Mandatory = $true,
             HelpMessage = 'The unique identifier of the model.')]
@@ -310,14 +326,25 @@ function Invoke-MetaModel {
             throw 'Vision is not supported for this model.'
         }
 
+        if ($ModelID -like 'meta.llama3-2-*') {
+            # 3.2 models only support a single image at a time
+            if ($MediaPath.Count -gt 1) {
+                Write-Warning -Message 'You provided multiple media paths for a 3.2 model. Only one media path is supported.'
+                throw 'Only one media path is supported for 3.2 models.'
+            }
+        }
+        # Convert all media files to base64 efficiently using a generic list
+        $base64Images = [System.Collections.Generic.List[string]]::new()
         foreach ($media in $MediaPath) {
-            if (-not (Test-MetaMedia -MediaPath $media)) {
+            $base64 = $null
+            if (-not (Test-MetaMedia -MediaPath $media -ModelID $ModelID )) {
                 throw ('Media test for {0} failed.' -f $media)
             }
 
             Write-Verbose -Message ('Converting media to base64: {0}' -f $media)
             try {
                 $base64 = Convert-MediaToBase64 -MediaPath $media
+                $base64Images.Add($base64)
             }
             catch {
                 throw ('Unable to convert media to base64: {0}' -f $media)
@@ -327,18 +354,19 @@ function Invoke-MetaModel {
         $formatMetaTextMessageSplat = @{
             Role             = 'User'
             ImagePrompt      = $ImagePrompt
+            ImageCount       = $MediaPath.Count
             ModelID          = $ModelID
             NoContextPersist = $NoContextPersist
         }
         $formattedMessages = Format-MetaTextMessage @formatMetaTextMessageSplat
 
-        $bodyObj.Add('images', @($base64))
+        $bodyObj.Add('images', $base64Images.ToArray())
 
     } #MediaPath
     elseif ($Tools) {
         Write-Verbose -Message 'Tools provided.'
         # tools is only supported for models 3.1 and above
-        if ($ModelID -like 'meta.llama3-1-*' -or $ModelID -like 'meta.llama3-2-*') {
+        if ($ModelID -like 'meta.llama3-1-*' -or $ModelID -like 'meta.llama3-2-*' -or $Message -like 'meta.llama3-3-*' -or $ModelID -like 'meta.llama4-*') {
             Write-Debug -Message 'Model supports tools.'
         }
         else {
@@ -346,7 +374,7 @@ function Invoke-MetaModel {
             throw 'Tools are not supported for this model.'
         }
         # Tools - must be formed properly
-        $toolsEval = Test-MetaTool -Tools $Tools
+        $toolsEval = Test-MetaTool -Tools $Tools -ModelID $ModelID
         if ($toolsEval -ne $true) {
             throw 'Tools validation failed.'
         }
@@ -368,7 +396,7 @@ function Invoke-MetaModel {
     elseif ($ToolsResults) {
         Write-Verbose -Message 'Tools results provided.'
         # tools is only supported for models 3.1 and above
-        if ($ModelID -like 'meta.llama3-1-*' -or $ModelID -like 'meta.llama3-2-*') {
+        if ($ModelID -like 'meta.llama3-1-*' -or $ModelID -like 'meta.llama3-2-*' -or $Message -like 'meta.llama3-3-*' -or $ModelID -like 'meta.llama4-*') {
             Write-Debug -Message 'Model supports tools.'
         }
         else {
@@ -548,18 +576,49 @@ function Invoke-MetaModel {
     Write-Verbose -Message 'Adding response to model context history.'
     $content = $response.generation
 
+    # special handling for Llama 4 function calls
+    $text = $response.generation.Trim()
+    $callListPattern = '^\[\s*\w+\([^)]*\)(?:\s*,\s*\w+\([^)]*\))*\s*\]$'
+
     if ($content -like '*<function=*</function>*') {
         $functionReturn = $true
-        Write-Debug -Message 'Function detected in response.'
+        Write-Debug -Message 'Llama 3 Function detected in response.'
         $role = 'ipython'
         # we need to retrieve just the json from the function return like: <function=spotify_trending_songs>{"n": 5}</function>
         $jsonFunctionContent = [regex]::Match($content, '<function=.*?>(.*?)</function>').Groups[1].Value
         $response.generation = $jsonFunctionContent
     }
+    elseif ($text -match $callListPattern) {
+        $functionReturn = $true
+        Write-Debug -Message 'Llama 4 Function detected in response.'
+        $role = 'ipython'
+
+        $callPattern = '(\w+)\(([^)]*)\)'
+        $allMatches = [regex]::Matches($text, $callPattern)
+
+        $results = foreach ($m in $allMatches) {
+            $funcName = $m.Groups[1].Value
+            $rawArgs = $m.Groups[2].Value
+
+            $pairs = [regex]::Matches($rawArgs, '(\w+)="([^"]*)"')
+            $argHash = @{}
+            foreach ($pair in $pairs) {
+                $argHash[$pair.Groups[1].Value] = $pair.Groups[2].Value
+            }
+
+            [PSCustomObject]@{
+                name = $funcName
+                args = $argHash
+            }
+        }
+
+        $jsonFunctionContent = $results | ConvertTo-Json -Depth 5
+        $response.generation = $jsonFunctionContent
+    }
     else {
         Write-Debug -Message 'No function detected in response.'
         $functionReturn = $false
-        $role = 'Model'
+        $role = 'Assistant'
     }
     $formatMetaTextMessageSplat = @{
         Role             = $role
