@@ -32,6 +32,8 @@ InModuleScope 'pwshBedrock' {
                 'anthropic.claude-3-5-sonnet-20241022-v2:0',
                 'anthropic.claude-3-5-sonnet-20240620-v1:0',
                 'anthropic.claude-3-7-sonnet-20250219-v1:0',
+                'anthropic.claude-opus-4-20250514-v1:0',
+                'anthropic.claude-sonnet-4-20250514-v1:0',
                 # 'cohere.command-text-v14', # *note: not supported by Converse API
                 # 'cohere.command-light-text-v14', # *note: not supported by Converse API
                 'cohere.command-r-v1:0',

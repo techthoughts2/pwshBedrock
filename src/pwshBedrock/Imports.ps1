@@ -182,6 +182,22 @@ $Global:pwshBedRockSessionModelTally = @(
         OutputTokenCost  = 0
     }
     [PSCustomObject]@{
+        ModelId          = 'anthropic.claude-sonnet-4-20250514-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
+        ModelId          = 'anthropic.claude-opus-4-20250514-v1:0'
+        TotalCost        = 0
+        InputTokenCount  = 0
+        OutputTokenCount = 0
+        InputTokenCost   = 0
+        OutputTokenCost  = 0
+    }
+    [PSCustomObject]@{
         ModelId          = 'cohere.command-text-v14'
         TotalCost        = 0
         InputTokenCount  = 0
@@ -494,6 +510,14 @@ $Global:pwshBedrockModelContext = @(
         ModelId = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
         Context = New-Object System.Collections.Generic.List[object]
     }
+    [PSCustomObject]@{
+        ModelId = 'anthropic.claude-sonnet-4-20250514-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
+    [PSCustomObject]@{
+        ModelId = 'anthropic.claude-opus-4-20250514-v1:0'
+        Context = New-Object System.Collections.Generic.List[object]
+    }
     # [PSCustomObject]@{
     #     ModelId = 'cohere.command-text-v14'
     #     Context = New-Object System.Collections.Generic.List[object]
@@ -777,7 +801,7 @@ $script:anthropicModelInfo = @(
         ModelName                  = 'Claude 3.7 Sonnet'
         ModelId                    = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
         Description                = 'Most intelligent model'
-        Strength                   = 'Highest level of intelligence and capability with toggleable extended thinking'
+        Strength                   = 'High intelligence with toggleable extended thinking'
         Multilingual               = $true
         Text                       = $true
         Image                      = $false
@@ -816,6 +840,54 @@ $script:anthropicModelInfo = @(
         ContextWindow              = 200000
         MaxOutput                  = 4096
         TrainingCutoff             = '08-01-2023'
+        PayloadLimit               = '20MB'
+        InputTokenCost             = 0.015
+        OutputTokenCost            = 0.075
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Anthropic'
+        ModelName                  = 'Claude Opus 4'
+        ModelId                    = 'anthropic.claude-opus-4-20250514-v1:0'
+        Description                = 'Our most capable model'
+        Strength                   = 'Highest level of intelligence and capability'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $true
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 200000
+        MaxOutput                  = 32000
+        TrainingCutoff             = '03-01-2025'
+        PayloadLimit               = '20MB'
+        InputTokenCost             = 0.015
+        OutputTokenCost            = 0.075
+    }
+    [PSCustomObject]@{
+        ProviderName               = 'Anthropic'
+        ModelName                  = 'Claude Sonnet 4'
+        ModelId                    = 'anthropic.claude-sonnet-4-20250514-v1:0'
+        Description                = 'High-performance model'
+        Strength                   = 'High intelligence and balanced performance'
+        Multilingual               = $true
+        Text                       = $true
+        Image                      = $false
+        Video                      = $false
+        Document                   = $true
+        Vision                     = $true
+        SystemPrompt               = $true
+        ToolUse                    = $true
+        ResponseStreamingSupported = $true
+        ChatHistorySupported       = $true
+        InferenceProfile           = $true
+        ContextWindow              = 200000
+        MaxOutput                  = 64000
+        TrainingCutoff             = '03-01-2025'
         PayloadLimit               = '20MB'
         InputTokenCost             = 0.015
         OutputTokenCost            = 0.075
