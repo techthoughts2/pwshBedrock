@@ -547,7 +547,7 @@ InModuleScope 'pwshBedrock' {
                 } | Should -Throw
             } #it
 
-            It 'should throw if Thinking parameter is used with a non-Claude 3.7 model' {
+            It 'should throw if Thinking parameter is used with an unsupported model' {
                 {
                     $invokeAnthropicModelSplat = @{
                         Message              = 'Tell me about the universe.'
@@ -559,7 +559,7 @@ InModuleScope 'pwshBedrock' {
                         Region               = 'us-west-2'
                     }
                     Invoke-AnthropicModel @invokeAnthropicModelSplat
-                } | Should -Throw -ExpectedMessage 'Thinking is only available for the Claude 3.7 model.'
+                } | Should -Throw -ExpectedMessage 'Thinking is only available for Claude 3.7 and Claude 4 models.'
             } #it
 
             It 'should throw if Thinking parameter is used without ThinkingBudgetTokens' {
@@ -981,6 +981,51 @@ InModuleScope 'pwshBedrock' {
                     Region           = 'us-west-2'
                 }
                 Invoke-AnthropicModel @invokeAnthropicModelSplat | Should -InvokeVerifiable
+            } #it
+
+            It 'should successfully use Thinking with Claude 4 Opus model' {
+                $invokeAnthropicModelSplat = @{
+                    Message              = 'Explain quantum mechanics.'
+                    ModelID              = 'anthropic.claude-opus-4-20250514-v1:0'
+                    Thinking             = $true
+                    ThinkingBudgetTokens = 2000
+                    AccessKey            = 'ak'
+                    SecretKey            = 'sk'
+                    Region               = 'us-west-2'
+                }
+                $result = Invoke-AnthropicModel @invokeAnthropicModelSplat
+                $result | Should -BeOfType [System.String]
+                $result | Should -BeExactly 'Hello! I am an AI language model.'
+            } #it
+
+            It 'should successfully use Thinking with Claude 4 Sonnet model' {
+                $invokeAnthropicModelSplat = @{
+                    Message              = 'Explain quantum mechanics.'
+                    ModelID              = 'anthropic.claude-sonnet-4-20250514-v1:0'
+                    Thinking             = $true
+                    ThinkingBudgetTokens = 1500
+                    AccessKey            = 'ak'
+                    SecretKey            = 'sk'
+                    Region               = 'us-west-2'
+                }
+                $result = Invoke-AnthropicModel @invokeAnthropicModelSplat
+                $result | Should -BeOfType [System.String]
+                $result | Should -BeExactly 'Hello! I am an AI language model.'
+            } #it
+
+            It 'should successfully use Thinking with Claude 3.7 model' {
+                $invokeAnthropicModelSplat = @{
+                    Message              = 'Explain quantum mechanics.'
+                    ModelID              = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+                    Thinking             = $true
+                    ThinkingBudgetTokens = 1024
+                    AccessKey            = 'ak'
+                    SecretKey            = 'sk'
+                    Region               = 'us-west-2'
+                }
+                $result = Invoke-AnthropicModel @invokeAnthropicModelSplat
+                $result | Should -BeOfType [System.String]
+                $result | Should -BeExactly 'Hello! I am an AI language model.'
             } #it
 
         } #context_Success

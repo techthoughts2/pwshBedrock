@@ -199,6 +199,34 @@ InModuleScope 'pwshBedrock' {
                         )
                     },
                     [PSCustomObject]@{
+                        ModelID = 'anthropic.claude-opus-4-20250514-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Opus 4 context'
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    [PSCustomObject]@{
+                        ModelID = 'anthropic.claude-sonnet-4-20250514-v1:0'
+                        Context = @(
+                            [PSCustomObject]@{
+                                role    = 'user'
+                                content = @(
+                                    [PSCustomObject]@{
+                                        type = 'text'
+                                        text = 'Sonnet 4 context'
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    [PSCustomObject]@{
                         ModelID = 'anthropic.claude-3-opus-20240229-v1:0'
                         Context = @(
                             [PSCustomObject]@{

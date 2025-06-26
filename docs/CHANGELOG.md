@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.2.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.95.0]
+
+- Module changes:
+    - Anthropic
+        - `Invoke-AnthropicModel`
+            - Added support for two new models: `anthropic.claude-opus-4-20250514-v1:0`, `anthropic.claude-sonnet-4-20250514-v1:0`
+
 ## [0.90.0]
 
 - Module changes:

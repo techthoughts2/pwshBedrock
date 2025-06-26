@@ -144,6 +144,20 @@ InModuleScope 'pwshBedrock' {
                             content = 'test'
                         }
                     }
+                    [PSCustomObject]@{
+                        ModelId = 'anthropic.claude-opus-4-20250514-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
+                    [PSCustomObject]@{
+                        ModelId = 'anthropic.claude-sonnet-4-20250514-v1:0'
+                        Context = [PSCustomObject]@{
+                            role    = 'user'
+                            content = 'test'
+                        }
+                    }
                     # [PSCustomObject]@{
                     #     ModelId = 'cohere.command-text-v14'
                     #     Context = [PSCustomObject]@{
