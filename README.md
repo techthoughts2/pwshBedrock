@@ -130,10 +130,10 @@ Invoke-AmazonNovaTextModel -Message 'Explain zero-point energy.' -ModelID 'amazo
 ```powershell
 #------------------------------------------------------------------------------------------------
 # Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the response.
-Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-sonnet-4-20250514-v1:0' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 # Sending a media file to an Anthropic model and retrieving the response
-Invoke-AnthropicModel -Message 'What can you tell me about this picture?' -ModelID 'anthropic.claude-3-5-sonnet-20241022-v2:0' -MediaPath 'C:\images\tanagra.jpg' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AnthropicModel -Message 'What can you tell me about this picture?' -ModelID 'anthropic.claude-sonnet-4-20250514-v1:0' -MediaPath 'C:\images\tanagra.jpg' -Credential $awsCredential -Region 'us-west-2'
 #------------------------------------------------------------------------------------------------
 ```
 

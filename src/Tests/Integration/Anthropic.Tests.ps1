@@ -77,7 +77,7 @@ InModuleScope 'pwshBedrock' {
                 Write-Verbose -Message $eval.content.text
             } #it
 
-            It 'should return an object with thinking and reasoning when provided a standard message for <_.ModelID>' -Foreach ($script:anthropicModelInfo | Where-Object { $_.ModelID -eq 'anthropic.claude-3-7-sonnet-20250219-v1:0' }) {
+            It 'should return an object with thinking and reasoning when provided a standard message for <_.ModelID>' -Foreach ($script:anthropicModelInfo | Where-Object { $_.ModelID -eq 'anthropic.claude-3-7-sonnet-20250219-v1:0' -or $_.ModelID -like 'anthropic.claude-*-4*' }) {
                 $ModelID = $_.ModelID
                 $invokeAnthropicModelSplat = @{
                     Message              = 'Return the number 1 as a string'

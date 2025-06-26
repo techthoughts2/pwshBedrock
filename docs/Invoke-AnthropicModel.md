@@ -69,7 +69,7 @@ See the pwshBedrock documentation for more information on Function Calling and t
 ### EXAMPLE 1
 
 ```powershell
-Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -Credential $awsCredential -Region 'us-west-2'
+Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-sonnet-4-20250514-v1:0' -Credential $awsCredential -Region 'us-west-2'
 ```
 
 Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the response.
@@ -77,7 +77,7 @@ Sends a text message to the on-demand Anthropic model in the specified AWS regio
 ### EXAMPLE 2
 
 ```powershell
-Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2' -ReturnFullObject
+Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-sonnet-4-20250514-v1:0' -ProfileName default -Region 'us-west-2' -ReturnFullObject
 ```
 
 Sends a text message to the on-demand Anthropic model in the specified AWS region and returns the full response object.
@@ -85,7 +85,7 @@ Sends a text message to the on-demand Anthropic model in the specified AWS regio
 ### EXAMPLE 3
 
 ```powershell
-Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-3-5-haiku-20241022-v1:0' -ProfileName default -Region 'us-west-2' -NoContextPersist
+Invoke-AnthropicModel -Message 'Explain zero-point energy.' -ModelID 'anthropic.claude-sonnet-4-20250514-v1:0' -ProfileName default -Region 'us-west-2' -NoContextPersist
 ```
 
 Sends a text message to the on-demand Anthropic model in the specified AWS region without persisting the conversation context history.
@@ -96,7 +96,7 @@ This is useful for one-off interactions.
 ```powershell
 $invokeAnthropicModelSplat = @{
     Message    = 'What can you tell me about this picture? Is it referencing something?'
-    ModelID    = 'anthropic.claude-3-sonnet-20240229-v1:0'
+    ModelID    = 'anthropic.claude-sonnet-4-20250514-v1:0'
     MediaPath  = 'C:\images\tanagra.jpg'
     AccessKey  = 'xxxxxxxxxxxxxxxxxxxx'
     SecretKey  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
@@ -112,7 +112,7 @@ Sends a text message with a media file to the on-demand Anthropic model in the s
 ```powershell
 $invokeAnthropicModelSplat = @{
     Message          = 'Give a brief synopsis to your class of students of what this picture represented a hundreds years ago.'
-    ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
+    ModelID          = 'anthropic.claude-sonnet-4-20250514-v1:0'
     MediaPath        = 'C:\images\tanagra.jpg'
     Temperature      = 1
     SystemPrompt     = 'You are a historian from the future who has studied the provided photo for many years.'
@@ -131,7 +131,7 @@ Temperature is set to 1 for creative responses.
 ```powershell
 $invokeAnthropicModelSplat = @{
     Message          = 'Can you name all of the Star Fleet captains featured in the various shows over the years?'
-    ModelID          = 'anthropic.claude-3-sonnet-20240229-v1:0'
+    ModelID          = 'anthropic.claude-sonnet-4-20250514-v1:0'
     SystemPrompt     = 'You are an expert on all things Star Trek, having studied the show for decades. You often win Star Trek Trivia contests and enjoy sharing your vast knowledge of Star Trek with others.'
     Temperature      = 1
     StopSequences    = 'Picard'
@@ -152,7 +152,7 @@ Stop sequences are provided to stop the model from generating more text when it 
 ```powershell
 $invokeAnthropicModelSplat = @{
     Message              = 'Can you name all of the Star Fleet captains featured in the various shows over the years?'
-    ModelID              = 'anthropic.claude-3-7-sonnet-20250219-v1:0'
+    ModelID              = 'anthropic.claude-opus-4-20250514-v1:0'
     SystemPrompt         = 'You are an expert on all things Star Trek, having studied the show for decades. You often win Star Trek Trivia contests and enjoy sharing your vast knowledge of Star Trek with others.'
     Thinking             = $true
     ThinkingBudgetTokens = 2000
@@ -184,7 +184,7 @@ Reference the pwshBedrock documentation for more information on the custom conve
 ```powershell
 $invokeAnthropicModelSplat = @{
     Message          = 'Can you name all of the Star Fleet captains featured in the various shows over the years?'
-    ModelID          = 'anthropic.claude-3-5-sonnet-20240620-v1:0'
+    ModelID          = 'anthropic.claude-sonnet-4-20250514-v1:0'
     SystemPrompt     = 'You are an expert on all things Star Trek, having studied the show for decades. You often win Star Trek Trivia contests and enjoy sharing your vast knowledge of Star Trek with others.'
     Tools            = $starTrekTriviaFunctionTool
     ToolChoice       = 'auto'
@@ -206,7 +206,7 @@ The tool is a function that provides Star Trek trivia information.
 ```powershell
 $invokeAnthropicModelSplat = @{
     ToolsResults = $standardToolResult
-    ModelID      = 'anthropic.claude-3-5-sonnet-20240620-v1:0'
+    ModelID      = 'anthropic.claude-sonnet-4-20250514-v1:0'
     Credential   = $credential
     Region       = 'us-west-2'
 }
@@ -434,7 +434,7 @@ Accept wildcard characters: False
 ### -Thinking
 
 Claude will show its reasoning process through thinking content blocks in the response.
-This switch is only available for Claude 3.7 model.
+This switch is available for Claude 3.7 and Claude 4 models.
 Thinking is not compatible with temperature, top_p, or top_k modifications, as well as forced tool use.
 Thinking is only viewable in the full response object, and will not be included in the message history context or the message reply.
 
@@ -455,7 +455,7 @@ Accept wildcard characters: False
 Maximum number of tokens that Claude may use for its internal reasoning process.
 thinking budget tokens must always be less than the max tokens you specify in your request.
 This is a required parameter when using the Thinking switch.
-This parameter is only available for Claude 3.7 model.
+This parameter is available for Claude 3.7 and Claude 4 models.
 This parameter has no effect if not using the Thinking switch.
 
 ```yaml
@@ -732,7 +732,7 @@ Use the -ReturnFullObject parameter to get the full response object, which inclu
 
 [https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html)
 
-[https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-37.html](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-37.html)
+[https://docs.aws.amazon.com/bedrock/latest/userguide/claude-messages-extended-thinking.html](https://docs.aws.amazon.com/bedrock/latest/userguide/claude-messages-extended-thinking.html)
 
 [https://docs.anthropic.com/en/docs/models-overview](https://docs.anthropic.com/en/docs/models-overview)
 
